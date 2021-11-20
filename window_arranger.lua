@@ -18,17 +18,10 @@ center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
 screen2Apps = {'Chrome'}
 screen3Apps = {'Calendar', 'Affinity Photo', 'iTerm2', 'IntelliJ IDEA', 'Safari', 'Google Chat'}
 
--- App watcher
-function wa.appWatcherHandler(appName, eventType, appObject)
-  if (eventType == hs.application.watcher.launched) and
-    (#hs.screen.allScreens() == 3) then
-
-    logger:d('appWatcherHandler', 'launched with screen 3', appName)
-
-    -- A delay is added since Calendar wasn't found when running without a delay.
-    -- https://www.hammerspoon.org/docs/hs.timer.html#usleep
-    hs.timer.usleep(120 * 1000) -- 120 ms (failed at 100 ms)
+function arrangeWindows(appName)
+    logger:d('Arranging ' .. appName)
     local win = hs.application.find(appName):mainWindow()
+    assert(win, "Couldn't find the app: " .. appName)
 
     if (tl.isin(center1Apps, appName)) then
       wl.moveWindowToCenter1(win)
@@ -41,6 +34,27 @@ function wa.appWatcherHandler(appName, eventType, appObject)
       wl.moveWindowToDisplay(win, 3)
       wl.fullscreen(win)
     end
+end
+
+-- App watcher
+function wa.appWatcherHandler(appName, eventType, appObject)
+  if (eventType == hs.application.watcher.launched) and
+    (#hs.screen.allScreens() == 3) then
+
+    logger:d('appWatcherHandler', 'launched with screen 3', appName)
+
+    function launchCompleted()
+      logger:d('Waiting an app to be launched: ' .. appName)
+      return hs.application.find(appName):mainWindow()
+    end
+
+    -- It takes time until hs can find an app after an app is launched.
+    -- It depends on the app and it take longer if the app is heavy.
+    -- This checks the predicate every second.
+    -- https://www.hammerspoon.org/docs/hs.timer.html#waitUntil
+    hs.timer.waitUntil(launchCompleted, function()
+      arrangeWindows(appName)
+    end)
   end
 end
 
