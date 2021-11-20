@@ -23,18 +23,21 @@ function wa.appWatcherHandler(appName, eventType, appObject)
   if (eventType == hs.application.watcher.launched) and
     (#hs.screen.allScreens() == 3) then
 
-    logger:d('appWatcherHandler', 'launched with screen 3')
+    logger:d('appWatcherHandler', 'launched with screen 3', appName)
 
+    -- A delay is added since Calendar wasn't found when running without a delay.
+    -- https://www.hammerspoon.org/docs/hs.timer.html#usleep
+    hs.timer.usleep(120 * 1000) -- 120 ms (failed at 100 ms)
     local win = hs.application.find(appName):mainWindow()
 
     if (tl.isin(center1Apps, appName)) then
       wl.moveWindowToCenter1(win)
     elseif (tl.isin(center2Apps, appName)) then
       wl.moveWindowToCenter2(win)
-    elseif (t1.isin(screen2Apps, appName)) then
+    elseif (tl.isin(screen2Apps, appName)) then
       wl.moveWindowToDisplay(win, 2)
       wl.fullscreen(win)
-    elseif (t1.isin(screen3Apps, appName)) then
+    elseif (tl.isin(screen3Apps, appName)) then
       wl.moveWindowToDisplay(win, 3)
       wl.fullscreen(win)
     end
