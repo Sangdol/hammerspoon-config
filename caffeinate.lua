@@ -13,6 +13,8 @@ function cafe.handler(eventType)
   if (eventType == hs.caffeinate.watcher.systemDidWake) then
     logger:d("Connecting to bluetooth")
     hs.execute('$HOME/projects/osx/scripts/bluetooth.sh', true)
+  elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
+    hs.execute('/usr/local/bin/blueutil --power 0', true)
   end
 end
 
