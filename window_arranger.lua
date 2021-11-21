@@ -24,14 +24,14 @@ function arrangeWindows(appName)
     local win = hs.application.find(appName):mainWindow()
     assert(win, "Couldn't find the app: " .. appName)
 
-    if (tl.isin(center1Apps, appName)) then
+    if (tl.isInList(center1Apps, appName)) then
       wl.moveWindowToCenter1(win)
-    elseif (tl.isin(center2Apps, appName)) then
+    elseif (tl.isInList(center2Apps, appName)) then
       wl.moveWindowToCenter2(win)
-    elseif (tl.isin(screen2Apps, appName)) then
+    elseif (tl.isInList(screen2Apps, appName)) then
       wl.moveWindowToDisplay(win, 2)
       wl.fullscreen(win)
-    elseif (tl.isin(screen3Apps, appName)) then
+    elseif (tl.isInList(screen3Apps, appName)) then
       wl.moveWindowToDisplay(win, 3)
       wl.fullscreen(win)
     end

@@ -13,12 +13,12 @@ logger = hs.logger.new('dnd_manager', 5)
 apps = {'Melodics', 'Movist'}
 
 function dnd.appWatcherHandler(appName, eventType, appObject)
-  if (not tl.isin(apps, appName)) then
+  if (not tl.isInList(apps, appName)) then
     return
   end
 
   if (eventType == hs.application.watcher.launched) and
-    (tl.isin(apps, appName)) then
+    (tl.isInList(apps, appName)) then
     logger:d('DND On', appName)
     dnd.onOff(true)
     bt.turnOff()
