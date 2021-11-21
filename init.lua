@@ -2,6 +2,8 @@
 hs.loadSpoon('ReloadConfiguration')
 spoon.ReloadConfiguration:start()
 
+hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', hs.reload)
+
 require('redshift')
 require('finder')
 require('window_arranger')
