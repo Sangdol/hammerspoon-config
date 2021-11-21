@@ -39,6 +39,7 @@ end
 
 -- App watcher
 function wa.appWatcherHandler(appName, eventType, appObject)
+  logger:d('appWatcher', appName, eventType, appObject)
   if (eventType == hs.application.watcher.launched) and
     (#hs.screen.allScreens() == 3) then
 
