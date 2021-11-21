@@ -89,9 +89,9 @@ function wa.screenWatcherHandler()
   end
 end
 
-appWatcher = hs.application.watcher.new(wa.appWatcherHandler)
-appWatcher:start()
+wa.appWatcher = hs.application.watcher.new(wa.appWatcherHandler)
+wa.appWatcher:start()
 
-screenWatcher = hs.screen.watcher.new(wa.screenWatcherHandler)
-screenWatcher:start()
+wa.screenWatcher = hs.screen.watcher.new(wa.screenWatcherHandler)
+wa.screenWatcher:start()
 

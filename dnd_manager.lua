@@ -6,11 +6,13 @@ bt = require('bluetooth_lib')
 tl = require('table_lib')
 no = require('notification')
 
+dnd = {}
+
 logger = hs.logger.new('dnd_manager', 5)
 
 apps = {'Melodics', 'Movist'}
 
-function wa.appWatcherHandler(appName, eventType, appObject)
+function dnd.appWatcherHandler(appName, eventType, appObject)
   if (not tl.isin(apps, appName)) then
     return
   end
@@ -18,16 +20,16 @@ function wa.appWatcherHandler(appName, eventType, appObject)
   if (eventType == hs.application.watcher.launched) and
     (tl.isin(apps, appName)) then
     logger:d('DND On', appName)
-    dndOnOff(true)
+    dnd.onOff(true)
     bt.turnOff()
   elseif (eventType == hs.application.watcher.terminated) then
     logger:d('DND Off', appName)
-    dndOnOff(false)
+    dnd.onOff(false)
     bt.connect()
   end
 end
 
-function dndOnOff(on)
+function dnd.onOff(on)
   local prefix = '/usr/local/bin/node $HOME/projects/do-not-disturb-timer-jxa/onoff.js'
 
   if (on) then
@@ -39,5 +41,5 @@ function dndOnOff(on)
   end
 end
 
-appWatcher = hs.application.watcher.new(wa.appWatcherHandler)
-appWatcher:start()
+dnd.appWatcher = hs.application.watcher.new(dnd.appWatcherHandler)
+dnd.appWatcher:start()
