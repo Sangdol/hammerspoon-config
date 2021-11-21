@@ -2,11 +2,11 @@
 -- Enable / disable DND based on conditions
 -- using https://github.com/Sangdol/do-not-disturb-timer-jxa
 --
-
-logger = hs.logger.new('dnd_manager', 5)
-
+bt = require('bluetooth_lib')
 tl = require('table_lib')
 no = require('notification')
+
+logger = hs.logger.new('dnd_manager', 5)
 
 apps = {'Melodics', 'Movist'}
 
@@ -19,9 +19,11 @@ function wa.appWatcherHandler(appName, eventType, appObject)
     (tl.isin(apps, appName)) then
     logger:d('DND On', appName)
     dndOnOff(true)
+    bt.turnOff()
   elseif (eventType == hs.application.watcher.terminated) then
     logger:d('DND Off', appName)
     dndOnOff(false)
+    bt.connect()
   end
 end
 

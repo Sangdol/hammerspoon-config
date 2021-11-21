@@ -2,6 +2,8 @@
 -- Sleep / awake watcher
 -- https://www.hammerspoon.org/docs/hs.caffeinate.watcher.html#systemDidWake
 --
+bt = require('bluetooth_lib')
+
 logger = hs.logger.new('cafe', 5)
 
 cafe = {}
@@ -9,12 +11,10 @@ cafe = {}
 function cafe.handler(eventType)
   --logger:d('cafe', eventType)
 
-  -- only for work laptop?
   if (eventType == hs.caffeinate.watcher.systemDidWake) then
-    logger:d("Connecting to bluetooth")
-    hs.execute('$HOME/projects/osx/scripts/bluetooth.sh', true)
+    bt.connect()
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
-    hs.execute('/usr/local/bin/blueutil --power 0', true)
+    bt.turnOff()
   end
 end
 
