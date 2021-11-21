@@ -17,8 +17,7 @@ function cafe.handler(eventType)
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
     --       (a similar issue https://github.com/Hammerspoon/hammerspoon/issues/1197)
-    --       appWatcher doesn't work (even after reload() if there's no timer.
-    hs.timer.doAfter(5, hs.reload)
+    hs.reload()
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
     bt.turnOff()
   end
