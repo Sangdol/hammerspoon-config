@@ -5,6 +5,7 @@ logger = hs.logger.new('window_arranger', 5)
 
 wl = require('window_lib')
 tl = require('table_lib')
+no = require('notification')
 
 wa = {}
 
@@ -43,8 +44,18 @@ function wa.appWatcherHandler(appName, eventType, appObject)
 
     logger:d('appWatcherHandler', 'launched with screen 3', appName)
 
+    local safetyCounter = 0
+    local SAFETY_COUNTER_THRESHOLD = 10
     function launchCompleted()
       logger:d('Waiting an app to be launched: ' .. appName)
+      safetyCounter = safetyCounter + 1
+
+      -- In case, an app started but didn't complete the launch process.
+      if (safetyCounter > SAFETY_COUNTER_THRESHOLD) then
+        no.notify('appWatcherHandler waited for ' .. appName .. ' too long')
+        return true
+      end
+
       return hs.application.find(appName):mainWindow()
     end
 
