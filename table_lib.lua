@@ -5,13 +5,13 @@ tl = {}
 
 function tl.print(t)
   for k, v in pairs(t) do
-    print(k, '|', v)
+    print(k, ':', v)
   end
 end
 
 function tl.printList(t)
   for i=1, #t do
-    print(i, '|', t[i])
+    print(i, ':', t[i])
   end
 end
 
