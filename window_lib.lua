@@ -22,6 +22,8 @@ function wl.currentWindowCenterToggle()
     wl.moveWindowToCenter2(win)
   elseif screen_i == 3 then
     wl.moveWindowToCenter1(win)
+  else
+    wl.moveWindowToCenter2(win)
   end
 end
 
