@@ -17,7 +17,7 @@ center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
 
 -- Fullscreen
 screen2Apps = {'Chrome'}
-screen3Apps = {'Calendar', 'Affinity Photo', 'iTerm2', 'IntelliJ IDEA', 'Safari', 'Google Chat'}
+screen3Apps = {'Calendar', 'Affinity Photo', 'iTerm2', 'IntelliJ IDEA', 'Safari', 'Google Chat', 'Brave Browser'}
 
 function arrangeWindows(appName)
     logger:d('Arranging ' .. appName)
