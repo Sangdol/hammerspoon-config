@@ -4,6 +4,8 @@ wl = {}
 -- window
 --
 
+hs.window.animationDuration = 0
+
 function wl.moveWindowToCenter1(win)
   wl.moveWindowToRight(win)
   wl.moveWindowToDisplay(win, 2)
