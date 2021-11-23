@@ -6,5 +6,8 @@
 -- Color Temperature https://en.wikipedia.org/wiki/Color_temperature
 hs.redshift.start(2200, '20:00', '5:00', '4h', true, wfRedshift)
 
--- allow manual control of inverted colors
-hs.hotkey.bind('ctrl-cmd-alt-shift', 'r', 'Invert', hs.redshift.toggle)
+-- allow manual control of toggle
+hs.hotkey.bind('ctrl-cmd-alt-shift', 'r', 'Toggle', hs.redshift.toggle)
+
+-- I don't know why but it was enabled once and couldn't revert without this.
+hs.hotkey.bind('ctrl-cmd-alt-shift', 'i', 'ToggleInvert', hs.redshift.toggleInvert)
