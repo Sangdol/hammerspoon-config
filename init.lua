@@ -1,6 +1,6 @@
--- https://www.hammerspoon.org/go/#smartreload
-hs.loadSpoon('ReloadConfiguration')
-spoon.ReloadConfiguration:start()
+--
+-- Welcome to Hammerspoon
+--
 
 hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', hs.reload)
 
