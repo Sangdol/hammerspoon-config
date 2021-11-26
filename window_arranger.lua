@@ -20,21 +20,38 @@ screen2Apps = {'Chrome'}
 screen3Apps = {'Calendar', 'Affinity Photo', 'iTerm2', 'IntelliJ IDEA', 'Safari', 'Google Chat', 'Brave Browser'}
 
 function arrangeWindows(appName)
-    logger:d('Arranging ' .. appName)
-    local win = hs.application.find(appName):mainWindow()
-    assert(win, "Couldn't find the app: " .. appName)
+  logger:d('Arranging ' .. appName)
+  local app = hs.application.find(appName)
 
-    if (tl.isInList(center1Apps, appName)) then
-      wl.moveWindowToCenter1(win)
-    elseif (tl.isInList(center2Apps, appName)) then
-      wl.moveWindowToCenter2(win)
-    elseif (tl.isInList(screen2Apps, appName)) then
-      wl.moveWindowToDisplay(win, 2)
-      wl.fullscreen(win)
-    elseif (tl.isInList(screen3Apps, appName)) then
-      wl.moveWindowToDisplay(win, 3)
-      wl.fullscreen(win)
+  if (not app) then
+    logger:d("Couldn't find the app: " .. appName)
+    return
+  end
+
+  local win = app:mainWindow()
+
+  if (tl.isInList(center1Apps, appName)) then
+    wl.moveWindowToCenter1(win)
+  elseif (tl.isInList(center2Apps, appName)) then
+    wl.moveWindowToCenter2(win)
+  elseif (tl.isInList(screen2Apps, appName)) then
+    -- For some reason, windows shrink to right or left.
+    wl.moveWindowToDisplay(win, 2)
+    wl.fullscreen(win)
+  elseif (tl.isInList(screen3Apps, appName)) then
+    wl.moveWindowToDisplay(win, 3)
+    wl.fullscreen(win)
+  end
+end
+
+function arrangeAllWindows()
+  logger:d('Arranging all windows')
+
+  for _, appNames in ipairs({center1Apps, center2Apps, screen2Apps, screen3Apps}) do
+    for _, appName in ipairs(appNames) do
+      arrangeWindows(appName)
     end
+  end
 end
 
 -- App watcher
@@ -75,17 +92,7 @@ function wa.screenWatcherHandler()
   logger:d('screenWatcherHandler', 'number of screens', #hs.screen.allScreens())
 
   if (#hs.screen.allScreens() == 3) then
-    winLists1 = wl.moveAppsToDisplay(screen2Apps, 2)
-    winLists2 = wl.moveAppsToDisplay(screen3Apps, 3)
-
-    -- For some reason, windows shrink to right or left.
-    -- Adding this to avoid it.
-    for _, winList in ipairs(tl.concat(winLists1, winLists2)) do
-      for _, win in ipairs(winList) do
-        --logger:d('fullscreening', win)
-        wl.fullscreen(win)
-      end
-    end
+    arrangeAllWindows()
   end
 end
 

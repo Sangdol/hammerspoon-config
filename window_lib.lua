@@ -90,19 +90,6 @@ end
 -- screen
 --
 
--- appNames: list
--- return: list of list of windows e.g., {{win1, win2}, {win3, win4}}
-function wl.moveAppsToDisplay(appNames, d)
-  winLists = {}
-  for _, appName in ipairs(appNames) do
-    if hs.application.find(appName) then
-      table.insert(winLists, wl.moveAllWindowsToDisplayWithAppName(appName, d))
-    end
-  end
-
-  return winLists
-end
-
 -- return: list of windows of an app e.g., {win1, win2}
 function wl.moveAllWindowsToDisplayWithAppName(appName, d)
   -- https://stackoverflow.com/a/58398311/524588
