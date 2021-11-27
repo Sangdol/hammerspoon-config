@@ -21,11 +21,13 @@ screen3Apps = {'Calendar', 'Affinity Photo', 'iTerm2', 'IntelliJ IDEA', 'Safari'
 
 function arrangeWindows(appName)
   logger:d('Arranging ' .. appName)
-  local app = hs.application.find(appName)
+  local app = hs.application.get(appName)
 
   if (not app) then
-    logger:d("Couldn't find the app: " .. appName)
+    logger:d("Couldn't get the app: " .. appName)
     return
+  else
+    logger:d(app, "App found: " .. appName)
   end
 
   local win = app:mainWindow()
@@ -74,7 +76,7 @@ function wa.appWatcherHandler(appName, eventType, appObject)
         return true
       end
 
-      return hs.application.find(appName):mainWindow()
+      return hs.application.get(appName):mainWindow()
     end
 
     -- It takes time until hs can find an app after an app is launched.
