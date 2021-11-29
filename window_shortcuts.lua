@@ -24,6 +24,7 @@ function ws.selectLastActiveWindow(appName)
   function selectApp()
     if (ws.lastUsedWins[appName]) then
       local win = ws.lastUsedWins[appName]
+      -- https://github.com/Hammerspoon/hammerspoon/issues/370#issuecomment-615535897
       win:application():activate()
       hs.timer.doAfter(0.001, function()
         win:focus()
