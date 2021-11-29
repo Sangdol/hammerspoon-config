@@ -9,6 +9,8 @@ function tl.print(t)
   end
 end
 
+tl.show = tl.print
+
 function tl.printList(t)
   for i=1, #t do
     print(i, ':', t[i])

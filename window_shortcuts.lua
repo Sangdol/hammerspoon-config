@@ -1,7 +1,10 @@
 --
 -- Window managing shortcuts
 --
+
+ws = {}
 wl = require('window_lib')
+logger = hs.logger.new('window_shortcuts', 5)
 
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", wl.currentWindowCenterToggle)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveWindowTo(1))
@@ -10,10 +13,27 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, "left", wl.moveFocusedWindowToLeft)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "right", wl.moveFocusedWindowToRight)
 hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
 
--- Reference
--- - This doesn't make app changing faster.
--- - This doesn't focus back to the previously used window.
--- => basically it's the same as BTT
---hs.hotkey.bind({"ctrl", "cmd"}, "0", function()
-  --hs.application.launchOrFocus('iTerm')
---end)
+ws.lastUsedWins = {}
+
+hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function(win, appName)
+  ws.lastUsedWins[appName] = win
+  logger:d(appName, 'window updated')
+end)
+
+function ws.selectLastActiveWindow(appName)
+  function selectApp()
+    if (ws.lastUsedWins[appName]) then
+      local win = ws.lastUsedWins[appName]
+      win:application():activate()
+      hs.timer.doAfter(0.001, function()
+        win:focus()
+      end)
+    else
+      hs.application.launchOrFocus(appName)
+    end
+  end
+
+  return selectApp
+end
+
+hs.hotkey.bind({"ctrl", "cmd"}, "k", ws.selectLastActiveWindow('iTerm2'))
