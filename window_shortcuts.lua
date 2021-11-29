@@ -30,7 +30,10 @@ function ws.selectLastActiveWindow(appName)
         win:focus()
       end)
     else
-      hs.application.launchOrFocus(appName)
+      hs.application.get(appName):mainWindow():focus()
+
+      -- This requires different appName e.g., iTerm2 vs. iTerm.
+      -- hs.application.launchOrFocus(appName)
     end
   end
 
