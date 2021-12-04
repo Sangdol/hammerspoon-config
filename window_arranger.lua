@@ -51,7 +51,14 @@ function arrangeAllWindows()
 
   for _, appNames in ipairs({center1Apps, center2Apps, screen2Apps, screen3Apps}) do
     for _, appName in ipairs(appNames) do
-      arrangeWindows(appName)
+      -- pcall to ignore this error
+      -- ERROR:   LuaSkin: hs.screen.watcher callback: ...oon.app/Contents/Resources/extensions/hs/window/init.lua:922: not a rect
+      -- similar issue: https://github.com/Hammerspoon/hammerspoon/issues/2507
+      local status, err = pcall(arrangeWindows, appName)
+
+      if (not status) then
+        print(err)
+      end
     end
   end
 end
