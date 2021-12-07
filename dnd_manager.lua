@@ -30,6 +30,7 @@ function dnd.appWatcherHandler(appName, eventType, appObject)
 end
 
 function dnd.onOff(on)
+  -- https://github.com/Sangdol/do-not-disturb-timer-jxa
   local prefix = '/usr/local/bin/node $HOME/projects/do-not-disturb-timer-jxa/onoff.js'
 
   if (on) then
