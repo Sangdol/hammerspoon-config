@@ -5,7 +5,7 @@ logger = hs.logger.new('window_arranger', 5)
 
 wl = require('window_lib')
 tl = require('table_lib')
-no = require('notification')
+no = require('notification_lib')
 
 wa = {}
 

@@ -4,7 +4,7 @@
 --
 bt = require('bluetooth_lib')
 tl = require('table_lib')
-no = require('notification')
+no = require('notification_lib')
 
 dnd = {}
 
