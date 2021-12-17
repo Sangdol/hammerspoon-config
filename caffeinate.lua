@@ -13,7 +13,8 @@ function cafe.handler(eventType)
   --logger:d('cafe', eventType)
 
   if (eventType == hs.caffeinate.watcher.systemDidWake) then
-    logger:d('systemDidWake')
+    logger:d('=== Hallo Hallo ===')
+
     hs.wifi.setPower(true)
 
     if wf.isSecond() then
@@ -31,6 +32,8 @@ function cafe.handler(eventType)
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
     hs.wifi.setPower(false)
     bt.turnOff()
+
+    logger:d('=== Bis Bald ===')
   end
 end
 
