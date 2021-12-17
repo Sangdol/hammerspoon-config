@@ -13,13 +13,16 @@ function cafe.handler(eventType)
 
   if (eventType == hs.caffeinate.watcher.systemDidWake) then
     bt.connect()
+    hs.wifi.setPower(true)
 
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
     --       (a similar issue https://github.com/Hammerspoon/hammerspoon/issues/1197)
     hs.reload()
+
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
     bt.turnOff()
+    hs.wifi.setPower(false)
   end
 end
 
