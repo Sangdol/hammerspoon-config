@@ -17,8 +17,10 @@ function cafe.handler(eventType)
     hs.wifi.setPower(true)
 
     if wf.isSecond() then
-      logger:d('Connecting to Bluetooth...')
+      logger:d('Connecting to bluetooth...')
       bt.connect()
+    else
+      logger:d('Skipping connecting to bluetooth...')
     end
 
     -- Sometimes Redshift doesn't work well after restarting
