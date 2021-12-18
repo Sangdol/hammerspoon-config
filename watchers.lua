@@ -41,15 +41,9 @@ function wifiHandler(watcher, eventType, interface)
   -- There's the "powerChange" event but it's triggered before Wifi is connected.
   -- The SSIDChange event is triggered when Wifi is connected to an access point
   -- but it's not triggered when Wifi is turned off.
-  if (eventType == 'SSIDChange') then
-    if wf.isOn() then
-      if wf.isSecond() then
-        logger:d('Connecting to bluetooth...')
-        bt.connect()
-      else
-        logger:d('Skipping connecting to bluetooth...')
-      end
-    end
+  if (eventType == 'SSIDChange') and (wf.isOn()) and (wf.isSecond()) then
+    logger:d('Connecting to bluetooth...')
+    bt.connect()
   end
 end
 
