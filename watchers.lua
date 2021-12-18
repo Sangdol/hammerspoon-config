@@ -17,29 +17,12 @@ function w.cafeHandler(eventType)
     logger:d('=== Hallo Hallo ===')
 
     wf.turnOn()
+    bt.conditionallyConnect()
 
-    timer.safeWaitUntil(function()
-      return wf.isOn()
-    end, function()
-      if wf.isSecond() then
-        bt.connect()
-      else
-        logger:d('Skipping connecting to bluetooth')
-      end
-
-      -- Sometimes Redshift doesn't work well after restarting
-      -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
-      --       (a similar issue https://github.com/Hammerspoon/hammerspoon/issues/1197)
-      --
-      -- This has to run after timer is done
-      -- since timer doesn't work if this is called
-      -- before a timer is ended for some reason.
-      hs.reload()
-    end, function()
-      logger:d('Retrying to connect to Wifi...')
-      wf.turnOn()
-    end, 5, 'connecting to Wifi')
-
+    -- Sometimes Redshift doesn't work well after restarting
+    -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
+    --       (a similar issue https://github.com/Hammerspoon/hammerspoon/issues/1197)
+    hs.reload()
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
     -- Turning it off to avoid wake it up for reminders.
     wf.turnOff()

@@ -25,7 +25,7 @@ function dnd.appWatcherHandler(appName, eventType, appObject)
   elseif (eventType == hs.application.watcher.terminated) then
     logger:d('DND Off', appName)
     dnd.onOff(false)
-    bt.connect()
+    bt.conditionallyConnect()
   end
 end
 
