@@ -1,5 +1,7 @@
 --
--- Table utili functions
+-- Table util functions
+--
+-- Refer to https://www.hammerspoon.org/docs/hs.fnutils.html
 --
 tl = {}
 
