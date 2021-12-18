@@ -1,3 +1,6 @@
+--
+-- https://www.hammerspoon.org/docs/hs.timer.html
+--
 timer = {}
 
 logger = hs.logger.new('timer', 5)
