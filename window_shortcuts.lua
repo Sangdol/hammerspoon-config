@@ -4,7 +4,7 @@
 
 ws = {}
 wl = require('window_lib')
-local logger = hs.logger.new('window_shortcuts', 5)
+local logger = hs.logger.new('window_shortcuts', 'info')
 
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", wl.currentWindowCenterToggle)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveWindowTo(1))
