@@ -5,7 +5,7 @@ tl = require('table_lib')
 
 wf = {}
 
-logger = hs.logger.new('Wifi', 5)
+local logger = hs.logger.new('Wifi', 5)
 
 function wf.isSecond()
   return hs.wifi.interfaceDetails()['security'] == 'WPA2 Personal'

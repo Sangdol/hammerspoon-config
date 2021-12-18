@@ -8,7 +8,7 @@ no = require('notification_lib')
 
 dnd = {}
 
-logger = hs.logger.new('dnd_manager', 5)
+local logger = hs.logger.new('dnd_manager', 5)
 
 apps = {'Melodics', 'Movist'}
 

@@ -3,7 +3,7 @@
 --
 timer = {}
 
-logger = hs.logger.new('timer', 5)
+local logger = hs.logger.new('timer', 5)
 
 function timer.safeWaitUntil(predicateFn, actionFn, failtureFn, count)
   local waitCounter = 0

@@ -5,7 +5,7 @@ bt = require('bluetooth_lib')
 wf = require('wifi_lib')
 timer = require('timer_lib')
 
-logger = hs.logger.new('watchers', 5)
+local logger = hs.logger.new('watchers', 5)
 
 w = {}
 
