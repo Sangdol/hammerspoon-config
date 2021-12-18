@@ -5,7 +5,7 @@ timer = {}
 
 logger = hs.logger.new('timer', 5)
 
-function timer.safeWaitUntil(predicateFn, actionFn, count, target)
+function timer.safeWaitUntil(predicateFn, actionFn, failtureFn, count, target)
   local waitCounter = 0
 
   hs.timer.waitUntil(function()
@@ -15,6 +15,7 @@ function timer.safeWaitUntil(predicateFn, actionFn, count, target)
       return predicateFn()
     else
       no.notify('Waited too long for ' .. target)
+      failtureFn()
       return true
     end
   end, actionFn)

@@ -35,7 +35,10 @@ function w.cafeHandler(eventType)
       -- since timer doesn't work if this is called
       -- before a timer is ended for some reason.
       hs.reload()
-    end, 15, 'connecting to Wifi')
+    end, function()
+      logger:d('Retrying to connect to Wifi...')
+      wf.turnOn()
+    end, 5, 'connecting to Wifi')
 
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
     -- Turning it off to avoid wake it up for reminders.
