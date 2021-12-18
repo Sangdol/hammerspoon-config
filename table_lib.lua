@@ -17,6 +17,8 @@ function tl.printList(t)
   end
 end
 
+tl.showList = tl.printList
+
 function tl.isInList(t, elem)
   for i=1, #t do
     if t[i] == elem then
