@@ -6,6 +6,7 @@ logger = hs.logger.new('window_arranger', 5)
 wl = require('window_lib')
 tl = require('table_lib')
 no = require('notification_lib')
+timer = require('timer_lib')
 
 wa = {}
 
@@ -71,28 +72,26 @@ function wa.appWatcherHandler(appName, eventType, appObject)
 
     logger:d('appWatcherHandler', 'launched with screen 3', appName)
 
-    local safetyCounter = 0
-    local SAFETY_COUNTER_THRESHOLD = 10
     function launchCompleted()
       logger:d('Waiting an app to be launched: ' .. appName)
-      safetyCounter = safetyCounter + 1
-
-      -- In case, an app started but didn't complete the launch process.
-      if (safetyCounter > SAFETY_COUNTER_THRESHOLD) then
-        no.notify('appWatcherHandler waited for ' .. appName .. ' too long')
-        return true
-      end
-
       return hs.application.get(appName):mainWindow()
     end
+
+    function onLaunchCompleted()
+      arrangeWindows(appName)
+    end
+
+    function onLaunchFailed()
+      no.notify('appWatcherHandler waited for ' .. appName .. ' too long')
+    end
+
+    local TRIAL = 10
 
     -- It takes time until hs can find an app after an app is launched.
     -- It depends on the app and it take longer if the app is heavy.
     -- This checks the predicate every second.
     -- https://www.hammerspoon.org/docs/hs.timer.html#waitUntil
-    hs.timer.waitUntil(launchCompleted, function()
-      arrangeWindows(appName)
-    end)
+    timer.safeWaitUntil(launchCompleted, onLaunchCompleted, onLaunchFailed, TRIAL)
   end
 end
 
