@@ -1,7 +1,7 @@
 --
 -- Move apps to a position of a screen when they start or a new screen is connected.
 --
-local logger = hs.logger.new('window_arranger', 5)
+local logger = hs.logger.new('window_arranger', 'info')
 
 wl = require('window_lib')
 tl = require('table_lib')
