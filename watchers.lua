@@ -14,7 +14,9 @@ function w.cafeHandler(eventType)
   --logger:d('cafe', eventType)
 
   if (eventType == hs.caffeinate.watcher.systemDidWake) then
+    logger:d('===================')
     logger:d('=== Hallo Hallo ===')
+    logger:d('===================')
 
     wf.turnOn()
     bt.conditionallyConnect()
@@ -28,7 +30,9 @@ function w.cafeHandler(eventType)
     wf.turnOff()
     bt.turnOff()
 
+    logger:d('================')
     logger:d('=== Bis Bald ===')
+    logger:d('================')
   end
 end
 
