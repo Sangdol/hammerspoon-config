@@ -5,18 +5,18 @@ bt = require('bluetooth_lib')
 wf = require('wifi_lib')
 timer = require('timer_lib')
 
-local logger = hs.logger.new('watchers', 5)
+local logger = hs.logger.new('watchers', 'info')
 
 w = {}
 
 -- https://www.hammerspoon.org/docs/hs.caffeinate.watcher.html#systemDidWake
 function w.cafeHandler(eventType)
-  --logger:d('cafe', eventType)
+  logger:d('Cafe', eventType)
 
   if (eventType == hs.caffeinate.watcher.systemDidWake) then
-    logger:d('===================')
-    logger:d('=== Hallo Hallo ===')
-    logger:d('===================')
+    logger:i('===================')
+    logger:i('=== Hallo Hallo ===')
+    logger:i('===================')
 
     wf.turnOn()
     bt.conditionallyConnect()
@@ -30,9 +30,9 @@ function w.cafeHandler(eventType)
     wf.turnOff()
     bt.turnOff()
 
-    logger:d('================')
-    logger:d('=== Bis Bald ===')
-    logger:d('================')
+    logger:i('================')
+    logger:i('=== Bis Bald ===')
+    logger:i('================')
   end
 end
 
