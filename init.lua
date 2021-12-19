@@ -8,9 +8,8 @@ hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
   hs.reload()
 
   -- It seems hs.alert doesn't work before or after hs.reload()
-  -- and the notification often doesn't disappear automatically
-  -- so keep it commented for now.
-  --no.nofity('Config reloaded')
+  -- and the notification often doesn't disappear automatically.
+  no.notify('Config reloaded')
 end)
 
 require('redshift')
