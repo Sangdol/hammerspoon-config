@@ -16,13 +16,13 @@ function wf.isOn()
 end
 
 function wf.turnOn()
-  logger:d('Turning on wifi...')
-  hs.wifi.setPower(true)
+  local res = hs.wifi.setPower(true)
+  logger:d('Turning on wifi...', res)
 end
 
 function wf.turnOff()
-  logger:d('Turning off wifi...')
-  hs.wifi.setPower(false)
+  local res = hs.wifi.setPower(false)
+  logger:d('Turning off wifi...', res)
 end
 
 function wf.details()
