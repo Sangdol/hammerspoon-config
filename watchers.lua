@@ -4,6 +4,7 @@
 bt = require('bluetooth_lib')
 wf = require('wifi_lib')
 timer = require('timer_lib')
+no = require('notification_lib')
 
 local logger = hs.logger.new('watchers', 'info')
 
@@ -18,13 +19,24 @@ function w.cafeHandler(eventType)
     logger:i('=== Hallo Hallo ===')
     logger:i('===================')
 
-    wf.turnOn()
+    -- Sometimes just doing wf.turnOn() doesn't work.
+    -- (was it due to hs.reload()?)
+    timer.safeDoUntil(function()
+      return wf.isOn()
+    end, function()
+      wf.turnOn()
+    end, function()
+      no.notify('Failed to connect to Wifi.')
+    end)
+
     bt.conditionallyConnect()
 
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
     --       (a similar issue https://github.com/Hammerspoon/hammerspoon/issues/1197)
-    hs.reload()
+    --
+    -- reload() distrubs timer.
+    --hs.reload()
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
     -- Turning it off to avoid wake it up for reminders.
     wf.turnOff()
