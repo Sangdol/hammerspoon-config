@@ -31,6 +31,8 @@ function w.cafeHandler(eventType)
     end)
 
     bt.conditionallyConnect()
+
+    -- To prevent Reminder alerts wake up the laptop
     dnd.turnOff()
 
     -- Sometimes Redshift doesn't work well after restarting
