@@ -5,6 +5,7 @@ bt = require('bluetooth_lib')
 wf = require('wifi_lib')
 timer = require('timer_lib')
 no = require('notification_lib')
+dnd = require('dnd_manager')
 
 local logger = hs.logger.new('watchers', 'info')
 
@@ -30,6 +31,7 @@ function w.cafeHandler(eventType)
     end)
 
     bt.conditionallyConnect()
+    dnd.turnOff()
 
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
@@ -41,6 +43,7 @@ function w.cafeHandler(eventType)
     -- Turning it off to avoid wake it up for reminders.
     wf.turnOff()
     bt.turnOff()
+    dnd.turnOn()
 
     logger:i('================')
     logger:i('=== Bis Bald ===')
