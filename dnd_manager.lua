@@ -20,25 +20,27 @@ function dnd.appWatcherHandler(appName, eventType, appObject)
 
   if (eventType == hs.application.watcher.launched) and
     (tl.isInList(apps, appName)) then
-    logger:d('DND On', appName)
     dnd.turnOn()
     bt.turnOff()
   elseif (eventType == hs.application.watcher.terminated) then
-    logger:d('DND Off', appName)
     dnd.turnOff()
     bt.conditionallyConnect()
   end
 end
 
 function dnd.turnOn()
+  logger:d('DND On')
   no.alert('DND On')
   hs.execute(DND_JS .. ' ' .. 'on', true)
 end
 
 function dnd.turnOff()
+  logger:d('DND Off')
   no.alert('DND Off')
   hs.execute(DND_JS .. ' ' .. 'off', true)
 end
 
 dnd.appWatcher = hs.application.watcher.new(dnd.appWatcherHandler)
 dnd.appWatcher:start()
+
+return dnd
