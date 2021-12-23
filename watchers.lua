@@ -16,6 +16,7 @@ function w.cafeHandler(eventType)
   logger:d('Cafe', eventType)
 
   if (eventType == hs.caffeinate.watcher.systemDidWake) then
+    logger:i('')
     logger:i('===================')
     logger:i('=== Hallo Hallo ===')
     logger:i('===================')
@@ -50,6 +51,7 @@ function w.cafeHandler(eventType)
     logger:i('================')
     logger:i('=== Bis Bald ===')
     logger:i('================')
+    logger:i('')
   end
 end
 
