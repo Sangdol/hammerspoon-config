@@ -34,4 +34,8 @@ function timer.safeWaitUntil(predicateFn, actionFn, failtureFn, count)
   safeTimer(hs.timer.waitUntil, predicateFn, actionFn, failtureFn, count)
 end
 
+function sleep(seconds)
+  hs.timer.usleep(seconds * 1000)
+end
+
 return timer
