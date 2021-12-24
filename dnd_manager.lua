@@ -1,15 +1,14 @@
 --
 -- Enable / disable DND based on conditions
--- using https://github.com/Sangdol/do-not-disturb-timer-jxa
 --
 bt = require('bluetooth_lib')
 tl = require('table_lib')
 no = require('notification_lib')
+st = require('string_lib')
 
 dnd = {}
 
 local logger = hs.logger.new('dnd_manager', 5)
-local DND_JS = '/usr/local/bin/node $HOME/projects/do-not-disturb-timer-jxa/onoff.js'
 
 apps = {'Melodics', 'Movist'}
 
@@ -28,16 +27,36 @@ function dnd.appWatcherHandler(appName, eventType, appObject)
   end
 end
 
+function dnd.isOn()
+  local command = 'defaults read com.apple.controlcenter "NSStatusItem Visible FocusModes"'
+
+  -- 1: on, 0: off
+  local result = hs.execute('defaults read com.apple.controlcenter "NSStatusItem Visible FocusModes"')
+  result = st.trim(result)
+
+  return result == '1'
+end
+
+local function dndKeyStroke()
+  hs.eventtap.keyStroke({'ctrl', 'alt', 'cmd', 'shift'}, 'z')
+end
+
 function dnd.turnOn()
   logger:d('DND On')
   no.alert('DND On')
-  hs.execute(DND_JS .. ' ' .. 'on', true)
+
+  if not dnd.isOn() then
+    dndKeyStroke()
+  end
 end
 
 function dnd.turnOff()
   logger:d('DND Off')
   no.alert('DND Off')
-  hs.execute(DND_JS .. ' ' .. 'off', true)
+
+  if dnd.isOn() then
+    dndKeyStroke()
+  end
 end
 
 dnd.appWatcher = hs.application.watcher.new(dnd.appWatcherHandler)

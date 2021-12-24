@@ -33,7 +33,6 @@ function w.cafeHandler(eventType)
 
     bt.conditionallyConnect()
 
-    -- To prevent Reminder alerts wake up the laptop
     dnd.turnOff()
 
     -- Sometimes Redshift doesn't work well after restarting
@@ -43,10 +42,10 @@ function w.cafeHandler(eventType)
     -- reload() distrubs timer.
     --hs.reload()
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
-    -- Turning it off to avoid wake it up for reminders.
+    -- To prevent Reminder alerts wake up the laptop (hopefully)
     wf.turnOff()
-    bt.turnOff()
     dnd.turnOn()
+    bt.turnOff()
 
     logger:i('================')
     logger:i('=== Bis Bald ===')
