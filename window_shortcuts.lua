@@ -40,4 +40,5 @@ function ws.selectLastActiveWindow(appName)
   return selectApp
 end
 
-hs.hotkey.bind({"ctrl", "cmd"}, "k", ws.selectLastActiveWindow('iTerm2'))
+hs.hotkey.bind({"ctrl", "cmd"}, "K", ws.selectLastActiveWindow('iTerm2'))
+hs.hotkey.bind({"ctrl", "cmd"}, "L", ws.selectLastActiveWindow('IntelliJ IDEA'))
