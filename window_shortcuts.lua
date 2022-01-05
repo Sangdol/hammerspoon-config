@@ -42,3 +42,4 @@ end
 
 hs.hotkey.bind({"ctrl", "cmd"}, "K", ws.selectLastActiveWindow('iTerm2'))
 hs.hotkey.bind({"ctrl", "cmd"}, "L", ws.selectLastActiveWindow('IntelliJ IDEA'))
+hs.hotkey.bind({"ctrl", "cmd"}, "J", ws.selectLastActiveWindow('Google Chrome'))
