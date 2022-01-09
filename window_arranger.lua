@@ -18,9 +18,9 @@ center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
 
 -- Fullscreen
 screen2Apps = {'Chrome'}
-screen3Apps = {'Calendar', 'Affinity Photo', 'iTerm2', 'IntelliJ IDEA', 'Safari', 'Google Chat', 'Brave Browser'}
+screen3Apps = {'Calendar', 'Affinity Photo', 'IntelliJ IDEA', 'Safari', 'Google Chat', 'Brave Browser'}
 
-function arrangeWindows(appName)
+local function arrangeWindows(appName)
   logger:d('Arranging ' .. appName)
   local app = hs.application.get(appName)
 
@@ -64,6 +64,31 @@ function arrangeAllWindows()
   end
 end
 
+-- An app has a list of rules.
+-- A rule returns a list of a list: {win, screen number}
+local rules = {['iTerm2'] = {function()
+  local targetScreen = 3
+  local screen3AppTabCount = 4
+  local allWins = hs.application.get('iTerm2'):allWindows()
+
+  for _, win in ipairs(allWins) do
+    if win:tabCount() == screen3AppTabCount then
+      return {win, targetScreen}
+    end
+  end
+end}}
+
+local function arrangeWindowsWithRules(appName)
+  for _, rule in ipairs(rules[appName]) do
+    local res = rule()
+    local win = res[1]
+    local screenNumber = res[2]
+
+    wl.moveWindowToDisplay(win, screenNumber)
+    wl.fullscreen(win)
+  end
+end
+
 -- App watcher
 function wa.appWatcherHandler(appName, eventType, appObject)
   --logger:d('appWatcher', appName, eventType, appObject)
@@ -79,6 +104,7 @@ function wa.appWatcherHandler(appName, eventType, appObject)
 
     function onLaunchCompleted()
       arrangeWindows(appName)
+      arrangeWindowsWithRules(appName)
     end
 
     function onLaunchFailed()
