@@ -78,14 +78,16 @@ local rules = {['iTerm2'] = {function()
   end
 end}}
 
-local function arrangeWindowsWithRules(appName)
-  for _, rule in ipairs(rules[appName]) do
-    local res = rule()
-    local win = res[1]
-    local screenNumber = res[2]
+local function arrangeAllWindowsWithRules()
+  for _, appRules in pairs(rules) do
+    for _, rule in ipairs(appRules) do
+      local res = rule()
+      local win = res[1]
+      local screenNumber = res[2]
 
-    wl.moveWindowToDisplay(win, screenNumber)
-    wl.fullscreen(win)
+      wl.moveWindowToDisplay(win, screenNumber)
+      wl.fullscreen(win)
+    end
   end
 end
 
@@ -103,8 +105,7 @@ function wa.appWatcherHandler(appName, eventType, appObject)
     end
 
     function onLaunchCompleted()
-      arrangeWindows(appName)
-      arrangeWindowsWithRules(appName)
+      arrangeAllWindows(appName)
     end
 
     function onLaunchFailed()
@@ -127,6 +128,7 @@ function wa.screenWatcherHandler()
 
   if (#hs.screen.allScreens() == 3) then
     arrangeAllWindows()
+    arrangeAllWindowsWithRules()
   end
 end
 
