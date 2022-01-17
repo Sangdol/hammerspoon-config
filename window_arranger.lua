@@ -78,12 +78,20 @@ local rules = {['iTerm2'] = {function()
   end
 end}}
 
-local function arrangeAllWindowsWithRules()
-  for _, appRules in pairs(rules) do
-    for _, rule in ipairs(appRules) do
-      local res = rule()
-      local win = res[1]
-      local screenNumber = res[2]
+function arrangeAllWindowsWithRules()
+  for appName, appRules in pairs(rules) do
+    for i, rule in ipairs(appRules) do
+      local winAndTargetScreen = rule()
+
+      -- This sometimes happens when starting up.
+      -- Is it because win doesn't return proper tab count?
+      if #winAndTargetScreen == 0 then
+        logger:info(appName .. ': no matching window for the rule ' .. i)
+        return
+      end
+
+      local win = winAndTargetScreen[1]
+      local screenNumber = winAndTargetScreen[2]
 
       wl.moveWindowToDisplay(win, screenNumber)
       wl.fullscreen(win)
