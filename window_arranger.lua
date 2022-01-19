@@ -85,7 +85,7 @@ function arrangeAllWindowsWithRules()
 
       -- This sometimes happens when starting up.
       -- Is it because win doesn't return proper tab count?
-      if #winAndTargetScreen == 0 then
+      if winAndTargetScreen and #winAndTargetScreen == 0 then
         logger:info(appName .. ': no matching window for the rule ' .. i)
         return
       end
