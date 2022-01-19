@@ -64,8 +64,12 @@ function arrangeAllWindows()
   end
 end
 
--- An app has a list of rules.
--- A rule returns a list of a list: {win, screen number}
+-- Rules has AppRules.
+--
+--    rules = [appRules, appRules, ...]
+--    appRules = [rule, rule, ...]
+--
+-- A rule returns {win, targetScrenNumber} or {}.
 local rules = {['iTerm2'] = {function()
   local targetScreen = 3
   local screen3AppTabCount = 4
@@ -78,6 +82,8 @@ local rules = {['iTerm2'] = {function()
       return {win, targetScreen}
     end
   end
+
+  return {}
 end}}
 
 function arrangeAllWindowsWithRules()
@@ -85,7 +91,7 @@ function arrangeAllWindowsWithRules()
     for i, rule in ipairs(appRules) do
       local winAndTargetScreen = rule()
 
-      if winAndTargetScreen and #winAndTargetScreen == 0 then
+      if #winAndTargetScreen == 0 then
         logger:info(appName .. ': no matching window for the rule ' .. i)
         return
       end
