@@ -92,7 +92,7 @@ function arrangeAllWindowsWithRules()
       local winAndTargetScreen = rule()
 
       if #winAndTargetScreen == 0 then
-        logger:info(appName .. ': no matching window for the rule ' .. i)
+        logger:i(appName .. ': no matching window for the rule ' .. i)
         return
       end
 
