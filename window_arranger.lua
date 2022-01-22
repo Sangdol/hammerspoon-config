@@ -1,7 +1,7 @@
 --
 -- Move apps to a position of a screen when they start or a new screen is connected.
 --
-local logger = hs.logger.new('window_arranger', 'info')
+local logger = hs.logger.new('window_arranger', 'debug')
 
 wl = require('window_lib')
 tl = require('table_lib')
@@ -75,11 +75,14 @@ local rules = {['iTerm2'] = {function()
   local screen3AppTabCount = 4
   local allWins = hs.application.get('iTerm2'):allWindows()
 
+  logger:d('---Checking iTerm2 rules...---')
   for _, win in ipairs(allWins) do
+    logger:d('Tab count: ' .. win:tabCount())
     if win:tabCount() == screen3AppTabCount then
       return {win, targetScreen}
     end
   end
+  logger:d('---Finishing iTerm2 rules...---')
 
   -- This sometimes happen even when there's a window with 4 tabs.
   -- Is it because win doesn't return proper tab count?
