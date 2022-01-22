@@ -76,28 +76,25 @@ local rules = {['iTerm2'] = {function()
   local allWins = hs.application.get('iTerm2'):allWindows()
 
   for _, win in ipairs(allWins) do
-    -- This sometimes returns nil even when there's a window with 4 tabs.
-    -- Is it because win doesn't return proper tab count?
     if win:tabCount() == screen3AppTabCount then
       return {win, targetScreen}
     end
   end
 
+  -- This sometimes happen even when there's a window with 4 tabs.
+  -- Is it because win doesn't return proper tab count?
   return {}
 end}}
 
 function arrangeAllWindowsWithRules()
   for appName, appRules in pairs(rules) do
     for i, rule in ipairs(appRules) do
-      local winAndTargetScreen = rule()
+      local win, screenNumber = table.unpack(rule())
 
-      if #winAndTargetScreen == 0 then
+      if not win then
         logger:i(appName .. ': no matching window for the rule ' .. i)
         return
       end
-
-      local win = winAndTargetScreen[1]
-      local screenNumber = winAndTargetScreen[2]
 
       wl.moveWindowToDisplay(win, screenNumber)
       wl.fullscreen(win)
