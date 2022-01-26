@@ -73,6 +73,11 @@ end
 local rules = {['iTerm2'] = {function()
   local targetScreen = 3
   local screen3AppTabCount = 4
+
+  -- This seems to prevent iTerm2 not to return 0 for tabCount() method
+  -- Probably this is happening due to a race condition.
+  timer.sleep(1)
+
   local allWins = hs.application.get('iTerm2'):allWindows()
 
   logger:d('---Checking iTerm2 rules...---')
