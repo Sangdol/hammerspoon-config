@@ -17,7 +17,7 @@ center1Apps = {'Reminders', 'Notes'}
 center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
 
 -- Fullscreen
-screen2Apps = {'Chrome'}
+screen2Apps = {'Google Chrome'}
 screen3Apps = {'Calendar', 'Affinity Photo', 'IntelliJ IDEA', 'Safari', 'Google Chat', 'Brave Browser', 'Google Chrome Canary'}
 
 local function arrangeWindows(appName)
