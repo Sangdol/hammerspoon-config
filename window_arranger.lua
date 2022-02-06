@@ -82,7 +82,9 @@ local rules = {['iTerm2'] = {function()
     local allWins = hs.application.get('iTerm2'):allWindows()
 
     if not tl.empty(allWins) then
-      return allWins[1]:tabCount() > 0
+      local tabCount = allWins[1]:tabCount()
+      logger:d('Tab count checking: ' .. tabCount)
+      return tabCount > 0
     end
 
     return false
