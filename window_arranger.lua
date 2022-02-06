@@ -74,24 +74,31 @@ local rules = {['iTerm2'] = {function()
   local targetScreen = 3
   local screen3AppTabCount = 4
 
-  -- This seems to prevent iTerm2 not to return 0 for tabCount() method
-  -- Probably this is happening due to a race condition.
-  timer.sleep(1)
+  return timer.safeBlockedTimer(function()
+    -- When a laptop restarts win:tabCount() returns 0
+    -- probably due to a race condition.
+    -- This checks until the application is fully initialized
+    -- so it can return a right tab count.
+    local allWins = hs.application.get('iTerm2'):allWindows()
 
-  local allWins = hs.application.get('iTerm2'):allWindows()
-
-  logger:d('---Checking iTerm2 rules...---')
-  for _, win in ipairs(allWins) do
-    logger:d('Tab count: ' .. win:tabCount())
-    if win:tabCount() == screen3AppTabCount then
-      return {win, targetScreen}
+    if not tl.empty(allWins) then
+      return allWins[1]:tabCount() > 0
     end
-  end
-  logger:d('---Finishing iTerm2 rules...---')
 
-  -- This sometimes happen even when there's a window with 4 tabs.
-  -- Is it because win doesn't return proper tab count?
-  return {}
+    return false
+  end, function()
+    local allWins = hs.application.get('iTerm2'):allWindows()
+    for _, win in ipairs(allWins) do
+      logger:d('Tab count: ' .. win:tabCount())
+      if win:tabCount() == screen3AppTabCount then
+        return {win, targetScreen}
+      end
+    end
+
+    return {}
+  end, function()
+    logger:w('Failed to load tab count of iTerm2.')
+  end)
 end}}
 
 function arrangeAllWindowsWithRules()

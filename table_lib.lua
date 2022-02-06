@@ -39,4 +39,9 @@ function tl.concat(t1, t2)
   return t1
 end
 
+-- https://stackoverflow.com/questions/1252539/most-efficient-way-to-determine-if-a-lua-table-is-empty-contains-no-entries
+function tl.empty(t)
+  return next(t) == nil
+end
+
 return tl

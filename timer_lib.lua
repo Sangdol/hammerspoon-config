@@ -26,6 +26,22 @@ function safeTimer(timerFn, predicateFn, actionFn, failtureFn, count)
   end, actionFn)
 end
 
+function timer.safeBlockedTimer(predicateFn, actionFn, failtureFn, count)
+  logger:d('SafeBlockedTimer')
+
+  count = count or DEFAULT_TRIAL
+
+  for i = 1, count do
+    if predicateFn() then
+      return actionFn()
+    end
+    timer.sleep(1)
+  end
+
+  failtureFn()
+  return {}
+end
+
 function timer.safeDoUntil(predicateFn, actionFn, failtureFn, count)
   safeTimer(hs.timer.doUntil, predicateFn, actionFn, failtureFn, count)
 end
