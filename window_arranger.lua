@@ -100,7 +100,7 @@ local rules = {['iTerm2'] = {function()
     return {}
   end, function()
     logger:w('Failed to load tab count of iTerm2.')
-  end)
+  end, 20)
 end}}
 
 function arrangeAllWindowsWithRules()
