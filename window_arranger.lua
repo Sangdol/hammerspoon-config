@@ -85,6 +85,8 @@ local rules = {['iTerm2'] = {function()
       local tabCount = allWins[1]:tabCount()
       logger:d('Tab count checking: ' .. tabCount)
       return tabCount > 0
+    else
+      logger:d('allWins are empty.')
     end
 
     return false
@@ -100,7 +102,7 @@ local rules = {['iTerm2'] = {function()
     return {}
   end, function()
     logger:w('Failed to load tab count of iTerm2.')
-  end, 20)
+  end)
 end}}
 
 function arrangeAllWindowsWithRules()
