@@ -1,8 +1,9 @@
 --
--- Table util functions
+-- Table utility functions
 --
 -- Refer to https://www.hammerspoon.org/docs/hs.fnutils.html
 --
+
 tl = {}
 
 function tl.print(t)

@@ -1,6 +1,7 @@
 --
--- Enable / disable DND based on conditions
+-- Enable / disable DND and Bluetooth based on conditions
 --
+
 bt = require('bluetooth_lib')
 tl = require('table_lib')
 no = require('notification_lib')

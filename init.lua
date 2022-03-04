@@ -15,7 +15,7 @@ end)
 require('finder')
 require('window_arranger')
 require('window_shortcuts')
-require('watchers')
+require('caffeinate')
 require('dnd_manager')
 
 -- Use Flux instead since there are some cons (2021.01.12)

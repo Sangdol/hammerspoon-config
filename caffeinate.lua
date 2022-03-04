@@ -1,5 +1,5 @@
 --
--- Watchers
+-- Caffeinate
 --
 bt = require('bluetooth_lib')
 wf = require('wifi_lib')

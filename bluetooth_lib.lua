@@ -1,3 +1,6 @@
+--
+-- Bluetooth lib
+--
 bt = {}
 
 local logger = hs.logger.new('BT_lib', 'debug')
