@@ -16,7 +16,7 @@ require('finder')
 require('window_arranger')
 require('window_shortcuts')
 require('caffeinate')
-require('dnd_manager')
+require('dnd')
 
 -- Use Flux instead since there are some cons (2021.01.12)
 -- - one of screens doesn't take on a color often times and I have to reload config.
