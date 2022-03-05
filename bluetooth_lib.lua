@@ -1,6 +1,9 @@
 --
 -- Bluetooth lib
 --
+-- This script is dependent on my custom bash script and blueutil.
+-- blueutil: https://github.com/toy/blueutil
+--
 bt = {}
 
 local logger = hs.logger.new('BT_lib', 'debug')
