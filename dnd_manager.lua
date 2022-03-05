@@ -2,10 +2,10 @@
 -- Enable / disable DND and Bluetooth based on conditions
 --
 
-local dnd = require('dnd_lib')
-local bt = require('bluetooth_lib')
-local tl = require('table_lib')
-local st = require('string_lib')
+local dnd = require('lib/dnd_lib')
+local bt = require('lib/bluetooth_lib')
+local tl = require('lib/table_lib')
+local st = require('lib/string_lib')
 
 local logger = hs.logger.new('dnd_manager', 5)
 

@@ -3,10 +3,10 @@
 --
 local logger = hs.logger.new('window_arranger', 'debug')
 
-wl = require('window_lib')
-tl = require('table_lib')
-no = require('notification_lib')
-timer = require('timer_lib')
+wl = require('lib/window_lib')
+tl = require('lib/table_lib')
+no = require('lib/notification_lib')
+timer = require('lib/timer_lib')
 
 wa = {}
 

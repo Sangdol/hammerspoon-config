@@ -1,11 +1,11 @@
 --
 -- Caffeinate
 --
-bt = require('bluetooth_lib')
-wf = require('wifi_lib')
-timer = require('timer_lib')
-no = require('notification_lib')
-dnd = require('dnd_lib')
+bt = require('lib/bluetooth_lib')
+wf = require('lib/wifi_lib')
+timer = require('lib/timer_lib')
+no = require('lib/notification_lib')
+dnd = require('lib/dnd_lib')
 
 local logger = hs.logger.new('watchers', 'info')
 
