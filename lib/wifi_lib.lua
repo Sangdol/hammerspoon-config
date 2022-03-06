@@ -1,7 +1,7 @@
 --
 -- https://www.hammerspoon.org/docs/hs.wifi.html
 --
-tl = require('table_lib')
+local tl = require('lib/table_lib')
 
 wf = {}
 

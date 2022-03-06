@@ -2,7 +2,7 @@
 -- DND utility
 --
 
-local no = require('notification_lib')
+local no = require('lib/notification_lib')
 
 dnd = {}
 
