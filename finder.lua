@@ -1,4 +1,8 @@
-function applicationWatcher(appName, eventType, appObject)
+--
+-- Better Finder
+--
+
+local function applicationWatcher(appName, eventType, appObject)
   if (eventType == hs.application.watcher.activated) then
     if (appName == "Finder") then
       -- Bring all Finder windows forward when one gets activated
@@ -7,5 +11,5 @@ function applicationWatcher(appName, eventType, appObject)
   end
 end
 
-appWatcher = hs.application.watcher.new(applicationWatcher)
-appWatcher:start()
+AppWatcher = hs.application.watcher.new(applicationWatcher)
+AppWatcher:start()

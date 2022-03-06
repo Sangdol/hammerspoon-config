@@ -1,5 +1,5 @@
 --
--- Enable / disable DND and Bluetooth based on conditions
+-- Enable / disable Do Not Disturb and Bluetooth based on conditions
 --
 
 local dnd = require('lib/dnd_lib')
@@ -26,5 +26,5 @@ local function appWatcherHandler(appName, eventType, appObject)
   end
 end
 
-dndAppWatcher = hs.application.watcher.new(appWatcherHandler)
-dndAppWatcher:start()
+DndAppWatcher = hs.application.watcher.new(appWatcherHandler)
+DndAppWatcher:start()

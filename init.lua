@@ -2,7 +2,7 @@
 -- Welcome to Hammerspoon
 --
 
-no = require('lib/notification_lib')
+local no = require('lib/notification_lib')
 
 hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
   hs.reload()

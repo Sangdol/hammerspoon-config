@@ -1,9 +1,10 @@
 --
--- Window managing shortcuts
+-- Window Shortcuts to arrange windows and focus the last active window
 --
 
-ws = {}
-wl = require('lib/window_lib')
+local wl = require('lib/window_lib')
+
+local ws = {}
 local logger = hs.logger.new('window_shortcuts', 'info')
 
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", wl.currentWindowCenterToggle)
@@ -26,11 +27,11 @@ end)
 -- for example iTerm for `launchOrFocus()` and iTerm2 for `subscribe()`.
 -- Due to this, this function can't work for a not running application.
 function ws.selectLastActiveWindow(appName)
-  function selectApp()
+  local function selectApp()
     if (ws.lastUsedWins[appName]) then
       local win = ws.lastUsedWins[appName]
 
-      logger:d('b')
+      -- A hack to focus the last used window.
       -- https://github.com/Hammerspoon/hammerspoon/issues/370#issuecomment-615535897
       win:application():activate()
       hs.timer.doAfter(0.001, function()

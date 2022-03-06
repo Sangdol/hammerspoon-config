@@ -1,15 +1,15 @@
 --
--- Caffeinate
+-- Caffeinate for better sleep
 --
-bt = require('lib/bluetooth_lib')
-wf = require('lib/wifi_lib')
-timer = require('lib/timer_lib')
-no = require('lib/notification_lib')
-dnd = require('lib/dnd_lib')
+
+local bt = require('lib/bluetooth_lib')
+local wf = require('lib/wifi_lib')
+local timer = require('lib/timer_lib')
+local no = require('lib/notification_lib')
+local dnd = require('lib/dnd_lib')
 
 local logger = hs.logger.new('watchers', 'info')
-
-w = {}
+local w = {}
 
 -- https://www.hammerspoon.org/docs/hs.caffeinate.watcher.html#systemDidWake
 function w.cafeHandler(eventType)
@@ -54,6 +54,6 @@ function w.cafeHandler(eventType)
   end
 end
 
-cafe = hs.caffeinate.watcher.new(w.cafeHandler)
-cafe:start()
+Cafe = hs.caffeinate.watcher.new(w.cafeHandler)
+Cafe:start()
 

@@ -1,24 +1,27 @@
 --
--- Move apps to a position of a screen when they start or a new screen is connected.
+-- Window Arranger
 --
+--   Arrange applications when they start up or multiple screens are connected.
+--
+
+local wl = require('lib/window_lib')
+local tl = require('lib/table_lib')
+local no = require('lib/notification_lib')
+local timer = require('lib/timer_lib')
+
+local wa = {}
 local logger = hs.logger.new('window_arranger', 'debug')
 
-wl = require('lib/window_lib')
-tl = require('lib/table_lib')
-no = require('lib/notification_lib')
-timer = require('lib/timer_lib')
-
-wa = {}
-
 -- Screen 2 right
-center1Apps = {'Reminders', 'Notes'}
+local center1Apps = {'Reminders', 'Notes'}
 
 -- Screen 3 left
-center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
+local center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
 
 -- Fullscreen
-screen2Apps = {'Google Chrome'}
-screen3Apps = {'Calendar', 'Affinity Photo', 'IntelliJ IDEA', 'Safari', 'Google Chat', 'Brave Browser', 'Google Chrome Canary'}
+local screen2Apps = {'Google Chrome'}
+local screen3Apps = {'Calendar', 'Affinity Photo', 'IntelliJ IDEA', 'Safari',
+  'Google Chat', 'Brave Browser', 'Google Chrome Canary'}
 
 local function arrangeWindows(appName)
   logger:d('Arranging ' .. appName)
@@ -47,7 +50,7 @@ local function arrangeWindows(appName)
   end
 end
 
-function arrangeAllWindows()
+local function arrangeAllWindows()
   logger:d('Arranging all windows')
 
   for _, appNames in ipairs({center1Apps, center2Apps, screen2Apps, screen3Apps}) do
@@ -105,7 +108,7 @@ local rules = {['iTerm2'] = {function()
   end, 20)
 end}}
 
-function arrangeAllWindowsWithRules()
+local function arrangeAllWindowsWithRules()
   for appName, appRules in pairs(rules) do
     for i, rule in ipairs(appRules) do
       local win, screenNumber = table.unpack(rule())
@@ -122,23 +125,23 @@ function arrangeAllWindowsWithRules()
 end
 
 -- App watcher
-function wa.appWatcherHandler(appName, eventType, appObject)
+function wa.appWatcherHandler(appName, eventType)
   --logger:d('appWatcher', appName, eventType, appObject)
   if (eventType == hs.application.watcher.launched) and
     (#hs.screen.allScreens() == 3) then
 
     logger:d('appWatcherHandler', 'launched with screen 3', appName)
 
-    function launchCompleted()
+    local function launchCompleted()
       logger:d('Waiting an app to be launched: ' .. appName)
       return hs.application.get(appName):mainWindow()
     end
 
-    function onLaunchCompleted()
-      arrangeAllWindows(appName)
+    local function onLaunchCompleted()
+      arrangeAllWindows()
     end
 
-    function onLaunchFailed()
+    local function onLaunchFailed()
       no.notify('appWatcherHandler waited for ' .. appName .. ' too long')
     end
 
