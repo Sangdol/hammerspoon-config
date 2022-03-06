@@ -6,9 +6,9 @@
 --
 
 local no = require('lib/notification_lib')
+local st = require('lib/string_lib')
 
-dnd = {}
-
+local dnd = {}
 local logger = hs.logger.new('dnd_lib', 5)
 
 function dnd.isOn()
