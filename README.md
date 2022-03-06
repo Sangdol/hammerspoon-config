@@ -12,23 +12,24 @@ Project structure
 ---
 
 ```lua
- init.lua                -- The starting point of Hammerspoon that loads all modules
- caffeinate.lua          -- Sleep and wakeup hooks
- dnd.lua                 -- Do Not Disturb management
- finder.lua              -- Better Finder behavior
- window_arranger.lua     -- Automating arranging application windows in multi-screen environment
- window_shortcuts.lua    -- Shortcuts to arrange and focus applications
- README.md
- LICENSE
- lib/                    -- Utility functions and wrappers that provide easier APIs
-│  bluetooth_lib.lua
-│  dnd_lib.lua
-│  notification_lib.lua
-│  string_lib.lua
-│  table_lib.lua
-│  timer_lib.lua
-│  wifi_lib.lua
-└  window_lib.lua
+.
+├── init.lua                  -- The starting point of Hammerspoon that loads all modules
+├── caffeinate.lua            -- Sleep and wakeup hooks
+├── dnd.lua                   -- Do Not Disturb management
+├── finder.lua                -- Better Finder behavior
+├── window_arranger.lua       -- Automating arranging application windows in multi-screen environment
+├── window_shortcuts.lua      -- Shortcuts to arrange and focus applications
+├── README.md
+├── LICENSE
+└── lib                       -- Utility functions and wrappers that provide easier APIs
+    ├── bluetooth_lib.lua
+    ├── dnd_lib.lua
+    ├── notification_lib.lua
+    ├── string_lib.lua
+    ├── table_lib.lua
+    ├── timer_lib.lua
+    ├── wifi_lib.lua
+    └── window_lib.lua
 ```
 
 See also
