@@ -1,5 +1,8 @@
 --
--- DND utility
+-- Do Not Disturb utility
+--
+-- You need to set up a shortcut to toggle Do Not Disturb to use this script.
+-- See the dndKeyStroke() function.
 --
 
 local no = require('lib/notification_lib')

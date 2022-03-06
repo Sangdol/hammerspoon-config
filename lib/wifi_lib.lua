@@ -1,15 +1,12 @@
 --
+-- Hammerspoon wifi wrapper
 -- https://www.hammerspoon.org/docs/hs.wifi.html
 --
+
 local tl = require('lib/table_lib')
 
-wf = {}
-
+local wf = {}
 local logger = hs.logger.new('Wifi', 5)
-
-function wf.isSecond()
-  return hs.wifi.interfaceDetails()['security'] == 'WPA2 Personal'
-end
 
 function wf.isOn()
   return hs.wifi.interfaceDetails()['power']

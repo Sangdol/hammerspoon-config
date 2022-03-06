@@ -1,8 +1,8 @@
 --
--- Notificaion utils
+-- Notificaion utility
 --
 
-no = {}
+local no = {}
 
 function no.alert(msg)
   return hs.alert.show(msg)

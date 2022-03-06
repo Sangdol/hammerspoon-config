@@ -1,10 +1,10 @@
 --
 -- Table utility functions
 --
--- Refer to https://www.hammerspoon.org/docs/hs.fnutils.html
+-- See also https://www.hammerspoon.org/docs/hs.fnutils.html
 --
 
-tl = {}
+local tl = {}
 
 function tl.print(t)
   for k, v in pairs(t) do

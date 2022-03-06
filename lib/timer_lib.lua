@@ -1,12 +1,14 @@
 --
+-- Hammerspoon timer wrapper
 -- https://www.hammerspoon.org/docs/hs.timer.html
 --
-timer = {}
+
+local timer = {}
 
 local DEFAULT_TRIAL = 10
 local logger = hs.logger.new('timer', 'info')
 
-function safeTimer(timerFn, predicateFn, actionFn, failtureFn, count)
+local function safeTimer(timerFn, predicateFn, actionFn, failtureFn, count)
   logger:d('SafeTimer', timerFn)
 
   count = count or DEFAULT_TRIAL
@@ -31,7 +33,7 @@ function timer.safeBlockedTimer(predicateFn, actionFn, failtureFn, count)
 
   count = count or DEFAULT_TRIAL
 
-  for i = 1, count do
+  for _ = 1, count do
     if predicateFn() then
       return actionFn()
     end

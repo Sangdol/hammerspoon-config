@@ -1,8 +1,8 @@
-wl = {}
+--
+-- Hammerspoon window and screen wrapper
+--
 
---
--- window
---
+local wl = {}
 
 hs.window.animationDuration = 0
 
@@ -116,7 +116,7 @@ end
 
 -- direction: 1 (right), -1 (left)
 function wl.moveWindowTo(direction)
-  function move()
+  local function move()
     local screen = hs.window.focusedWindow():screen()
     local screen_i =  wl.getScreenNumber(screen)
 

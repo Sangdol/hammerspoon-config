@@ -1,8 +1,8 @@
 --
--- String Utils
+-- String Utility
 --
 
-st = {}
+local st = {}
 
 -- from http://lua-users.org/wiki/StringTrim
 function st.trim(s)

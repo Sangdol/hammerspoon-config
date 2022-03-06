@@ -1,7 +1,7 @@
 --
 -- Bluetooth lib
 --
--- This script is dependent on my custom bash script and blueutil.
+-- This script is dependent on blueutil and my custom bash script that uses blueutil.
 -- blueutil: https://github.com/toy/blueutil
 --
 bt = {}
