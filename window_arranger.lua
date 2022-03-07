@@ -8,9 +8,9 @@ local wl = require('lib/window_lib')
 local tl = require('lib/table_lib')
 local no = require('lib/notification_lib')
 local timer = require('lib/timer_lib')
-
-local wa = {}
 local logger = hs.logger.new('window_arranger', 'debug')
+
+Wa = {}
 
 -- Screen 2 right
 local center1Apps = {'Reminders', 'Notes'}
@@ -50,7 +50,7 @@ local function arrangeWindows(appName)
   end
 end
 
-local function arrangeAllWindows()
+function Wa.arrangeAllWindows()
   logger:d('Arranging all windows')
 
   for _, appNames in ipairs({center1Apps, center2Apps, screen2Apps, screen3Apps}) do
@@ -108,7 +108,7 @@ local rules = {['iTerm2'] = {function()
   end, 20)
 end}}
 
-local function arrangeAllWindowsWithRules()
+function Wa.arrangeAllWindowsWithRules()
   for appName, appRules in pairs(rules) do
     for i, rule in ipairs(appRules) do
       local win, screenNumber = table.unpack(rule())
@@ -125,7 +125,7 @@ local function arrangeAllWindowsWithRules()
 end
 
 -- App watcher
-function wa.appWatcherHandler(appName, eventType)
+function Wa.appWatcherHandler(appName, eventType)
   --logger:d('appWatcher', appName, eventType, appObject)
   if (eventType == hs.application.watcher.launched) and
     (#hs.screen.allScreens() == 3) then
@@ -156,18 +156,18 @@ function wa.appWatcherHandler(appName, eventType)
 end
 
 -- Screen watcher
-function wa.screenWatcherHandler()
+function Wa.screenWatcherHandler()
   logger:d('screenWatcherHandler', 'number of screens', #hs.screen.allScreens())
 
   if (#hs.screen.allScreens() == 3) then
-    arrangeAllWindows()
-    arrangeAllWindowsWithRules()
+    Wa.arrangeAllWindows()
+    Wa.arrangeAllWindowsWithRules()
   end
 end
 
-wa.appWatcher = hs.application.watcher.new(wa.appWatcherHandler)
-wa.appWatcher:start()
+Wa.appWatcher = hs.application.watcher.new(Wa.appWatcherHandler)
+Wa.appWatcher:start()
 
-wa.screenWatcher = hs.screen.watcher.new(wa.screenWatcherHandler)
-wa.screenWatcher:start()
+Wa.screenWatcher = hs.screen.watcher.new(Wa.screenWatcherHandler)
+Wa.screenWatcher:start()
 

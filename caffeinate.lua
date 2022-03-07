@@ -7,12 +7,12 @@ local wf = require('lib/wifi_lib')
 local timer = require('lib/timer_lib')
 local no = require('lib/notification_lib')
 local dnd = require('lib/dnd_lib')
-
 local logger = hs.logger.new('watchers', 'info')
-local w = {}
+
+Cafe = {}
 
 -- https://www.hammerspoon.org/docs/hs.caffeinate.watcher.html#systemDidWake
-function w.cafeHandler(eventType)
+function Cafe.cafeHandler(eventType)
   logger:d('Cafe', eventType)
 
   if (eventType == hs.caffeinate.watcher.systemDidWake) then
@@ -54,6 +54,6 @@ function w.cafeHandler(eventType)
   end
 end
 
-Cafe = hs.caffeinate.watcher.new(w.cafeHandler)
-Cafe:start()
+Cafe.watcher = hs.caffeinate.watcher.new(Cafe.cafeHandler)
+Cafe.watcher:start()
 

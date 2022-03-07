@@ -3,9 +3,9 @@
 --
 
 local wl = require('lib/window_lib')
-
-local ws = {}
 local logger = hs.logger.new('window_shortcuts', 'info')
+
+Ws = {}
 
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", wl.currentWindowCenterToggle)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveWindowTo(1))
@@ -14,11 +14,11 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, "left", wl.moveFocusedWindowToLeft)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "right", wl.moveFocusedWindowToRight)
 hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
 
-ws.lastUsedWins = {}
+Ws.lastUsedWins = {}
 
 hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function(win, appName)
   logger:d(appName)
-  ws.lastUsedWins[appName] = win
+  Ws.lastUsedWins[appName] = win
   logger:d(appName, 'window updated')
 end)
 
@@ -26,10 +26,10 @@ end)
 -- and the appName used in subscribe can be different
 -- for example iTerm for `launchOrFocus()` and iTerm2 for `subscribe()`.
 -- Due to this, this function can't work for a not running application.
-function ws.selectLastActiveWindow(appName)
+function Ws.selectLastActiveWindow(appName)
   local function selectApp()
-    if (ws.lastUsedWins[appName]) then
-      local win = ws.lastUsedWins[appName]
+    if (Ws.lastUsedWins[appName]) then
+      local win = Ws.lastUsedWins[appName]
 
       -- A hack to focus the last used window.
       -- https://github.com/Hammerspoon/hammerspoon/issues/370#issuecomment-615535897
@@ -51,6 +51,6 @@ function ws.selectLastActiveWindow(appName)
   return selectApp
 end
 
-hs.hotkey.bind({"ctrl", "cmd"}, "K", ws.selectLastActiveWindow('iTerm2'))
-hs.hotkey.bind({"ctrl", "cmd"}, "L", ws.selectLastActiveWindow('IntelliJ IDEA'))
-hs.hotkey.bind({"ctrl", "cmd"}, "J", ws.selectLastActiveWindow('Google Chrome'))
+hs.hotkey.bind({"ctrl", "cmd"}, "K", Ws.selectLastActiveWindow('iTerm2'))
+hs.hotkey.bind({"ctrl", "cmd"}, "L", Ws.selectLastActiveWindow('IntelliJ IDEA'))
+hs.hotkey.bind({"ctrl", "cmd"}, "J", Ws.selectLastActiveWindow('Google Chrome'))
