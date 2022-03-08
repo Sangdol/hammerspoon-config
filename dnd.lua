@@ -6,7 +6,7 @@ local dnd = require('lib/dnd_lib')
 local bt = require('lib/bluetooth_lib')
 local tl = require('lib/table_lib')
 
-local dndApps = {'Melodics', 'Movist'}
+local dndApps = {'Melodics'}
 
 local function appWatcherHandler(appName, eventType)
   if (not tl.isInList(dndApps, appName)) then
