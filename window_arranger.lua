@@ -138,7 +138,7 @@ function Wa.appWatcherHandler(appName, eventType)
     end
 
     local function onLaunchCompleted()
-      arrangeAllWindows()
+      Wa.arrangeAllWindows()
     end
 
     local function onLaunchFailed()
