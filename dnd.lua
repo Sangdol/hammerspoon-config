@@ -17,9 +17,6 @@ local function appWatcherHandler(appName, eventType)
     (tl.isInList(dndApps, appName)) then
     dnd.turnOn()
     bt.turnOff()
-  elseif (eventType == hs.application.watcher.terminated) then
-    dnd.turnOff()
-    bt.conditionallyConnect()
   end
 end
 
