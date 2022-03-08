@@ -32,8 +32,7 @@ function Cafe.cafeHandler(eventType)
     end)
 
     bt.conditionallyConnect()
-
-    dnd.turnOff()
+    dnd.conditionallyTurnOn()
 
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color

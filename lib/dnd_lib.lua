@@ -43,4 +43,15 @@ function dnd.turnOff()
   end
 end
 
+function dnd.conditionallyTurnOn()
+  -- The number of connected screens can be also used.
+  if hs.battery.powerSource() == 'AC Power' then
+    logger:d('AC Power and turning off DND')
+    dnd.turnOff()
+  else
+    logger:d('No AC Power and turning on DND')
+    dnd.turnOn()
+  end
+end
+
 return dnd
