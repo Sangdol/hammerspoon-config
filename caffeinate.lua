@@ -31,10 +31,11 @@ function Cafe.cafeHandler(eventType)
       no.notify('Failed to connect to Wifi.')
     end)
 
+    bt.conditionallyConnect()
+
     -- Add delay to avoid race condition
     hs.timer.doAfter(3, function()
-      bt.conditionallyConnect()
-      dnd.conditionallyTurnOn()
+      dnd.conditionallyTurnOnOff()
     end)
 
     -- Sometimes Redshift doesn't work well after restarting
