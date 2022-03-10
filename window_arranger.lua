@@ -89,7 +89,7 @@ local rules = {['iTerm2'] = {function()
       logger:d('Tab count checking: ' .. tabCount)
       return tabCount > 0
     else
-      logger:d('allWins are empty.')
+      logger:d('No iTerm2 windows.')
     end
 
     return false
