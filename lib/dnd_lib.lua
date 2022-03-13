@@ -32,7 +32,7 @@ function dnd.turnOn()
   if not dnd.isOn() then
     dndKeyStroke()
   else
-    logger:d('DND is already off.')
+    logger:d('DND is already on.')
   end
 end
 
@@ -43,7 +43,7 @@ function dnd.turnOff()
   if dnd.isOn() then
     dndKeyStroke()
   else
-    logger:d('DND is already on.')
+    logger:d('DND is already off.')
   end
 end
 
