@@ -32,11 +32,7 @@ function Cafe.cafeHandler(eventType)
     end)
 
     bt.conditionallyConnect()
-
-    -- Add delay to avoid race condition
-    hs.timer.doAfter(3, function()
-      dnd.conditionallyTurnOnOff()
-    end)
+    dnd.conditionallyTurnOnOff()
 
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
