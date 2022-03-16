@@ -34,7 +34,7 @@ function Ws.selectLastActiveWindow(appName)
       -- A hack to focus the last used window.
       -- https://github.com/Hammerspoon/hammerspoon/issues/370#issuecomment-615535897
       win:application():activate()
-      hs.timer.doAfter(0.001, function()
+      hs.timer.doAfter(0.01, function()
         win:focus()
       end)
     else
