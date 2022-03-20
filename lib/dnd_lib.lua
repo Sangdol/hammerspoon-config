@@ -7,6 +7,7 @@
 
 local no = require('lib/notification_lib')
 local st = require('lib/string_lib')
+local timer = require('lib/timer_lib')
 
 local dnd = {}
 local logger = hs.logger.new('dnd_lib', 5)
@@ -25,25 +26,44 @@ local function dndKeyStroke()
   hs.eventtap.keyStroke({'ctrl', 'alt', 'cmd', 'shift'}, 'z')
 end
 
+-- It has a retry logic since dndKeyStroke() could fail
+-- especially when it's triggered right after waking up.
+--
+-- sleep() is needed between retrial since it takes time
+-- until a change is applied and isOn() returns correct state.
 function dnd.turnOn()
-  logger:d('DND On')
-  no.alert('DND On')
+  no.alert('Turning DND On')
 
-  if not dnd.isOn() then
-    dndKeyStroke()
-  else
+  if dnd.isOn() then
     logger:d('DND is already on.')
+  else
+    timer.safeDoUntil(function()
+      return dnd.isOn()
+    end, function()
+      logger:d('Turning DND On')
+      dndKeyStroke()
+      timer.sleep(8)
+    end, function()
+      logger:d('Failed to trun DND On')
+    end)
   end
 end
 
 function dnd.turnOff()
-  logger:d('DND Off')
-  no.alert('DND Off')
+  no.alert('Turning DND Off')
 
-  if dnd.isOn() then
-    dndKeyStroke()
-  else
+  if not dnd.isOn() then
     logger:d('DND is already off.')
+  else
+    timer.safeDoUntil(function()
+      return not dnd.isOn()
+    end, function()
+      logger:d('Turning DND Off')
+      dndKeyStroke()
+      timer.sleep(8)
+    end, function()
+      logger:d('Failed to trun DND Off')
+    end)
   end
 end
 
