@@ -26,26 +26,14 @@ local function dndKeyStroke()
   hs.eventtap.keyStroke({'ctrl', 'alt', 'cmd', 'shift'}, 'z')
 end
 
--- It has a retry logic since dndKeyStroke() could fail
--- especially when it's triggered right after waking up.
---
--- sleep() is needed between retrial since it takes time
--- until a change is applied and isOn() returns correct state.
 function dnd.turnOn()
   no.alert('Turning DND On')
 
   if dnd.isOn() then
     logger:d('DND is already on.')
   else
-    timer.safeDoUntil(function()
-      return dnd.isOn()
-    end, function()
-      logger:d('Turning DND On')
-      dndKeyStroke()
-      timer.sleep(8)
-    end, function()
-      logger:d('Failed to trun DND On')
-    end)
+    logger:d('Turning DND On')
+    dndKeyStroke()
   end
 end
 
@@ -55,23 +43,32 @@ function dnd.turnOff()
   if not dnd.isOn() then
     logger:d('DND is already off.')
   else
-    timer.safeDoUntil(function()
-      return not dnd.isOn()
-    end, function()
-      logger:d('Turning DND Off')
-      dndKeyStroke()
-      timer.sleep(8)
-    end, function()
-      logger:d('Failed to trun DND Off')
-    end)
+    logger:d('Turning DND Off')
+    dndKeyStroke()
   end
+end
+
+-- It has a retry logic since dndKeyStroke() could fail
+-- especially when it's triggered right after waking up.
+--
+-- sleep() is needed between retrial since it takes time
+-- until a change is applied and isOn() returns correct state.
+function dnd.turnOffAfterSleep()
+  timer.safeDoUntil(function()
+    return not dnd.isOn()
+  end, function()
+    dndKeyStroke()
+    timer.sleep(8)
+  end, function()
+    logger:d('Failed to trun DND Off')
+  end)
 end
 
 function dnd.conditionallyTurnOnOff()
   -- The number of connected screens can be also used.
   if hs.battery.powerSource() == 'AC Power' then
     logger:d('AC Power and turning off DND')
-    dnd.turnOff()
+    dnd.turnOffAfterSleep()
   else
     logger:d('No AC Power and turning on DND')
     dnd.turnOn()
