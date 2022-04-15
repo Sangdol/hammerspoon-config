@@ -3,6 +3,7 @@
 --
 
 local wl = {}
+local tl = require('lib/table_lib')
 
 hs.window.animationDuration = 0
 
@@ -111,24 +112,40 @@ end
 function wl.moveFocusedWindowToDisplay(d)
   local displays = hs.screen.allScreens()
   local win = hs.window.focusedWindow()
-  win:moveToScreen(displays[d], false, true)
+  local appName = win:application():name()
+  local chromes = {'Google Chrome', 'Google Chrome Canary', 'Brave Browser'}
+  
+  if tl.isInList(chromes, appName) then
+    -- There's a weird bug where Chrome windows are not moved to another display
+    -- if the target display has a different resolution.
+    -- This put a window in a wrong size but better than the bug.
+    -- https://github.com/Hammerspoon/hammerspoon/issues/2316
+    win = win:moveToScreen(displays[d], true, false)
+  else
+    win:moveToScreen(displays[d], false, true)
+  end
 end
 
--- direction: 1 (right), -1 (left)
+-- Direction: 1 (clockwise), -1 (anticlockwise)
 function wl.moveWindowTo(direction)
   local function move()
     local screen = hs.window.focusedWindow():screen()
     local screen_i =  wl.getScreenNumber(screen)
 
-    if screen_i == 1 then
-      -- to avoid confusing direction of moving from the main screen
+    local MAIN_SCREEN_I = 1
+    local LEFT_SCREEN_I = 2
+    local RIGHT_SCREEN_I = 3
+
+    if screen_i == MAIN_SCREEN_I then
+      -- To avoid confusing direction of windows moving from the main screen
+      -- this has fixed directions instead of moving clockwise.
       if direction == -1 then
-        wl.moveFocusedWindowToDisplay(2)
+        wl.moveFocusedWindowToDisplay(LEFT_SCREEN_I)
       elseif direction == 1 then
-        wl.moveFocusedWindowToDisplay(3)
+        wl.moveFocusedWindowToDisplay(RIGHT_SCREEN_I)
       end
     else
-      -- formula gets complicated due to 1-based index
+      -- This formula gets complicated due to 1-based index.
       wl.moveFocusedWindowToDisplay((screen_i + direction - 1) % 3 + 1)
     end
   end

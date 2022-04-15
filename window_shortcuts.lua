@@ -14,6 +14,10 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, "left", wl.moveFocusedWindowToLeft)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "right", wl.moveFocusedWindowToRight)
 hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
 
+hs.hotkey.bind({"ctrl", "shift", "option", "cmd"}, "p", function() 
+  print(hs.window.focusedWindow():application():name())
+end)
+
 Ws.lastUsedWins = {}
 
 hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function(win, appName)
