@@ -114,7 +114,7 @@ function wl.moveFocusedWindowToDisplay(d)
   local win = hs.window.focusedWindow()
   local appName = win:application():name()
   local chromes = {'Google Chrome', 'Google Chrome Canary', 'Brave Browser'}
-  
+
   if tl.isInList(chromes, appName) then
     -- There's a weird bug where Chrome windows are not moved to another display
     -- if the target display has a different resolution.
