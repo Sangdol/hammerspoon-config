@@ -2,8 +2,10 @@
 -- Hammerspoon window and screen wrapper
 --
 
-local wl = {}
 local tl = require('lib/table_lib')
+local di = require('lib/device_lib')
+
+local wl = {}
 
 hs.window.animationDuration = 0
 
@@ -115,7 +117,7 @@ function wl.moveFocusedWindowToDisplay(d)
   local appName = win:application():name()
   local chromes = {'Google Chrome', 'Google Chrome Canary', 'Brave Browser'}
 
-  if tl.isInList(chromes, appName) then
+  if tl.isInList(chromes, appName) and di.isHugh() then
     -- There's a weird bug where Chrome windows are not moved to another display
     -- if the target display has a different resolution.
     -- This put a window in a wrong size but better than the bug.
