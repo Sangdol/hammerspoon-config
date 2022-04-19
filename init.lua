@@ -2,6 +2,9 @@
 -- Welcome to Hammerspoon
 --
 
+-- For debugging in the console
+Tl = require("lib/table_lib")
+
 local no = require('lib/notification_lib')
 
 hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
