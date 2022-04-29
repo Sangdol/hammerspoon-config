@@ -75,7 +75,7 @@ end
 -- A rule returns {win, targetScrenNumber} or {}.
 local rules = {['iTerm2'] = {function()
   local targetScreen = 3
-  local screen3AppTabCount = 4
+  local screen3AppTabCountMax = 5
 
   return timer.safeBlockedTimer(function()
     -- When a laptop restarts win:tabCount() returns 0
@@ -97,7 +97,7 @@ local rules = {['iTerm2'] = {function()
     local allWins = hs.application.get('iTerm2'):allWindows()
     for _, win in ipairs(allWins) do
       logger:d('Tab count: ' .. win:tabCount())
-      if win:tabCount() == screen3AppTabCount then
+      if win:tabCount() <= screen3AppTabCountMax then
         return {win, targetScreen}
       end
     end
