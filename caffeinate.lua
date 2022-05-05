@@ -3,9 +3,6 @@
 --
 
 local bt = require('lib/bluetooth_lib')
-local wf = require('lib/wifi_lib')
-local timer = require('lib/timer_lib')
-local no = require('lib/notification_lib')
 local dnd = require('lib/dnd_lib')
 local logger = hs.logger.new('watchers', 'info')
 
@@ -21,16 +18,6 @@ function Cafe.cafeHandler(eventType)
     logger:i('=== Hallo Hallo ===')
     logger:i('===================')
 
-    -- Sometimes just doing wf.turnOn() doesn't work.
-    -- (was it due to hs.reload()?)
-    timer.safeDoUntil(function()
-      return wf.isOn()
-    end, function()
-      wf.turnOn()
-    end, function()
-      no.notify('Failed to connect to Wifi.')
-    end)
-
     bt.conditionallyConnect()
     dnd.conditionallyTurnOnOff()
 
@@ -41,8 +28,6 @@ function Cafe.cafeHandler(eventType)
     -- reload() distrubs timer.
     --hs.reload()
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
-    -- To prevent Reminder alerts wake up the laptop (hopefully)
-    wf.turnOff()
     dnd.turnOn()
     bt.turnOff()
 
