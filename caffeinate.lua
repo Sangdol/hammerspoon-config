@@ -21,6 +21,13 @@ function Cafe.cafeHandler(eventType)
     bt.conditionallyConnect()
     dnd.conditionallyTurnOnOff()
 
+    -- Restart Espanso
+    hs.task.new('/usr/local/bin/espanso',
+      function(exitCode, stdout, stderr)
+        print(exitCode, stdout, stderr)
+      end,
+      {'restart'}):start()
+
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
     --       (a similar issue https://github.com/Hammerspoon/hammerspoon/issues/1197)
