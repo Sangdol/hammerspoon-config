@@ -20,8 +20,7 @@ local center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
 
 -- Fullscreen
 local screen2Apps = {'Google Chrome'}
-local screen3Apps = {'Calendar', 'Affinity Photo', 'IntelliJ IDEA', 'Safari',
-  'Google Chat', 'Brave Browser', 'Google Chrome Canary'}
+local screen3Apps = {'Calendar', 'Affinity Photo', 'Safari', 'Brave Browser', 'Google Chrome Canary'}
 
 local function arrangeWindows(appName)
   logger:d('Arranging ' .. appName)
