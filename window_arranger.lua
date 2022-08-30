@@ -19,8 +19,8 @@ local center1Apps = {'Reminders', 'Notes'}
 local center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
 
 -- Fullscreen
-local screen2Apps = {'Google Chrome'}
-local screen3Apps = {'Calendar', 'Affinity Photo', 'Safari', 'Brave Browser', 'Google Chrome Canary'}
+local screen1Apps = {'Calendar', 'Safari'}
+local screen2Apps = {'Affinity Photo', 'Google Chrome', 'Brave Browser', 'Google Chrome Canary'}
 
 local function arrangeWindows(appName)
   logger:d('Arranging ' .. appName)
@@ -39,12 +39,12 @@ local function arrangeWindows(appName)
     wl.moveWindowToCenter1(win)
   elseif (tl.isInList(center2Apps, appName)) then
     wl.moveWindowToCenter2(win)
-  elseif (tl.isInList(screen2Apps, appName)) then
+  elseif (tl.isInList(screen1Apps, appName)) then
     -- For some reason, windows shrink to right or left.
-    wl.moveWindowToDisplay(win, 2)
+    wl.moveWindowToDisplay(win, 1)
     wl.fullscreen(win)
-  elseif (tl.isInList(screen3Apps, appName)) then
-    wl.moveWindowToDisplay(win, 3)
+  elseif (tl.isInList(screen2Apps, appName)) then
+    wl.moveWindowToDisplay(win, 2)
     wl.fullscreen(win)
   end
 end
@@ -52,7 +52,7 @@ end
 function Wa.arrangeAllWindows()
   logger:d('Arranging all windows')
 
-  for _, appNames in ipairs({center1Apps, center2Apps, screen2Apps, screen3Apps}) do
+  for _, appNames in ipairs({center1Apps, center2Apps, screen1Apps, screen2Apps}) do
     for _, appName in ipairs(appNames) do
       -- pcall to ignore this error
       -- ERROR:   LuaSkin: hs.screen.watcher callback: ...oon.app/Contents/Resources/extensions/hs/window/init.lua:922: not a rect
@@ -73,7 +73,7 @@ end
 --
 -- A rule returns {win, targetScrenNumber} or {}.
 local rules = {['iTerm2'] = {function()
-  local targetScreen = 3
+  local targetScreen = 2
   local screen3AppTabCountMax = 5
 
   return timer.safeBlockedTimer(function()
