@@ -8,11 +8,14 @@ local logger = hs.logger.new('window_shortcuts', 'info')
 Ws = {}
 
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", wl.currentWindowCenterToggle)
-hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveWindowTo(1))
-hs.hotkey.bind({"ctrl", "shift", "cmd"}, "j", wl.moveWindowTo(-1))
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "left", wl.moveFocusedWindowToLeft)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "right", wl.moveFocusedWindowToRight)
 hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
+
+-- This is not used after using 2 screens.
+-- BTT is used instead
+-- hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveWindowTo(1))
+-- hs.hotkey.bind({"ctrl", "shift", "cmd"}, "j", wl.moveWindowTo(-1))
 
 Ws.lastUsedWins = {}
 
