@@ -11,21 +11,31 @@ hs.window.animationDuration = 0
 
 function wl.moveWindowToCenter1(win)
   wl.moveWindowToRight(win)
-  wl.moveWindowToDisplay(win, 2)
+
+  if #hs.screen.allScreens() == 3 then
+    wl.moveWindowToDisplay(win, 2)
+  else
+    wl.moveWindowToDisplay(win, 1)
+  end
 end
 
 function wl.moveWindowToCenter2(win)
   wl.moveWindowToLeft(win)
-  wl.moveWindowToDisplay(win, 3)
+  if #hs.screen.allScreens() == 3 then
+    wl.moveWindowToDisplay(win, 3)
+  else
+    wl.moveWindowToDisplay(win, 2)
+  end
 end
 
 function wl.currentWindowCenterToggle()
   local win = hs.window.focusedWindow()
   local screen_i = wl.getScreenNumber(win:screen())
+  local screen_count = #hs.screen.allScreens()
 
-  if screen_i == 2 then
+  if screen_i == screen_count - 1 then
     wl.moveWindowToCenter2(win)
-  elseif screen_i == 3 then
+  elseif screen_i == screen_count then
     wl.moveWindowToCenter1(win)
   else
     wl.moveWindowToCenter2(win)
