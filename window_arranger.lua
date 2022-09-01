@@ -12,11 +12,11 @@ local logger = hs.logger.new('window_arranger', 'debug')
 
 Wa = {}
 
--- Screen 2 right
-local center1Apps = {'Reminders', 'Notes'}
+-- Screen 1 right
+local center1Apps = {'Reminders', 'KakaoTalk'}
 
--- Screen 3 left
-local center2Apps = {'Anki', 'Terminal', 'KakaoTalk'}
+-- Screen 2 left
+local center2Apps = {'Anki', 'Terminal', 'Notes'}
 
 -- Fullscreen
 local screen1Apps = {'Calendar', 'Safari'}
