@@ -54,6 +54,6 @@ function Ws.selectLastActiveWindow(appName)
   return selectApp
 end
 
-hs.hotkey.bind({"ctrl", "cmd"}, "J", Ws.selectLastActiveWindow('iTerm2'))
-hs.hotkey.bind({"ctrl", "cmd"}, "K", Ws.selectLastActiveWindow('Google Chrome'))
+hs.hotkey.bind({"ctrl", "cmd"}, "K", Ws.selectLastActiveWindow('iTerm2'))
+hs.hotkey.bind({"ctrl", "cmd"}, "J", Ws.selectLastActiveWindow('Google Chrome'))
 hs.hotkey.bind({"ctrl", "cmd"}, "L", Ws.selectLastActiveWindow('IntelliJ IDEA'))
