@@ -12,6 +12,8 @@ local logger = hs.logger.new('window_arranger', 'debug')
 
 Wa = {}
 
+local TOTAL_SCREEN_COUNT = 2
+
 -- Screen 1 right
 local center1Apps = {'Reminders', 'KakaoTalk'}
 
@@ -19,7 +21,7 @@ local center1Apps = {'Reminders', 'KakaoTalk'}
 local center2Apps = {'Anki', 'Terminal', 'Notes'}
 
 -- Fullscreen
-local screen1Apps = {'Calendar', 'Safari'}
+local screen1Apps = {'Calendar', 'Safari', 'Hyper'}
 local screen2Apps = {'Affinity Photo', 'Google Chrome', 'Brave Browser', 'Google Chrome Canary'}
 
 local function arrangeWindows(appName)
@@ -74,7 +76,9 @@ end
 -- A rule returns {win, targetScrenNumber} or {}.
 local rules = {['iTerm2'] = {function()
   local targetScreen = 2
-  local screen3AppTabCountMax = 5
+  -- Move all iTerm2 windows to screen2
+  -- (Rule-based arrangement is not needed for now.)
+  local screen2AppTabCountMax = 50
 
   return timer.safeBlockedTimer(function()
     -- When a laptop restarts win:tabCount() returns 0
@@ -96,7 +100,7 @@ local rules = {['iTerm2'] = {function()
     local allWins = hs.application.get('iTerm2'):allWindows()
     for _, win in ipairs(allWins) do
       logger:d('Tab count: ' .. win:tabCount())
-      if win:tabCount() <= screen3AppTabCountMax then
+      if win:tabCount() <= screen2AppTabCountMax then
         return {win, targetScreen}
       end
     end
@@ -158,7 +162,7 @@ end
 function Wa.screenWatcherHandler()
   logger:d('screenWatcherHandler', 'number of screens', #hs.screen.allScreens())
 
-  if (#hs.screen.allScreens() == 3) then
+  if (#hs.screen.allScreens() == TOTAL_SCREEN_COUNT) then
     Wa.arrangeAllWindows()
     Wa.arrangeAllWindowsWithRules()
   end
