@@ -129,11 +129,11 @@ end
 
 -- App watcher
 function Wa.appWatcherHandler(appName, eventType)
-  --logger:d('appWatcher', appName, eventType, appObject)
+  logger:d('appWatcher', appName, eventType, appObject)
   if (eventType == hs.application.watcher.launched) and
-    (#hs.screen.allScreens() == 3) then
+    (#hs.screen.allScreens() == TOTAL_SCREEN_COUNT) then
 
-    logger:d('appWatcherHandler', 'launched with screen 3', appName)
+    logger:d('appWatcherHandler', 'launched with all screens', appName)
 
     local function launchCompleted()
       logger:d('Waiting an app to be launched: ' .. appName)
