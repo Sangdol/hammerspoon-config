@@ -24,7 +24,8 @@ function Cafe.cafeHandler(eventType)
     -- Restart Espanso
     hs.task.new('/usr/local/bin/espanso',
       function(exitCode, stdout, stderr)
-        print(exitCode, stdout, stderr)
+        logger:i('$ espanso restart')
+        logger:i(exitCode, stdout, stderr)
       end,
       {'restart'}):start()
 
