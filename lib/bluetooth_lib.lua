@@ -26,7 +26,7 @@ end
 
 function bt.turnOff()
   logger:i("Turning off bluetooth")
-  hs.execute('/usr/local/bin/blueutil --power 0', true)
+  hs.execute('/opt/homebrew/bin/blueutil --power 0', true)
 end
 
 return bt
