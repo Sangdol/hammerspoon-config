@@ -15,10 +15,10 @@ Wa = {}
 local TOTAL_SCREEN_COUNT = 2
 
 -- Screen 1 right
-local center1Apps = {'Reminders', 'KakaoTalk'}
+local center1Apps = {'KakaoTalk'}
 
 -- Screen 2 left
-local center2Apps = {'Anki', 'Terminal', 'Notes'}
+local center2Apps = {'Reminders', 'Anki', 'Terminal', 'Notes'}
 
 -- Fullscreen
 local screen1Apps = {'Calendar', 'Safari', 'Hyper'}
