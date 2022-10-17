@@ -5,6 +5,7 @@
 local bt = require('lib/bluetooth_lib')
 local dnd = require('lib/dnd_lib')
 local logger = hs.logger.new('watchers', 'info')
+local espanso = require('lib/espanso_lib')
 
 Cafe = {}
 
@@ -21,13 +22,7 @@ function Cafe.cafeHandler(eventType)
     bt.conditionallyConnect()
     dnd.conditionallyTurnOnOff()
 
-    -- Restart Espanso
-    hs.task.new('/usr/local/bin/espanso',
-      function(exitCode, stdout, stderr)
-        logger:i('$ espanso restart')
-        logger:i(exitCode, stdout, stderr)
-      end,
-      {'restart'}):start()
+    espanso.restartRetry(3)
 
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
