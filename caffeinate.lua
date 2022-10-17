@@ -32,7 +32,6 @@ function Cafe.cafeHandler(eventType)
     --hs.reload()
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
     dnd.turnOn()
-    bt.turnOff()
 
     logger:i('================')
     logger:i('=== Bis Bald ===')
