@@ -14,18 +14,21 @@ end
 function espanso.restartRetry(n)
   local i = 0
 
-  EspansoCallback = function(exitCode, stdout, stderr)
+  -- Need to declare the function variable separately to call it recursively
+  -- https://stackoverflow.com/a/48210132/524588
+  local callback
+  callback = function(exitCode, stdout, stderr)
     logger:i('$ espanso restart')
     logger:i(exitCode, stdout, stderr)
 
     if i < n and exitCode > 0  then
       i = i + 1
-      restart(EspansoCallback)
+      restart(callback)
     elseif i == n then
       no.notify('Failed to restart espanso after retries')
     end
   end
-  restart(EspansoCallback)
+  restart(callback)
 end
 
 return espanso
