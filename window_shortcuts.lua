@@ -54,6 +54,5 @@ function Ws.selectLastActiveWindow(appName)
   return selectApp
 end
 
-hs.hotkey.bind({"ctrl", "cmd"}, "L", Ws.selectLastActiveWindow('iTerm2'))
 hs.hotkey.bind({"ctrl", "cmd"}, "K", Ws.selectLastActiveWindow('Hyper'))
 hs.hotkey.bind({"ctrl", "cmd"}, "G", Ws.selectLastActiveWindow('Google Chrome'))
