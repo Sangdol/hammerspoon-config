@@ -1,6 +1,7 @@
 --
 -- Window Shortcuts to arrange windows and focus the last active window
 --
+--
 
 local wl = require('lib/window_lib')
 local logger = hs.logger.new('window_shortcuts', 'info')
@@ -19,6 +20,10 @@ hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
 
 Ws.lastUsedWins = {}
 
+--
+-- NOTE: This is not being used for now 
+--       since the wrong window selection problem doesn't seem to happen in M1.
+--
 hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function(win, appName)
   logger:d(appName)
   Ws.lastUsedWins[appName] = win
@@ -54,5 +59,4 @@ function Ws.selectLastActiveWindow(appName)
   return selectApp
 end
 
-hs.hotkey.bind({"ctrl", "cmd"}, "K", Ws.selectLastActiveWindow('Hyper'))
-hs.hotkey.bind({"ctrl", "cmd"}, "G", Ws.selectLastActiveWindow('Google Chrome'))
+--hs.hotkey.bind({"ctrl", "cmd"}, "G", Ws.selectLastActiveWindow('Google Chrome'))
