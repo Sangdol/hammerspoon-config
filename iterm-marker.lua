@@ -13,7 +13,7 @@ function iTermDrawing(win, appName)
   logger:d(appName)
 
   logger:d(appName, 'all info', wl.getScreenNumber(win:screen()), win:tabCount())
-  if appName == 'iTerm2' and wl.getScreenNumber(win:screen()) == 2 and win:tabCount() > 4 then
+  if appName == 'iTerm2' and wl.getScreenNumber(win:screen()) == 2 and win:tabCount() < 5 then
     frame = win:frame()
     logger:d(appName, 'show iTerm sign')
     ca.deleteItermSign()
