@@ -164,7 +164,7 @@ function Wa.screenWatcherHandler()
 
   if (#hs.screen.allScreens() == TOTAL_SCREEN_COUNT) then
     Wa.arrangeAllWindows()
-    Wa.arrangeAllWindowsWithRules()
+    --Wa.arrangeAllWindowsWithRules()
   end
 end
 
