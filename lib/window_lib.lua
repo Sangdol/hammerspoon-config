@@ -121,6 +121,23 @@ function wl.moveWindowToDisplay(win, d)
   win:moveToScreen(displays[d], false, true)
 end
 
+function wl.moveFocusedWindowToNextDisplay()
+  local screens = hs.screen.allScreens()
+  local win = hs.window.focusedWindow()
+  local current_screen = hs.window.focusedWindow():screen()
+  local current_screen_frame = hs.window.focusedWindow():screen():frame()
+  local screen_i =  wl.getScreenNumber(current_screen)
+  local target_screen = screens[screen_i % 2 + 1]
+  local target_screen_frame = target_screen:frame()
+
+  if current_screen_frame.w > target_screen_frame.w then
+    win:setSize(target_screen_frame.w, target_screen_frame.h)
+  end
+
+  -- Screen numbers: 1-based e.g., 1, 2
+  win:moveToScreen(target_screen, true, false)
+end
+
 function wl.moveFocusedWindowToDisplay(d)
   local displays = hs.screen.allScreens()
   local win = hs.window.focusedWindow()
@@ -138,6 +155,7 @@ function wl.moveFocusedWindowToDisplay(d)
   end
 end
 
+-- This is only useful when there are three or more screens.
 -- Direction: 1 (clockwise), -1 (anticlockwise)
 function wl.moveWindowTo(direction)
   local function move()

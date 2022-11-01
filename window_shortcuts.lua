@@ -12,6 +12,7 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", wl.currentWindowCenterToggle)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "j", wl.moveFocusedWindowToLeft)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveFocusedWindowToRight)
 hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "n", wl.moveFocusedWindowToNextDisplay)
 
 -- This is not used after using 2 screens.
 -- BTT is used instead
@@ -21,7 +22,7 @@ hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
 Ws.lastUsedWins = {}
 
 --
--- NOTE: This is not being used for now 
+-- NOTE: This is not being used for now
 --       since the wrong window selection problem doesn't seem to happen in M1.
 --
 hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function(win, appName)
