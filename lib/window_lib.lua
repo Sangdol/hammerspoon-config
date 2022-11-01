@@ -121,21 +121,33 @@ function wl.moveWindowToDisplay(win, d)
   win:moveToScreen(displays[d], false, true)
 end
 
-function wl.moveFocusedWindowToNextDisplay()
-  local screens = hs.screen.allScreens()
-  local win = hs.window.focusedWindow()
-  local current_screen = hs.window.focusedWindow():screen()
-  local current_screen_frame = hs.window.focusedWindow():screen():frame()
-  local screen_i =  wl.getScreenNumber(current_screen)
-  local target_screen = screens[screen_i % 2 + 1]
-  local target_screen_frame = target_screen:frame()
+function wl.moveFocusedWindowToNextDisplay(maximize)
+  local function inner()
+    local screens = hs.screen.allScreens()
+    local win = hs.window.focusedWindow()
+    local current_screen = hs.window.focusedWindow():screen()
+    local screen_i =  wl.getScreenNumber(current_screen)
+    local target_screen = screens[screen_i % 2 + 1]
+    local target_screen_frame = target_screen:frame()
+    local milliseconds = 400
 
-  if current_screen_frame.w > target_screen_frame.w then
-    win:setSize(target_screen_frame.w, target_screen_frame.h)
+    -- This is needed due to the weird bug described in 
+    -- the wl.moveFocusedWindowToDisplay() function.
+    local is_target_screen_smaller_than_window = win:size().w > target_screen_frame.w
+    if is_target_screen_smaller_than_window then
+      win = win:setSize(target_screen_frame.w, target_screen_frame.h)
+      hs.timer.usleep(milliseconds * 1000)
+    end
+
+    win = win:moveToScreen(target_screen, true, false)
+
+    if maximize and not is_target_screen_smaller_than_window then
+      hs.timer.usleep(milliseconds * 1000)
+      win:setSize(target_screen_frame.w, target_screen_frame.h)
+    end
   end
 
-  -- Screen numbers: 1-based e.g., 1, 2
-  win:moveToScreen(target_screen, true, false)
+  return inner
 end
 
 function wl.moveFocusedWindowToDisplay(d)
