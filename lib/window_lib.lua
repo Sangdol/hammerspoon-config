@@ -131,19 +131,30 @@ function wl.moveFocusedWindowToNextDisplay(maximize)
     local target_screen_frame = target_screen:frame()
     local milliseconds = 400
 
-    -- This is needed due to the weird bug described in 
+    local function wait()
+      hs.timer.usleep(milliseconds * 1000)
+    end
+
+    -- This is needed due to the weird bug described in
     -- the wl.moveFocusedWindowToDisplay() function.
     local is_target_screen_smaller_than_window = win:size().w > target_screen_frame.w
     if is_target_screen_smaller_than_window then
       win = win:setSize(target_screen_frame.w, target_screen_frame.h)
-      hs.timer.usleep(milliseconds * 1000)
+      wait()
     end
 
     win = win:moveToScreen(target_screen, true, false)
 
-    if maximize and not is_target_screen_smaller_than_window then
-      hs.timer.usleep(milliseconds * 1000)
+    local is_target_screen_bigger = not is_target_screen_smaller_than_window
+    if maximize and is_target_screen_bigger then
+      wait()
       win:setSize(target_screen_frame.w, target_screen_frame.h)
+    elseif not maximize and is_target_screen_bigger then
+      wait()
+      -- move window to the center of the screen based on the window size
+      local x = target_screen_frame.x + (target_screen_frame.w - win:size().w) / 2
+      local y = target_screen_frame.y + (target_screen_frame.h - win:size().h) / 2
+      win:setTopLeft(x, y)
     end
   end
 
