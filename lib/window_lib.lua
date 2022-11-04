@@ -7,6 +7,11 @@ local di = require('lib/device_lib')
 
 local wl = {}
 
+local function wait()
+  local milliseconds = 400
+  hs.timer.usleep(milliseconds * 1000)
+end
+
 hs.window.animationDuration = 0
 
 function wl.moveWindowToCenter1(win)
@@ -86,15 +91,12 @@ function wl.fullscreenCurrent()
 end
 
 function wl.fullscreen(win)
-  local f = win:frame()
-  local screen = win:screen()
-  local screenFrame = screen:frame()
+  local screenFrame = win:screen():frame()
 
-  f.x = screenFrame.x
-  f.y = screenFrame.y
-  f.w = screenFrame.w
-  f.h = screenFrame.h
-  win:setFrame(f)
+  -- Avoiding bug: https://github.com/Hammerspoon/hammerspoon/issues/3224
+  win:setTopLeft(screenFrame.x, screenFrame.y)
+  wait()
+  win:setFrame(screenFrame)
 
   return win
 end
@@ -121,41 +123,50 @@ function wl.moveWindowToDisplay(win, d)
   win:moveToScreen(displays[d], false, true)
 end
 
+function wl.moveToSmallerDisplay(win, targetScreen)
+  -- resize and move
+  local targetScreenFrame = targetScreen:frame()
+
+  win:setSize(targetScreenFrame.w, targetScreenFrame.h)
+  wait()
+  win:moveToScreen(targetScreen, true, false)
+end
+
+function wl.moveToBiggerDisplay(win, targetScreen, maximize)
+  -- move and resize
+  local targetScreenFrame = targetScreen:frame()
+
+  win:moveToScreen(targetScreen, true, false)
+  if maximize then
+    wait()
+    win:setSize(targetScreenFrame.w, targetScreenFrame.h)
+  end
+end
+
+-- This has lots of hacks to avoid bug
+-- https://github.com/Hammerspoon/hammerspoon/issues/3224
 function wl.moveFocusedWindowToNextDisplay(maximize)
   local function inner()
     local screens = hs.screen.allScreens()
     local win = hs.window.focusedWindow()
     local current_screen = hs.window.focusedWindow():screen()
-    local screen_i =  wl.getScreenNumber(current_screen)
-    local target_screen = screens[screen_i % 2 + 1]
-    local target_screen_frame = target_screen:frame()
-    local milliseconds = 400
+    local screenI =  wl.getScreenNumber(current_screen)
+    local targetScreen = screens[screenI % 2 + 1]
+    local targetScreenFrame = targetScreen:frame()
 
-    local function wait()
-      hs.timer.usleep(milliseconds * 1000)
-    end
-
-    -- This is needed due to the weird bug described in
-    -- the wl.moveFocusedWindowToDisplay() function.
-    local is_target_screen_smaller_than_window = win:size().w > target_screen_frame.w
+    local is_target_screen_smaller_than_window = win:size().w > targetScreenFrame.w
     if is_target_screen_smaller_than_window then
-      win = win:setSize(target_screen_frame.w, target_screen_frame.h)
-      wait()
+      wl.moveToSmallerDisplay(win, targetScreen)
+    else
+      wl.moveToBiggerDisplay(win, targetScreen, maximize)
     end
 
-    win = win:moveToScreen(target_screen, true, false)
+    wait()
 
-    local is_target_screen_bigger = not is_target_screen_smaller_than_window
-    if maximize and is_target_screen_bigger then
-      wait()
-      win:setSize(target_screen_frame.w, target_screen_frame.h)
-    elseif not maximize and is_target_screen_bigger then
-      wait()
-      -- move window to the center of the screen based on the window size
-      local x = target_screen_frame.x + (target_screen_frame.w - win:size().w) / 2
-      local y = target_screen_frame.y + (target_screen_frame.h - win:size().h) / 2
-      win:setTopLeft(x, y)
-    end
+    -- move window to the center of the screen based on the window size
+    local x = targetScreenFrame.x + (targetScreenFrame.w - win:size().w) / 2
+    local y = targetScreenFrame.y + (targetScreenFrame.h - win:size().h) / 2
+    win:setTopLeft(x, y)
   end
 
   return inner
