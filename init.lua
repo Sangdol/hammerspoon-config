@@ -2,9 +2,6 @@
 -- Welcome to Hammerspoon
 --
 
--- For debugging in the console
-Tl = require("lib/table_lib")
-
 local no = require('lib/notification_lib')
 
 hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
@@ -26,6 +23,7 @@ require('caffeinate')
 require('window_shortcuts')
 require('dnd')
 require('iterm_marker')
+require('console_debugging')
 
 
 -- Use Flux instead since there are some cons (2021.01.12)
