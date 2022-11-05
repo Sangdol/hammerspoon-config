@@ -4,30 +4,22 @@
 
 local wl = {}
 
+hs.window.animationDuration = 0
+
+-- Delay between window transisions
 local function wait()
   local milliseconds = 400
   hs.timer.usleep(milliseconds * 1000)
 end
 
-hs.window.animationDuration = 0
-
 function wl.moveWindowToCenter1(win)
   wl.moveWindowToRight(win)
-
-  if #hs.screen.allScreens() == 3 then
-    wl.moveWindowToScreen(win, 2)
-  else
-    wl.moveWindowToScreen(win, 1)
-  end
+  wl.moveWindowToScreen(win, 1)
 end
 
 function wl.moveWindowToCenter2(win)
   wl.moveWindowToLeft(win)
-  if #hs.screen.allScreens() == 3 then
-    wl.moveWindowToScreen(win, 3)
-  else
-    wl.moveWindowToScreen(win, 2)
-  end
+  wl.moveWindowToScreen(win, 2)
 end
 
 function wl.currentWindowCenterToggle()
