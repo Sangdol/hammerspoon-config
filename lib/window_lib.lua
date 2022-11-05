@@ -2,9 +2,6 @@
 -- Hammerspoon window and screen wrapper
 --
 
-local tl = require('lib/table_lib')
-local di = require('lib/device_lib')
-
 local wl = {}
 
 local function wait()
@@ -170,51 +167,6 @@ function wl.moveFocusedWindowToNextScreen(maximize)
   end
 
   return inner
-end
-
-function wl.moveFocusedWindowToScreen(d)
-  local screens = hs.screen.allScreens()
-  local win = hs.window.focusedWindow()
-  local appName = win:application():name()
-  local chromes = {'Google Chrome', 'Google Chrome Canary', 'Brave Browser'}
-
-  if tl.isInList(chromes, appName) and di.isHugh() then
-    -- There's a weird bug where Chrome windows are not moved to another screen
-    -- if the target screen has a different resolution.
-    -- This put a window in a wrong size but better than the bug.
-    -- https://github.com/Hammerspoon/hammerspoon/issues/2316
-    win = win:moveToScreen(screens[d], true, false)
-  else
-    win:moveToScreen(screens[d], false, true)
-  end
-end
-
--- This is only useful when there are three or more screens.
--- Direction: 1 (clockwise), -1 (anticlockwise)
-function wl.moveWindowTo(direction)
-  local function move()
-    local screen = hs.window.focusedWindow():screen()
-    local screenI =  wl.getScreenNumber(screen)
-
-    local MAIN_SCREEN_I = 1
-    local LEFT_SCREEN_I = 2
-    local RIGHT_SCREEN_I = 3
-
-    if screenI == MAIN_SCREEN_I then
-      -- To avoid confusing direction of windows moving from the main screen
-      -- this has fixed directions instead of moving clockwise.
-      if direction == -1 then
-        wl.moveFocusedWindowToScreen(LEFT_SCREEN_I)
-      elseif direction == 1 then
-        wl.moveFocusedWindowToScreen(RIGHT_SCREEN_I)
-      end
-    else
-      -- This formula gets complicated due to 1-based index.
-      wl.moveFocusedWindowToScreen((screenI + direction - 1) % 3 + 1)
-    end
-  end
-
-  return move
 end
 
 function wl.getScreenNumber(screen)
