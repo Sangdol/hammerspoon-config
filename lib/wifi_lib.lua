@@ -3,8 +3,6 @@
 -- https://www.hammerspoon.org/docs/hs.wifi.html
 --
 
-local tl = require('lib/table_lib')
-
 local wf = {}
 local logger = hs.logger.new('Wifi', 5)
 

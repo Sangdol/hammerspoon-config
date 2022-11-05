@@ -4,7 +4,7 @@
 -- This script is dependent on blueutil and my custom bash script that uses blueutil.
 -- blueutil: https://github.com/toy/blueutil
 --
-bt = {}
+local bt = {}
 
 local logger = hs.logger.new('BT_lib', 'debug')
 

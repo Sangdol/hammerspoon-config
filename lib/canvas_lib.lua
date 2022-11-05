@@ -1,9 +1,9 @@
-canvas = require("hs.canvas")
+local canvas = require("hs.canvas")
 
-Ca = {}
+local ca = {}
 
 
-function Ca.showItermSign(frame)
+function ca.showItermSign(frame)
   ItermSign = canvas.new(frame):appendElements({
       type = "rectangle",
       action = "fill",
@@ -13,10 +13,10 @@ function Ca.showItermSign(frame)
     }):show()
 end
 
-function Ca.deleteItermSign()
+function ca.deleteItermSign()
   if ItermSign then
     ItermSign:delete()
   end
 end
 
-return Ca
+return ca

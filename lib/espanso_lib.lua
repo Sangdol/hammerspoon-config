@@ -3,7 +3,6 @@
 --
 
 local logger = hs.logger.new('watchers', 'info')
-local no = require('lib/notification_lib')
 
 local espanso = {}
 

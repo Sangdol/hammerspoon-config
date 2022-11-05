@@ -5,10 +5,6 @@
 -- See the dndKeyStroke() function.
 --
 
-local no = require('lib/notification_lib')
-local st = require('lib/string_lib')
-local timer = require('lib/timer_lib')
-
 local dnd = {}
 local logger = hs.logger.new('dnd_lib', 5)
 
