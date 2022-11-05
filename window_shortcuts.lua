@@ -5,21 +5,21 @@
 
 local logger = hs.logger.new('window_shortcuts', 'info')
 
-Ws = {}
+local ws = {}
 
-hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", wl.currentWindowCenterToggle)
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", sc.currentWindowCenterToggle)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "j", wl.moveFocusedWindowToLeft)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveFocusedWindowToRight)
 hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
-hs.hotkey.bind({"ctrl", "shift", "cmd"}, "n", wl.moveFocusedWindowToNextScreen(false))
-hs.hotkey.bind({"ctrl", "shift", "cmd"}, "m", wl.moveFocusedWindowToNextScreen(true))
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "n", sc.moveFocusedWindowToNextScreen(false))
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "m", sc.moveFocusedWindowToNextScreen(true))
 
 -- This is not used after using 2 screens.
 -- BTT is used instead
 -- hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveWindowTo(1))
 -- hs.hotkey.bind({"ctrl", "shift", "cmd"}, "j", wl.moveWindowTo(-1))
 
-Ws.lastUsedWins = {}
+ws.lastUsedWins = {}
 
 --
 -- NOTE: This is not being used for now
@@ -27,7 +27,7 @@ Ws.lastUsedWins = {}
 --
 hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function(win, appName)
   logger:d(appName)
-  Ws.lastUsedWins[appName] = win
+  ws.lastUsedWins[appName] = win
   logger:d(appName, 'window updated')
 end)
 
@@ -35,10 +35,10 @@ end)
 -- and the appName used in subscribe can be different
 -- for example iTerm for `launchOrFocus()` and iTerm2 for `subscribe()`.
 -- Due to this, this function can't work for a not running application.
-function Ws.selectLastActiveWindow(appName)
+function ws.selectLastActiveWindow(appName)
   local function selectApp()
-    if (Ws.lastUsedWins[appName]) then
-      local win = Ws.lastUsedWins[appName]
+    if (ws.lastUsedWins[appName]) then
+      local win = ws.lastUsedWins[appName]
 
       -- A hack to focus the last used window.
       -- https://github.com/Hammerspoon/hammerspoon/issues/370#issuecomment-615535897

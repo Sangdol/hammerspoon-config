@@ -1,5 +1,5 @@
 --
--- Hammerspoon window and screen wrapper
+-- Window functions for one screen
 --
 
 local wl = {}
@@ -8,32 +8,7 @@ hs.window.animationDuration = 0
 
 -- Delay between window transisions
 local function wait()
-  local milliseconds = 400
-  hs.timer.usleep(milliseconds * 1000)
-end
-
-function wl.moveWindowToCenter1(win)
-  wl.moveWindowToRight(win)
-  wl.moveWindowToScreen(win, 1)
-end
-
-function wl.moveWindowToCenter2(win)
-  wl.moveWindowToLeft(win)
-  wl.moveWindowToScreen(win, 2)
-end
-
-function wl.currentWindowCenterToggle()
-  local win = hs.window.focusedWindow()
-  local screenI = wl.getScreenNumber(win:screen())
-  local screenCount = #hs.screen.allScreens()
-
-  if screenI == screenCount - 1 then
-    wl.moveWindowToCenter2(win)
-  elseif screenI == screenCount then
-    wl.moveWindowToCenter1(win)
-  else
-    wl.moveWindowToCenter2(win)
-  end
+  timer.sleep(0.4)
 end
 
 function wl.moveFocusedWindowToLeft()
@@ -88,90 +63,6 @@ function wl.fullscreen(win)
   win:setFrame(screenFrame)
 
   return win
-end
-
---
--- screen
---
-
--- return: list of windows of an app e.g., {win1, win2}
-function wl.moveAllWindowsToScreenWithAppName(appName, d)
-  -- https://stackoverflow.com/a/58398311/524588
-  local screens = hs.screen.allScreens()
-  local wins = hs.application.find(appName):allWindows()
-
-  for _, win in ipairs(wins) do
-    win:moveToScreen(screens[d], false, true)
-  end
-
-  return wins
-end
-
-function wl.moveWindowToScreen(win, d)
-  local screens = hs.screen.allScreens()
-  win:moveToScreen(screens[d], false, true)
-end
-
-function wl.moveToSmallerScreen(win, targetScreen)
-  -- resize and move
-  local targetScreenFrame = targetScreen:frame()
-
-  win:setSize(targetScreenFrame.w, targetScreenFrame.h)
-  wait()
-  win:moveToScreen(targetScreen, true, false)
-end
-
-function wl.moveToBiggerScreen(win, targetScreen, maximize)
-  -- move and resize
-  local targetScreenFrame = targetScreen:frame()
-
-  win:moveToScreen(targetScreen, true, false)
-  if maximize then
-    wait()
-    win:setSize(targetScreenFrame.w, targetScreenFrame.h)
-  end
-end
-
--- This has lots of hacks to avoid bug
--- https://github.com/Hammerspoon/hammerspoon/issues/3224
-function wl.moveFocusedWindowToNextScreen(maximize)
-  local function inner()
-    local screens = hs.screen.allScreens()
-    local win = hs.window.focusedWindow()
-    local current_screen = hs.window.focusedWindow():screen()
-    local screenI =  wl.getScreenNumber(current_screen)
-    local targetScreen = screens[screenI % 2 + 1]
-    local targetScreenFrame = targetScreen:frame()
-
-    local isTargetScreenSmallerThanWindow = win:size().w > targetScreenFrame.w
-    if isTargetScreenSmallerThanWindow then
-      wl.moveToSmallerScreen(win, targetScreen)
-    else
-      wl.moveToBiggerScreen(win, targetScreen, maximize)
-    end
-
-    wait()
-
-    -- move window to the center of the screen based on the window size
-    local x = targetScreenFrame.x + (targetScreenFrame.w - win:size().w) / 2
-    local y = targetScreenFrame.y + (targetScreenFrame.h - win:size().h) / 2
-    win:setTopLeft(x, y)
-  end
-
-  return inner
-end
-
-function wl.getScreenNumber(screen)
-  local screens = hs.screen.allScreens()
-  local screenI
-
-  for i, s in pairs(screens) do
-    if (screen == s) then
-      screenI =  i
-    end
-  end
-
-  return screenI
 end
 
 return wl

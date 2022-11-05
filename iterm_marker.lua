@@ -12,12 +12,12 @@ It = {}
 -- This is design to be used with multiple iTerm applications.
 function It.iTermDrawing(wrongWin, appName)
   -- This information is wrong when there are multiple duplicated applications.
-  logger:d(appName, 'all info', wl.getScreenNumber(wrongWin:screen()), wrongWin:tabCount())
+  logger:d(appName, 'all info', sc.getScreenNumber(wrongWin:screen()), wrongWin:tabCount())
 
   local focusedWin = hs.window.focusedWindow()
-  logger:d(appName, 'all info focusedWindow', wl.getScreenNumber(focusedWin:screen()), focusedWin:tabCount())
+  logger:d(appName, 'all info focusedWindow', sc.getScreenNumber(focusedWin:screen()), focusedWin:tabCount())
 
-  if appName == 'iTerm2' and wl.getScreenNumber(focusedWin:screen()) == 2 and focusedWin:tabCount() < 5 then
+  if appName == 'iTerm2' and sc.getScreenNumber(focusedWin:screen()) == 2 and focusedWin:tabCount() < 5 then
     local frame = focusedWin:frame()
     logger:d(appName, 'show iTerm sign')
     ca.deleteItermSign()

@@ -6,6 +6,7 @@
 
 local logger = hs.logger.new('window_arranger', 'info')
 
+-- Global for debugging
 Wa = {}
 
 local TOTAL_SCREEN_COUNT = 2
@@ -34,15 +35,15 @@ local function arrangeWindows(appName)
   local win = app:mainWindow()
 
   if (tl.isInList(center1Apps, appName)) then
-    wl.moveWindowToCenter1(win)
+    sc.moveWindowToCenter1(win)
   elseif (tl.isInList(center2Apps, appName)) then
-    wl.moveWindowToCenter2(win)
+    sc.moveWindowToCenter2(win)
   elseif (tl.isInList(screen1Apps, appName)) then
     -- For some reason, windows shrink to right or left.
-    wl.moveWindowToScreen(win, 1)
+    sc.moveWindowToScreen(win, 1)
     wl.fullscreen(win)
   elseif (tl.isInList(screen2Apps, appName)) then
-    wl.moveWindowToScreen(win, 2)
+    sc.moveWindowToScreen(win, 2)
     wl.fullscreen(win)
   end
 end
@@ -117,7 +118,7 @@ function Wa.arrangeAllWindowsWithRules()
         return
       end
 
-      wl.moveWindowToScreen(win, screenNumber)
+      sc.moveWindowToScreen(win, screenNumber)
       wl.fullscreen(win)
     end
   end
