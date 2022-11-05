@@ -2,6 +2,8 @@
 -- Welcome to Hammerspoon
 --
 
+hs.loadSpoon("EmmyLua")
+
 hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
   hs.reload()
 
