@@ -12,8 +12,8 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, "l", wl.currentWindowCenterToggle)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "j", wl.moveFocusedWindowToLeft)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveFocusedWindowToRight)
 hs.hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
-hs.hotkey.bind({"ctrl", "shift", "cmd"}, "n", wl.moveFocusedWindowToNextDisplay(false))
-hs.hotkey.bind({"ctrl", "shift", "cmd"}, "m", wl.moveFocusedWindowToNextDisplay(true))
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "n", wl.moveFocusedWindowToNextScreen(false))
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "m", wl.moveFocusedWindowToNextScreen(true))
 
 -- This is not used after using 2 screens.
 -- BTT is used instead

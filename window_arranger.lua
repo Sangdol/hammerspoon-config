@@ -43,10 +43,10 @@ local function arrangeWindows(appName)
     wl.moveWindowToCenter2(win)
   elseif (tl.isInList(screen1Apps, appName)) then
     -- For some reason, windows shrink to right or left.
-    wl.moveWindowToDisplay(win, 1)
+    wl.moveWindowToScreen(win, 1)
     wl.fullscreen(win)
   elseif (tl.isInList(screen2Apps, appName)) then
-    wl.moveWindowToDisplay(win, 2)
+    wl.moveWindowToScreen(win, 2)
     wl.fullscreen(win)
   end
 end
@@ -121,7 +121,7 @@ function Wa.arrangeAllWindowsWithRules()
         return
       end
 
-      wl.moveWindowToDisplay(win, screenNumber)
+      wl.moveWindowToScreen(win, screenNumber)
       wl.fullscreen(win)
     end
   end

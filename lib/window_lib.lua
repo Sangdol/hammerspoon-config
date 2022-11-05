@@ -18,18 +18,18 @@ function wl.moveWindowToCenter1(win)
   wl.moveWindowToRight(win)
 
   if #hs.screen.allScreens() == 3 then
-    wl.moveWindowToDisplay(win, 2)
+    wl.moveWindowToScreen(win, 2)
   else
-    wl.moveWindowToDisplay(win, 1)
+    wl.moveWindowToScreen(win, 1)
   end
 end
 
 function wl.moveWindowToCenter2(win)
   wl.moveWindowToLeft(win)
   if #hs.screen.allScreens() == 3 then
-    wl.moveWindowToDisplay(win, 3)
+    wl.moveWindowToScreen(win, 3)
   else
-    wl.moveWindowToDisplay(win, 2)
+    wl.moveWindowToScreen(win, 2)
   end
 end
 
@@ -106,24 +106,24 @@ end
 --
 
 -- return: list of windows of an app e.g., {win1, win2}
-function wl.moveAllWindowsToDisplayWithAppName(appName, d)
+function wl.moveAllWindowsToScreenWithAppName(appName, d)
   -- https://stackoverflow.com/a/58398311/524588
-  local displays = hs.screen.allScreens()
+  local screens = hs.screen.allScreens()
   local wins = hs.application.find(appName):allWindows()
 
   for _, win in ipairs(wins) do
-    win:moveToScreen(displays[d], false, true)
+    win:moveToScreen(screens[d], false, true)
   end
 
   return wins
 end
 
-function wl.moveWindowToDisplay(win, d)
-  local displays = hs.screen.allScreens()
-  win:moveToScreen(displays[d], false, true)
+function wl.moveWindowToScreen(win, d)
+  local screens = hs.screen.allScreens()
+  win:moveToScreen(screens[d], false, true)
 end
 
-function wl.moveToSmallerDisplay(win, targetScreen)
+function wl.moveToSmallerScreen(win, targetScreen)
   -- resize and move
   local targetScreenFrame = targetScreen:frame()
 
@@ -132,7 +132,7 @@ function wl.moveToSmallerDisplay(win, targetScreen)
   win:moveToScreen(targetScreen, true, false)
 end
 
-function wl.moveToBiggerDisplay(win, targetScreen, maximize)
+function wl.moveToBiggerScreen(win, targetScreen, maximize)
   -- move and resize
   local targetScreenFrame = targetScreen:frame()
 
@@ -145,7 +145,7 @@ end
 
 -- This has lots of hacks to avoid bug
 -- https://github.com/Hammerspoon/hammerspoon/issues/3224
-function wl.moveFocusedWindowToNextDisplay(maximize)
+function wl.moveFocusedWindowToNextScreen(maximize)
   local function inner()
     local screens = hs.screen.allScreens()
     local win = hs.window.focusedWindow()
@@ -156,9 +156,9 @@ function wl.moveFocusedWindowToNextDisplay(maximize)
 
     local isTargetScreenSmallerThanWindow = win:size().w > targetScreenFrame.w
     if isTargetScreenSmallerThanWindow then
-      wl.moveToSmallerDisplay(win, targetScreen)
+      wl.moveToSmallerScreen(win, targetScreen)
     else
-      wl.moveToBiggerDisplay(win, targetScreen, maximize)
+      wl.moveToBiggerScreen(win, targetScreen, maximize)
     end
 
     wait()
@@ -172,20 +172,20 @@ function wl.moveFocusedWindowToNextDisplay(maximize)
   return inner
 end
 
-function wl.moveFocusedWindowToDisplay(d)
-  local displays = hs.screen.allScreens()
+function wl.moveFocusedWindowToScreen(d)
+  local screens = hs.screen.allScreens()
   local win = hs.window.focusedWindow()
   local appName = win:application():name()
   local chromes = {'Google Chrome', 'Google Chrome Canary', 'Brave Browser'}
 
   if tl.isInList(chromes, appName) and di.isHugh() then
-    -- There's a weird bug where Chrome windows are not moved to another display
-    -- if the target display has a different resolution.
+    -- There's a weird bug where Chrome windows are not moved to another screen
+    -- if the target screen has a different resolution.
     -- This put a window in a wrong size but better than the bug.
     -- https://github.com/Hammerspoon/hammerspoon/issues/2316
-    win = win:moveToScreen(displays[d], true, false)
+    win = win:moveToScreen(screens[d], true, false)
   else
-    win:moveToScreen(displays[d], false, true)
+    win:moveToScreen(screens[d], false, true)
   end
 end
 
@@ -204,13 +204,13 @@ function wl.moveWindowTo(direction)
       -- To avoid confusing direction of windows moving from the main screen
       -- this has fixed directions instead of moving clockwise.
       if direction == -1 then
-        wl.moveFocusedWindowToDisplay(LEFT_SCREEN_I)
+        wl.moveFocusedWindowToScreen(LEFT_SCREEN_I)
       elseif direction == 1 then
-        wl.moveFocusedWindowToDisplay(RIGHT_SCREEN_I)
+        wl.moveFocusedWindowToScreen(RIGHT_SCREEN_I)
       end
     else
       -- This formula gets complicated due to 1-based index.
-      wl.moveFocusedWindowToDisplay((screenI + direction - 1) % 3 + 1)
+      wl.moveFocusedWindowToScreen((screenI + direction - 1) % 3 + 1)
     end
   end
 
@@ -218,10 +218,10 @@ function wl.moveWindowTo(direction)
 end
 
 function wl.getScreenNumber(screen)
-  local displays = hs.screen.allScreens()
+  local screens = hs.screen.allScreens()
   local screenI
 
-  for i, s in pairs(displays) do
+  for i, s in pairs(screens) do
     if (screen == s) then
       screenI =  i
     end
