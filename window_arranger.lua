@@ -125,7 +125,7 @@ end
 
 -- App watcher
 function Wa.appWatcherHandler(appName, eventType)
-  logger:d('appWatcher', appName, eventType, appObject)
+  logger:d('appWatcher', appName, eventType)
   if (eventType == hs.application.watcher.launched) and
     (#hs.screen.allScreens() == TOTAL_SCREEN_COUNT) then
 
