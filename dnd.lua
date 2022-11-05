@@ -2,10 +2,6 @@
 -- Enable / disable Do Not Disturb and Bluetooth based on conditions
 --
 
-local dnd = require('lib/dnd_lib')
-local bt = require('lib/bluetooth_lib')
-local tl = require('lib/table_lib')
-
 local dndApps = {'Melodics'}
 
 local function appWatcherHandler(appName, eventType)

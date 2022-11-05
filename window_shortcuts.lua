@@ -3,7 +3,6 @@
 --
 --
 
-local wl = require('lib/window_lib')
 local logger = hs.logger.new('window_shortcuts', 'info')
 
 Ws = {}

@@ -2,10 +2,7 @@
 -- Caffeinate for better sleep
 --
 
-local bt = require('lib/bluetooth_lib')
-local dnd = require('lib/dnd_lib')
-local logger = hs.logger.new('watchers', 'info')
-local espanso = require('lib/espanso_lib')
+local logger = hs.logger.new('cafe', 'info')
 
 Cafe = {}
 

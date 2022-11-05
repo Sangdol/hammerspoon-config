@@ -5,8 +5,6 @@
 -- to make each iTerm window noticiable.
 --
 
-local ca = require('lib/canvas_lib')
-local wl = require('lib/window_lib')
 local logger = hs.logger.new('iTerm marker', 'info')
 
 It = {}

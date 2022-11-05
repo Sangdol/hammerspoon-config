@@ -4,10 +4,6 @@
 --   Arrange applications when they start up or multiple screens are connected.
 --
 
-local wl = require('lib/window_lib')
-local tl = require('lib/table_lib')
-local no = require('lib/notification_lib')
-local timer = require('lib/timer_lib')
 local logger = hs.logger.new('window_arranger', 'info')
 
 Wa = {}

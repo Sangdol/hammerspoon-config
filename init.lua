@@ -2,8 +2,6 @@
 -- Welcome to Hammerspoon
 --
 
-local no = require('lib/notification_lib')
-
 hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
   hs.reload()
 
@@ -17,13 +15,13 @@ hs.hotkey.bind({"ctrl", "shift", "option", "cmd"}, "p", function()
   print(hs.window.focusedWindow():application():name())
 end)
 
+require('global')
 require('finder')
 require('window_arranger')
 require('caffeinate')
 require('window_shortcuts')
 require('dnd')
 require('iterm_marker')
-require('console_debugging')
 
 
 -- Use Flux instead since there are some cons (2021.01.12)
