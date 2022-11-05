@@ -23,7 +23,7 @@ require('window_arranger')
 require('caffeinate')
 require('window_shortcuts')
 require('dnd')
-require('iterm_marker')
+--require('iterm_marker')
 
 
 -- Use Flux instead since there are some cons (2021.01.12)

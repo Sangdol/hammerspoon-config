@@ -51,7 +51,25 @@ end
 
 function wl.fullscreenCurrent()
   local win = hs.window.focusedWindow()
-  return wl.fullscreen(win)
+
+  if win:frame() == win:screen():frame() then
+    return wl.almostFullscreen(win, 0.98)
+  else
+    return wl.fullscreen(win)
+  end
+end
+
+function wl.almostFullscreen(win, ratio)
+  local f = win:frame()
+  local screenFrame = win:screen():frame()
+
+  f.x = screenFrame.x + (screenFrame.w * (1 - ratio) / 2)
+  f.y = screenFrame.y + (screenFrame.h * (1 - ratio) / 2)
+  f.w = screenFrame.w * ratio
+  f.h = screenFrame.h * ratio
+  win:setFrame(f)
+
+  return win
 end
 
 function wl.fullscreen(win)
