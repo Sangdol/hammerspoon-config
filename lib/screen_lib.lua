@@ -46,9 +46,9 @@ function sc.moveAllWindowsToScreenWithAppName(appName, d)
   return wins
 end
 
-function sc.moveWindowToScreen(win, d)
+function sc.moveWindowToScreen(win, index)
   local screens = hs.screen.allScreens()
-  win:moveToScreen(screens[d], false, true)
+  win:moveToScreen(screens[index], false, true)
 end
 
 function sc.moveToSmallerScreen(win, targetScreen)
