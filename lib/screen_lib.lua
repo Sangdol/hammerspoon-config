@@ -10,12 +10,12 @@ local function wait()
 end
 
 function sc.moveWindowToCenter1(win)
-  sc.moveWindowToRight(win)
+  wl.moveWindowToRight(win)
   sc.moveWindowToScreen(win, 1)
 end
 
 function sc.moveWindowToCenter2(win)
-  sc.moveWindowToLeft(win)
+  wl.moveWindowToLeft(win)
   sc.moveWindowToScreen(win, 2)
 end
 
