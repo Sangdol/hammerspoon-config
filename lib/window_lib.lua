@@ -35,12 +35,12 @@ end
 
 function wl.currentWindowCenterToggle()
   local win = hs.window.focusedWindow()
-  local screen_i = wl.getScreenNumber(win:screen())
-  local screen_count = #hs.screen.allScreens()
+  local screenI = wl.getScreenNumber(win:screen())
+  local screenCount = #hs.screen.allScreens()
 
-  if screen_i == screen_count - 1 then
+  if screenI == screenCount - 1 then
     wl.moveWindowToCenter2(win)
-  elseif screen_i == screen_count then
+  elseif screenI == screenCount then
     wl.moveWindowToCenter1(win)
   else
     wl.moveWindowToCenter2(win)
@@ -194,13 +194,13 @@ end
 function wl.moveWindowTo(direction)
   local function move()
     local screen = hs.window.focusedWindow():screen()
-    local screen_i =  wl.getScreenNumber(screen)
+    local screenI =  wl.getScreenNumber(screen)
 
     local MAIN_SCREEN_I = 1
     local LEFT_SCREEN_I = 2
     local RIGHT_SCREEN_I = 3
 
-    if screen_i == MAIN_SCREEN_I then
+    if screenI == MAIN_SCREEN_I then
       -- To avoid confusing direction of windows moving from the main screen
       -- this has fixed directions instead of moving clockwise.
       if direction == -1 then
@@ -210,7 +210,7 @@ function wl.moveWindowTo(direction)
       end
     else
       -- This formula gets complicated due to 1-based index.
-      wl.moveFocusedWindowToDisplay((screen_i + direction - 1) % 3 + 1)
+      wl.moveFocusedWindowToDisplay((screenI + direction - 1) % 3 + 1)
     end
   end
 
@@ -219,15 +219,15 @@ end
 
 function wl.getScreenNumber(screen)
   local displays = hs.screen.allScreens()
-  local screen_i
+  local screenI
 
   for i, s in pairs(displays) do
     if (screen == s) then
-      screen_i =  i
+      screenI =  i
     end
   end
 
-  return screen_i
+  return screenI
 end
 
 return wl
