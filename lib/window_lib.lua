@@ -154,8 +154,8 @@ function wl.moveFocusedWindowToNextDisplay(maximize)
     local targetScreen = screens[screenI % 2 + 1]
     local targetScreenFrame = targetScreen:frame()
 
-    local is_target_screen_smaller_than_window = win:size().w > targetScreenFrame.w
-    if is_target_screen_smaller_than_window then
+    local isTargetScreenSmallerThanWindow = win:size().w > targetScreenFrame.w
+    if isTargetScreenSmallerThanWindow then
       wl.moveToSmallerDisplay(win, targetScreen)
     else
       wl.moveToBiggerDisplay(win, targetScreen, maximize)
