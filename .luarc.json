@@ -2,6 +2,5 @@
     "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
     "Lua.diagnostics.globals": [
         "hs", "tl", "wl", "no", "dnd", "bt", "espanso", "timer", "ca", "st", "sc"
-    ],
-    "Lua.workspace.library": ["/Users/sang/.hammerspoon/Spoons/EmmyLua.spoon/annotations"]
+    ]
 }
