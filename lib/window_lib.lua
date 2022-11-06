@@ -97,12 +97,12 @@ end
 function wl.lessFullscreen(win)
   local f = win:frame()
   local screenFrame = win:screen():frame()
-  local offset = 20
+  local offset = 10
 
   f.x = screenFrame.x + offset
-  f.y = screenFrame.y
+  f.y = screenFrame.y + offset
   f.w = screenFrame.w - offset
-  f.h = screenFrame.h
+  f.h = screenFrame.h - offset
   win:setFrame(f)
 
   return win
