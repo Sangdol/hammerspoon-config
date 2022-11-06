@@ -6,7 +6,7 @@ local sc = {}
 
 -- Delay between window transisions
 local function wait()
-  timer.sleep(0.4)
+  timer.sleep(0.3)
 end
 
 function sc.moveWindowToCenter1(win)
