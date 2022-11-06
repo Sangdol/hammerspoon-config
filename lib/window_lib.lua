@@ -8,7 +8,7 @@ hs.window.animationDuration = 0
 
 -- Delay between window transisions
 local function wait()
-  timer.sleep(0.4)
+  timer.sleep(0.3)
 end
 
 function wl.moveFocusedWindowToLeft()
@@ -49,17 +49,29 @@ function wl.moveWindowToRight(win)
   return win
 end
 
-function wl.fullscreenCurrent()
-  local win = hs.window.focusedWindow()
-
-  if win:frame() == win:screen():frame() then
-    return wl.almostFullscreen(win, 0.98)
-  else
-    return wl.fullscreen(win)
+function wl.resizeAndCenterCurrent(ratio)
+  local resize = function()
+    local win = wl.resize(hs.window.focusedWindow(), ratio)
+    wait()
+    return wl.moveToCenter(win)
   end
+
+  return resize
 end
 
-function wl.almostFullscreen(win, ratio)
+function wl.moveToCenter(win)
+  local f = win:frame()
+  local screen = win:screen()
+  local screenFrame = screen:frame()
+
+  f.x = screenFrame.x + (screenFrame.w / 2) - (f.w / 2)
+  f.y = screenFrame.y + (screenFrame.h / 2) - (f.h / 2)
+  win:setFrame(f)
+
+  return win
+end
+
+function wl.resize(win, ratio)
   local f = win:frame()
   local screenFrame = win:screen():frame()
 
@@ -67,6 +79,30 @@ function wl.almostFullscreen(win, ratio)
   f.y = screenFrame.y + (screenFrame.h * (1 - ratio) / 2)
   f.w = screenFrame.w * ratio
   f.h = screenFrame.h * ratio
+  win:setFrame(f)
+
+  return win
+end
+
+function wl.fullscreenCurrent()
+  local win = hs.window.focusedWindow()
+
+  if win:frame() == win:screen():frame() then
+    return wl.lessFullscreen(win)
+  else
+    return wl.fullscreen(win)
+  end
+end
+
+function wl.lessFullscreen(win)
+  local f = win:frame()
+  local screenFrame = win:screen():frame()
+  local offset = 20
+
+  f.x = screenFrame.x + offset
+  f.y = screenFrame.y
+  f.w = screenFrame.w - offset
+  f.h = screenFrame.h
   win:setFrame(f)
 
   return win
