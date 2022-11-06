@@ -53,7 +53,6 @@ function timer.safeWaitUntil(predicateFn, actionFn, failtureFn, count)
 end
 
 function timer.sleep(seconds)
-  -- usleep(microsecs)
   hs.timer.usleep(seconds * 1000 * 1000)
 end
 
