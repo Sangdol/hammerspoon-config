@@ -20,8 +20,7 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, "m", sc.moveFocusedWindowToNextScreen(t
 
 
 --
--- NOTE: This is not being used for now
---       since the wrong window selection problem doesn't seem to happen in M1.
+-- Shortcuts to focus the last used window
 --
 ws.lastUsedWins = {}
 
@@ -60,4 +59,7 @@ function ws.selectLastActiveWindow(appName)
   return selectApp
 end
 
---hs.hotkey.bind({"ctrl", "cmd"}, "G", Ws.selectLastActiveWindow('Google Chrome'))
+hs.hotkey.bind({"ctrl", "cmd"}, "G", ws.selectLastActiveWindow('Google Chrome'))
+hs.hotkey.bind({"ctrl", "cmd"}, "C", ws.selectLastActiveWindow('Google Chrome Canary'))
+hs.hotkey.bind({"ctrl", "cmd"}, "U", ws.selectLastActiveWindow('Firefox'))
+hs.hotkey.bind({"ctrl", "cmd"}, "J", ws.selectLastActiveWindow('Brave Browser'))
