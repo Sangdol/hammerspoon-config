@@ -67,6 +67,8 @@ function sc.moveToBiggerScreen(win, targetScreen, maximize)
   win:moveToScreen(targetScreen, true, false)
   if maximize then
     wait()
+    win:setTopLeft(targetScreenFrame)
+    wait()
     win:setSize(targetScreenFrame.w, targetScreenFrame.h)
   end
 end
