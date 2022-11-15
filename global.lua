@@ -3,7 +3,6 @@
 --
 
 bt = require('lib/bluetooth_lib')
-ca = require('lib/canvas_lib')
 dnd = require('lib/dnd_lib')
 espanso = require('lib/espanso_lib')
 no = require('lib/notification_lib')
