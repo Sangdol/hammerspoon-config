@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 --
 -- Libraries are global and free. Enjoy.
 --
