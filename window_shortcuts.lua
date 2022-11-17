@@ -59,7 +59,6 @@ function ws.selectLastActiveWindow(appName)
   return selectApp
 end
 
-hs.hotkey.bind({"ctrl", "cmd"}, "G", ws.selectLastActiveWindow('Google Chrome'))
+hs.hotkey.bind({"ctrl", "cmd"}, "J", ws.selectLastActiveWindow('Google Chrome'))
 hs.hotkey.bind({"ctrl", "cmd"}, "C", ws.selectLastActiveWindow('Google Chrome Canary'))
 hs.hotkey.bind({"ctrl", "cmd"}, "U", ws.selectLastActiveWindow('Firefox'))
-hs.hotkey.bind({"ctrl", "cmd"}, "J", ws.selectLastActiveWindow('Brave Browser'))
