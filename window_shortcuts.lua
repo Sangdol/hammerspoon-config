@@ -17,7 +17,11 @@ hs.hotkey.bind({"ctrl", "cmd"}, "8", wl.resizeAndCenterCurrent(0.95))
 hs.hotkey.bind({"ctrl", "cmd"}, "7", wl.resizeAndCenterCurrent(0.8))
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "n", sc.moveFocusedWindowToNextScreen(false))
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "m", sc.moveFocusedWindowToNextScreen(true))
-
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "m", sc.moveFocusedWindowToNextScreen(true))
+hs.hotkey.bind({"ctrl", "shift",}, "f", function()
+  local currentApp = hs.application.frontmostApplication()
+  currentApp:selectMenuItem({"Window", "Bring All to Front"})
+end)
 
 --
 -- Shortcuts to focus the last used window
@@ -62,3 +66,4 @@ end
 hs.hotkey.bind({"ctrl", "cmd"}, "J", ws.selectLastActiveWindow('Google Chrome'))
 hs.hotkey.bind({"ctrl", "cmd"}, "C", ws.selectLastActiveWindow('Google Chrome Canary'))
 hs.hotkey.bind({"ctrl", "cmd"}, "U", ws.selectLastActiveWindow('Firefox'))
+hs.hotkey.bind({"ctrl", "cmd"}, "J", ws.selectLastActiveWindow('Brave Browser'))
