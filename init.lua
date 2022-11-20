@@ -23,9 +23,3 @@ require('caffeinate')
 require('window_shortcuts')
 require('dnd')
 
-
--- Use Flux instead since there are some cons (2021.01.12)
--- - one of screens doesn't take on a color often times and I have to reload config.
--- - it often doesn't change colors smoothly.
--- - I need to set up time manually.
---require('redshift')
