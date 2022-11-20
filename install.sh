@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-cd ~
-ln -sfv ~/projects/hammerspoon-config .hammerspoon
+ln -sfvn ~/projects/hammerspoon-config ~/.hammerspoon
