@@ -18,7 +18,7 @@ hs.hotkey.bind({"ctrl", "shift", "option", "cmd"}, "p", function()
 end)
 
 require('global')
-require('finder')
+--require('finder')
 require('window_arranger')
 require('caffeinate')
 require('window_shortcuts')
