@@ -13,7 +13,7 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveFocusedWindowToRight)
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "n", sc.moveFocusedWindowToNextScreen(false))
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "m", sc.moveFocusedWindowToNextScreen(true))
 
-hs.hotkey.bind({"ctrl", "shift",}, "f", function()
+hs.hotkey.bind({"ctrl", "shift"}, "f", function()
   local currentApp = hs.application.frontmostApplication()
   currentApp:selectMenuItem({"Window", "Bring All to Front"})
 end)
