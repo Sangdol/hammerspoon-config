@@ -21,7 +21,7 @@ local center2Apps = {'Reminders', 'Anki', 'Terminal', 'Notes'}
 local screen1Apps = {'Calendar', 'Safari', 'Hyper'}
 local screen2Apps = {'Affinity Photo', 'Google Chrome', 'Brave Browser', 'Google Chrome Canary'}
 
-local function arrangeWindows(appName)
+local function arrangeWindowsForTwoScreens(appName)
   logger:d('Arranging ' .. appName)
   local app = hs.application.get(appName)
 
@@ -56,7 +56,7 @@ function Wa.arrangeAllWindows()
       -- pcall to ignore this error
       -- ERROR:   LuaSkin: hs.screen.watcher callback: ...oon.app/Contents/Resources/extensions/hs/window/init.lua:922: not a rect
       -- similar issue: https://github.com/Hammerspoon/hammerspoon/issues/2507
-      local status, err = pcall(arrangeWindows, appName)
+      local status, err = pcall(arrangeWindowsForTwoScreens, appName)
 
       if (not status) then
         print(err)
@@ -138,7 +138,7 @@ function Wa.appWatcherHandler(appName, eventType)
     end
 
     local function onLaunchCompleted()
-      Wa.arrangeAllWindows()
+      arrangeWindowsForTwoScreens(appName)
     end
 
     local function onLaunchFailed()
