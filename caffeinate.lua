@@ -17,7 +17,6 @@ function Cafe.cafeHandler(eventType)
     logger:i('===================')
 
     bt.conditionallyConnect()
-    dnd.conditionallyTurnOnOff()
 
     espanso.restartRetry(3)
 
@@ -28,8 +27,6 @@ function Cafe.cafeHandler(eventType)
     -- reload() distrubs timer.
     --hs.reload()
   elseif (eventType == hs.caffeinate.watcher.systemWillSleep) then
-    dnd.turnOn()
-
     logger:i('================')
     logger:i('=== Bis Bald ===')
     logger:i('================')
