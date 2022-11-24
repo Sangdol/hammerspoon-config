@@ -9,8 +9,6 @@ local logger = hs.logger.new('window_arranger', 'info')
 -- Global for debugging
 Wa = {}
 
-local TOTAL_SCREEN_COUNT = 2
-
 -- Screen 1 right
 local center1Apps = {'KakaoTalk'}
 
@@ -21,17 +19,19 @@ local center2Apps = {'Reminders', 'Anki', 'Terminal', 'Notes'}
 local screen1Apps = {'Calendar', 'Safari', 'Hyper'}
 local screen2Apps = {'Affinity Photo', 'Google Chrome', 'Brave Browser', 'Google Chrome Canary'}
 
-local function arrangeWindowsForTwoScreens(appName)
-  logger:d('Arranging ' .. appName)
-  local app = hs.application.get(appName)
+local function arrangeWindowsForOneScreen(app, appName)
+  local win = app:mainWindow()
 
-  if (not app) then
-    logger:d("Couldn't get the app: " .. appName)
-    return
-  else
-    logger:d(app, "App found: " .. appName)
+  if (tl.isInList(center1Apps, appName) or tl.isInList(center2Apps, appName)) then
+    sc.moveWindowToCenter1(win)
+  elseif (tl.isInList(screen1Apps, appName)) then
+    wl.fullscreen(win)
+  elseif (tl.isInList(screen2Apps, appName)) then
+    wl.fullscreen(win)
   end
+end
 
+local function arrangeWindowsForTwoScreens(app, appName)
   local win = app:mainWindow()
 
   if (tl.isInList(center1Apps, appName)) then
@@ -48,6 +48,27 @@ local function arrangeWindowsForTwoScreens(appName)
   end
 end
 
+local function arrangeWindows(appName)
+  logger:d('Arranging: ' .. appName)
+  local app = hs.application.get(appName)
+
+  if (not app) then
+    logger:d("Couldn't get the app: " .. appName)
+    return
+  else
+    logger:d(app, "App found: " .. appName)
+  end
+
+  local screenCount = #hs.screen.allScreens()
+  if screenCount == 1 then
+    arrangeWindowsForOneScreen(app, appName)
+  elseif screenCount == 2 then
+    arrangeWindowsForTwoScreens(app, appName)
+  else
+    logger:d('Did you buy more screens? Screen count: ' .. screenCount )
+  end
+end
+
 function Wa.arrangeAllWindows()
   logger:d('Arranging all windows')
 
@@ -56,7 +77,7 @@ function Wa.arrangeAllWindows()
       -- pcall to ignore this error
       -- ERROR:   LuaSkin: hs.screen.watcher callback: ...oon.app/Contents/Resources/extensions/hs/window/init.lua:922: not a rect
       -- similar issue: https://github.com/Hammerspoon/hammerspoon/issues/2507
-      local status, err = pcall(arrangeWindowsForTwoScreens, appName)
+      local status, err = pcall(arrangeWindows, appName)
 
       if (not status) then
         print(err)
@@ -127,9 +148,8 @@ end
 -- App watcher
 function Wa.appWatcherHandler(appName, eventType)
   logger:d('appWatcher', appName, eventType)
-  if (eventType == hs.application.watcher.launched) and
-    (#hs.screen.allScreens() == TOTAL_SCREEN_COUNT) then
 
+  if (eventType == hs.application.watcher.launched) then
     logger:d('appWatcherHandler', 'launched with all screens', appName)
 
     local function launchCompleted()
@@ -138,7 +158,7 @@ function Wa.appWatcherHandler(appName, eventType)
     end
 
     local function onLaunchCompleted()
-      arrangeWindowsForTwoScreens(appName)
+      arrangeWindows(appName)
     end
 
     local function onLaunchFailed()
@@ -159,10 +179,8 @@ end
 function Wa.screenWatcherHandler()
   logger:d('screenWatcherHandler', 'number of screens', #hs.screen.allScreens())
 
-  if (#hs.screen.allScreens() == TOTAL_SCREEN_COUNT) then
-    Wa.arrangeAllWindows()
-    --Wa.arrangeAllWindowsWithRules()
-  end
+  Wa.arrangeAllWindows()
+  --Wa.arrangeAllWindowsWithRules()
 end
 
 Wa.appWatcher = hs.application.watcher.new(Wa.appWatcherHandler)
