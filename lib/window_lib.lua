@@ -86,26 +86,7 @@ end
 
 function wl.fullscreenCurrent()
   local win = hs.window.focusedWindow()
-
-  if win:frame() == win:screen():frame() then
-    return wl.lessFullscreen(win)
-  else
-    return wl.fullscreen(win)
-  end
-end
-
-function wl.lessFullscreen(win)
-  local f = win:frame()
-  local screenFrame = win:screen():frame()
-  local offset = 10
-
-  f.x = screenFrame.x + offset
-  f.y = screenFrame.y + offset
-  f.w = screenFrame.w - offset
-  f.h = screenFrame.h - offset
-  win:setFrame(f)
-
-  return win
+  return wl.fullscreen(win)
 end
 
 function wl.fullscreen(win)
