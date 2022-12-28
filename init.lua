@@ -22,4 +22,4 @@ require('window_arranger')
 require('caffeinate')
 require('window_shortcuts')
 require('dnd')
-
+require('menubar')
