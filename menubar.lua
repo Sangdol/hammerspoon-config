@@ -2,8 +2,6 @@
 -- Textbar replacement
 --
 
-local st = require('lib/string_lib')
-
 local PATH_PREFIX = '$HOME/projects/osx/textbar'
 local UPDATE_INTERVAL = 5
 
