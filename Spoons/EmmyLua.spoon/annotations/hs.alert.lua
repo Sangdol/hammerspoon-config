@@ -66,7 +66,7 @@ M.defaultStyle = {}
 --  * For convenience, you can call this function as `hs.alert(...)`
 --  * This function effectively calls `hs.alert.showWithImage(msg, nil, ...)`. As such, all the same rules apply regarding argument processing
 function M.show(str, style, screen, seconds, ...) end
-
+ 
 -- Shows an image and a message in large words briefly in the middle of the screen; does tostring() on its argument for convenience.
 --
 -- Parameters:
