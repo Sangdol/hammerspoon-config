@@ -4,9 +4,9 @@
 
 local DIAMETER = 60
 local STROKE_WIDTH = 2
-local DURATION = 2
+local DURATION = 1
 local COLOR = '#603b5a'
-local ALPHA = 0.8
+local ALPHA = 0.4
 
 local function mouseHighlight()
   local mousepoint = hs.mouse.absolutePosition()
@@ -14,11 +14,12 @@ local function mouseHighlight()
 
   local mouseCircle = hs.drawing.circle(rect)
   mouseCircle:setStrokeColor({["hex"]=COLOR,["alpha"]=ALPHA})
-  mouseCircle:setFill(false)
+  mouseCircle:setFillColor({["hex"]=COLOR,["alpha"]=ALPHA})
+  mouseCircle:setFill(true)
   mouseCircle:setStrokeWidth(STROKE_WIDTH)
   mouseCircle:show()
 
-  hs.timer.doAfter(DURATION, function() mouseCircle:delete() end)
+  MouseHighligtTimer = hs.timer.doAfter(DURATION, function() mouseCircle:delete() end)
 end
 
 hs.hotkey.bind({"ctrl","alt"}, "P", mouseHighlight)
