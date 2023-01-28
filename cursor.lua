@@ -22,6 +22,18 @@ local function mouseHighlight()
   MouseHighligtTimer = hs.timer.doAfter(DURATION, function() mouseCircle:delete() end)
 end
 
-hs.hotkey.bind({"ctrl","alt"}, "P", mouseHighlight)
-hs.hotkey.bind({"ctrl","shift"}, "P", mouseHighlight)
+local function moveCursorToCenter()
+  local win = hs.window.focusedWindow()
+  local f = win:frame()
+  local center = hs.geometry.point(f.x + f.w/2, f.y + f.h/2)
+  hs.mouse.setAbsolutePosition(center)
+end
+
+local function main()
+  moveCursorToCenter()
+  mouseHighlight()
+end
+
+hs.hotkey.bind({"ctrl","alt"}, "P", main)
+hs.hotkey.bind({"ctrl","shift"}, "P", main)
 
