@@ -25,7 +25,7 @@ end
 local function moveCursorToCenter()
   local win = hs.window.focusedWindow()
   local f = win:frame()
-  local center = hs.geometry.point(f.x + f.w/2, f.y + f.h/2)
+  local center = hs.geometry.point(f.x + f.w/2, f.y + f.h/2 - 15)
   hs.mouse.setAbsolutePosition(center)
 end
 
