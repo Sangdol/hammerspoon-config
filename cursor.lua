@@ -23,11 +23,12 @@ local function mouseHighlight()
 end
 
 local function moveCursorToCenter()
-  local win = hs.window.focusedWindow()
-  local f = win:frame()
-  local center = hs.geometry.point(f.x + f.w/2, f.y + f.h/2 - 15)
+  local currentScreen = hs.window.focusedWindow():screen()
+  local currentScreenFrame = currentScreen:frame()
+  local center = hs.geometry.point(currentScreenFrame.x + currentScreenFrame.w/2, currentScreenFrame.y + currentScreenFrame.h/2)
   hs.mouse.setAbsolutePosition(center)
 end
+
 
 local function main()
   moveCursorToCenter()

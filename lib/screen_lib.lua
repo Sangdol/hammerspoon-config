@@ -79,8 +79,8 @@ function sc.moveFocusedWindowToNextScreen(maximize)
   local function inner()
     local screens = hs.screen.allScreens()
     local win = hs.window.focusedWindow()
-    local current_screen = hs.window.focusedWindow():screen()
-    local screenI =  sc.getScreenNumber(current_screen)
+    local currentScreen = hs.window.focusedWindow():screen()
+    local screenI =  sc.getScreenNumber(currentScreen)
     local targetScreen = screens[screenI % 2 + 1]
     local targetScreenFrame = targetScreen:frame()
 
