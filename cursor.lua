@@ -24,8 +24,8 @@ end
 
 local function moveCursorToCenter()
   local currentScreen = hs.window.focusedWindow():screen()
-  local currentScreenFrame = currentScreen:frame()
-  local center = hs.geometry.point(currentScreenFrame.x + currentScreenFrame.w/2, currentScreenFrame.y + currentScreenFrame.h/2)
+  local frame = currentScreen:frame()
+  local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
   hs.mouse.setAbsolutePosition(center)
 end
 
