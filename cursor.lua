@@ -29,7 +29,6 @@ local function moveCursorToCenter()
   hs.mouse.setAbsolutePosition(center)
 end
 
-
 local function main()
   moveCursorToCenter()
   mouseHighlight()
@@ -37,4 +36,6 @@ end
 
 hs.hotkey.bind({"ctrl","alt"}, "P", main)
 hs.hotkey.bind({"ctrl","shift"}, "P", main)
+
+-- Close "Do you want to change your default web browser to "Chrome Canary"?" dialog 
 
