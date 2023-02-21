@@ -34,8 +34,6 @@ local function main()
   mouseHighlight()
 end
 
-hs.hotkey.bind({"ctrl","alt"}, "P", main)
-hs.hotkey.bind({"ctrl","shift"}, "P", main)
-
--- Close "Do you want to change your default web browser to "Chrome Canary"?" dialog 
+hs.hotkey.bind({"ctrl","alt"}, "c", main)
+hs.hotkey.bind({"ctrl","shift"}, "c", main)
 
