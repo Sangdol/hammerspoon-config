@@ -12,10 +12,8 @@ local function isWorkingHours()
 end
 
 local function appWatcherHandler(appName, eventType)
-  if (not tl.isInList(dndApps, appName)) and isWorkingHours() then
+  if (not tl.isInList(dndApps, appName)) or isWorkingHours() then
     return
-  else 
-    logger:d('DND is starting. App Name: ', appName)
   end
 
   if (eventType == hs.application.watcher.launched) and
