@@ -75,13 +75,20 @@ end
 
 -- This has lots of hacks to avoid bug
 -- https://github.com/Hammerspoon/hammerspoon/issues/3224
-function sc.moveFocusedWindowToNextScreen(maximize)
+--
+-- maximize: boolean
+-- direction: 1 or -1 (1: right, -1: left)
+function sc.moveFocusedWindowToNextScreen(maximize, direction)
   local function inner()
     local screens = hs.screen.allScreens()
     local win = hs.window.focusedWindow()
     local currentScreen = hs.window.focusedWindow():screen()
     local screenI =  sc.getScreenNumber(currentScreen)
-    local targetScreen = screens[screenI % 2 + 1]
+    local screenCount = #screens
+
+    -- Screen number starts from 1 which makes the calculation complicated
+    local targetScreenI = (screenI - 1 + direction) % screenCount + 1
+    local targetScreen = screens[targetScreenI]
     local targetScreenFrame = targetScreen:frame()
 
     local isTargetScreenSmallerThanWindow = win:size().w > targetScreenFrame.w
