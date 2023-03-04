@@ -38,6 +38,8 @@ end
 hs.hotkey.bind({"ctrl","alt"}, "c", main)
 hs.hotkey.bind({"ctrl","shift"}, "c", main)
 
+-- This function finds the next screen based on the mouse position
+-- which is different from when moving windows.
 local function moveCursorToNextScreen(direction)
   return function()
     local screens = hs.screen.allScreens()
