@@ -38,14 +38,21 @@ end
 hs.hotkey.bind({"ctrl","alt"}, "c", main)
 hs.hotkey.bind({"ctrl","shift"}, "c", main)
 
+local function moveCursorToNextScreen(direction)
+  return function()
+    local screens = hs.screen.allScreens()
+    local currentScreen = hs.mouse.getCurrentScreen()
+    local screenI =  sc.getScreenNumber(currentScreen)
+    local screenCount = #screens
+    local targetScreenI = (screenI - 1 + direction) % screenCount + 1
+    local targetScreen = screens[targetScreenI]
+    local frame = targetScreen:frame()
+    local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
+    hs.mouse.setAbsolutePosition(center)
+    mouseHighlight()
+  end
+end
+
 -- Move cursor to the center of next screen
-hs.hotkey.bind({"ctrl","alt"}, "n", function()
-  local screens = hs.screen.allScreens()
-  local currentScreen = hs.mouse.getCurrentScreen()
-  local screenI =  sc.getScreenNumber(currentScreen)
-  local targetScreen = screens[screenI % 2 + 1]
-  local frame = targetScreen:frame()
-  local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
-  hs.mouse.setAbsolutePosition(center)
-  mouseHighlight()
-end)
+hs.hotkey.bind({"ctrl","alt"}, "n", moveCursorToNextScreen(-1))
+hs.hotkey.bind({"ctrl","alt"}, "m", moveCursorToNextScreen(1))
