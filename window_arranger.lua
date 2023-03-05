@@ -16,8 +16,8 @@ local center1Apps = {'KakaoTalk'}
 local center2Apps = {'Reminders', 'Anki', 'Terminal', 'Notes'}
 
 -- Fullscreen
-local screen1Apps = {'Calendar', 'Hyper'}
-local screen2Apps = {'Affinity Photo', 'Safari', 'Google Chrome', 'Brave Browser', 'Google Chrome Canary'}
+local screen1Apps = {} -- {'Calendar', 'Hyper'}
+local screen2Apps = {} -- {'Affinity Photo', 'Safari', 'Google Chrome', 'Brave Browser', 'Google Chrome Canary'}
 
 local function arrangeWindowsForOneScreen(app, appName)
   local win = app:mainWindow()
