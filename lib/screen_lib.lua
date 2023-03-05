@@ -71,22 +71,19 @@ end
 
 function sc.currentWindowCenterToggle()
   local win = hs.window.focusedWindow()
-  local screenI = sc.getScreenNumber(win:screen())
-  local screenCount = #hs.screen.allScreens()
+  local screenI = S:getScreenNumber(win:screen())
 
-  if screenI == screenCount - 1 then
+  if screenI == 1 then
     sc.moveWindowToCenter2(win)
-  elseif screenI == screenCount then
-    sc.moveWindowToCenter1(win)
   else
-    sc.moveWindowToCenter2(win)
+    sc.moveWindowToCenter1(win)
   end
 end
 
 -- return: list of windows of an app e.g., {win1, win2}
 function sc.moveAllWindowsToScreenWithAppName(appName, d)
   -- https://stackoverflow.com/a/58398311/524588
-  local screens = hs.screen.allScreens()
+  local screens = S:getScreens()
   local wins = hs.application.find(appName):allWindows()
 
   for _, win in ipairs(wins) do
@@ -97,7 +94,7 @@ function sc.moveAllWindowsToScreenWithAppName(appName, d)
 end
 
 function sc.moveWindowToScreen(win, index)
-  local screens = hs.screen.allScreens()
+  local screens = S:getScreens()
   win:moveToScreen(screens[index], false, true)
 end
 
