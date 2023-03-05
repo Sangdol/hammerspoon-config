@@ -2,11 +2,61 @@
 -- Window functions for multiple screens
 --
 
-local sc = {}
-
 -- Delay between window transisions
 local function wait()
   timer.sleep(0.3)
+end
+
+-- Helper functions to get screens based on the number of screens
+local S = {
+  getOrderedScreens = function()
+    local orderedScreens = {}
+
+    for _, s in pairs(hs.screen.allScreens()) do
+      table.insert(orderedScreens, s)
+    end
+
+    table.sort(orderedScreens, function(a, b)
+      return a:position() < b:position()
+    end)
+
+    return orderedScreens
+  end,
+  -- Return screen number based on the number of screens
+  getScreens = function(self)
+    local screenCount = #hs.screen.allScreens()
+    if screenCount > 2 then
+      return self:getOrderedScreens()
+    else
+      return hs.screen.allScreens()
+    end
+  end,
+  -- Find the current screen number in screens
+  getScreenNumber = function(self, currentScreen)
+    local screens = self:getScreens()
+    local screenI
+
+    for i, s in ipairs(screens) do
+      if (currentScreen == s) then
+        screenI =  i
+      end
+    end
+
+    return screenI
+  end,
+}
+
+local sc = {}
+
+function sc.getNextScreen(currentScreen, direction)
+  local screens = S:getScreens()
+  local screenI = S:getScreenNumber(currentScreen)
+  local screenCount = #screens
+
+  local targetScreenI = (screenI - 1 + direction) % screenCount + 1
+  local targetScreen = screens[targetScreenI]
+
+  return targetScreen
 end
 
 function sc.moveWindowToCenter1(win)
@@ -101,54 +151,6 @@ function sc.moveFocusedWindowToNextScreen(maximize, direction)
   end
 
   return inner
-end
-
--- Find the current screen number in screens
-local function getScreenNumber(screens, currentScreen)
-  local screenI
-
-  for i, s in ipairs(screens) do
-    if (currentScreen == s) then
-      screenI =  i
-    end
-  end
-
-  return screenI
-end
-
-local function getOrderedScreens()
-  local orderedScreens = {}
-
-  for _, s in pairs(hs.screen.allScreens()) do
-    table.insert(orderedScreens, s)
-  end
-
-  table.sort(orderedScreens, function(a, b)
-    return a:position() < b:position()
-  end)
-
-  return orderedScreens
-end
-
--- Return screen number based on the number of screens
-local function getScreens()
-  local screenCount = #hs.screen.allScreens()
-  if screenCount > 2 then
-    return getOrderedScreens()
-  else
-    return hs.screen.allScreens()
-  end
-end
-
-function sc.getNextScreen(currentScreen, direction)
-  local screens = getScreens()
-  local screenI = getScreenNumber(screens, currentScreen)
-  local screenCount = #screens
-
-  local targetScreenI = (screenI - 1 + direction) % screenCount + 1
-  local targetScreen = screens[targetScreenI]
-
-  return targetScreen
 end
 
 return sc
