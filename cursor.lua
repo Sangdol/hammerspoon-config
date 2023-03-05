@@ -26,7 +26,7 @@ local function moveCursorToCenter()
   local currentScreen = hs.window.focusedWindow():screen()
   local frame = currentScreen:frame()
   local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
-  hs.mouse.setAbsolutePosition(center)
+  hs.mouse.absolutePosition(center)
 end
 
 local function main()
@@ -50,7 +50,7 @@ local function moveCursorToNextScreen(direction)
     local targetScreen = screens[targetScreenI]
     local frame = targetScreen:frame()
     local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
-    hs.mouse.setAbsolutePosition(center)
+    hs.mouse.absolutePosition(center)
     mouseHighlight()
   end
 end
