@@ -42,12 +42,8 @@ hs.hotkey.bind({"ctrl","shift"}, "c", main)
 -- which is different from when moving windows.
 local function moveCursorToNextScreen(direction)
   return function()
-    local screens = hs.screen.allScreens()
     local currentScreen = hs.mouse.getCurrentScreen()
-    local screenI =  sc.getScreenNumber(currentScreen)
-    local screenCount = #screens
-    local targetScreenI = (screenI - 1 + direction) % screenCount + 1
-    local targetScreen = screens[targetScreenI]
+    local targetScreen = sc.getNextScreen(currentScreen, direction)
     local frame = targetScreen:frame()
     local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
     hs.mouse.absolutePosition(center)
