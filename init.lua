@@ -14,7 +14,11 @@ end)
 
 -- For debugging
 hs.hotkey.bind({"ctrl", "shift", "option", "cmd"}, "p", function()
-  print(hs.window.focusedWindow():application():name())
+  CurrentApp = hs.window.focusedWindow():application()
+  CurrentWindow = hs.window.focusedWindow()
+  print('Current app name: ' .. CurrentApp:name())
+  print('The current app is accessible via the variable `CurrentApp`.')
+  print('The current window is accessible via the variable `CurrentWindow`.')
 end)
 
 require('global')
