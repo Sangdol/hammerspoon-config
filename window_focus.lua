@@ -3,7 +3,7 @@
 --
 --
 
-local logger = hs.logger.new('window_shortcuts', 'info')
+local logger = hs.logger.new('window_focus', 'info')
 
 local ws = {}
 
@@ -25,11 +25,23 @@ hs.hotkey.bind({"ctrl", "cmd"}, "7", wl.resizeAndCenterCurrent(0.8))
 --
 ws.lastUsedWins = {}
 
-hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function(win, appName)
+hs.window.filter.default:subscribe(hs.window.filter.windowUnfocused, function(win, appName)
   logger:d(appName)
   ws.lastUsedWins[appName] = win
   logger:d(appName, 'window updated')
 end)
+
+AppFocusWatcher = hs.application.watcher.new(function(appName, eventType)
+  if (eventType == hs.application.watcher.activated) then
+    logger:d(appName, 'activated')
+    if appName == 'iTerm2' then
+      -- Do not use it for iTerm2 for now.
+      return
+    end
+    ws.selectLastActiveWindow(appName)()
+  end
+end)
+AppFocusWatcher:start()
 
 -- The appName the function `launchOrFocus()` requires
 -- and the appName used in subscribe can be different
@@ -65,3 +77,4 @@ hs.hotkey.bind({"ctrl", "cmd"}, "C", ws.selectLastActiveWindow('Google Chrome Ca
 hs.hotkey.bind({"ctrl", "cmd"}, "U", ws.selectLastActiveWindow('Firefox'))
 hs.hotkey.bind({"ctrl", "cmd"}, ";", ws.selectLastActiveWindow('Microsoft Edge'))
 hs.hotkey.bind({"ctrl", "cmd"}, "I", ws.selectLastActiveWindow('Anki'))
+
