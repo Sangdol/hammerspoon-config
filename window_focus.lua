@@ -25,12 +25,16 @@ hs.hotkey.bind({"ctrl", "cmd"}, "7", wl.resizeAndCenterCurrent(0.8))
 --
 ws.lastUsedWins = {}
 
+-- Set the last used window when a window is unfocused.
+-- It sets the window when unfocused instead of focused
+-- to make it run after the applicatino watcher.
 hs.window.filter.default:subscribe(hs.window.filter.windowUnfocused, function(win, appName)
   logger:d(appName)
   ws.lastUsedWins[appName] = win
   logger:d(appName, 'window updated')
 end)
 
+-- Focus the last used window when the application is activated.
 AppFocusWatcher = hs.application.watcher.new(function(appName, eventType)
   if (eventType == hs.application.watcher.activated) then
     logger:d(appName, 'activated')
