@@ -44,6 +44,39 @@ local S = {
 
     return screenI
   end,
+  getTwoBiggestScreens = function(self)
+    local screens = self:getScreens()
+    local screenCount = #screens
+
+    -- To find out the two biggest screens and sort the screens by its position.
+    -- Well, this is getting crazy.
+    if screenCount > 2 then
+      table.sort(screens, function(a, b)
+        return a:fullFrame().w * a:fullFrame().h > b:fullFrame().w * b:fullFrame().h
+      end)
+
+      screens = {screens[1], screens[2]}
+      table.sort(screens, function(a, b)
+        return a:position() < b:position()
+      end)
+
+      return {screens[1], screens[2]}
+    else
+      return screens
+    end
+  end,
+  getScreenNumberFromTwoBiggestScreens = function(self, screen)
+    local screens = self:getTwoBiggestScreens()
+    local screenI
+
+    for i, s in ipairs(screens) do
+      if (screen == s) then
+        screenI =  i
+      end
+    end
+
+    return screenI
+  end
 }
 
 local sc = {}
@@ -61,17 +94,17 @@ end
 
 function sc.moveWindowToCenter1(win)
   wl.moveWindowToRight(win)
-  sc.moveWindowToScreen(win, 1)
+  sc.moveWindowToBiggestScreen(win, 1)
 end
 
 function sc.moveWindowToCenter2(win)
   wl.moveWindowToLeft(win)
-  sc.moveWindowToScreen(win, 2)
+  sc.moveWindowToBiggestScreen(win, 2)
 end
 
 function sc.currentWindowCenterToggle()
   local win = hs.window.focusedWindow()
-  local screenI = S:getScreenNumber(win:screen())
+  local screenI = S:getScreenNumberFromTwoBiggestScreens(win:screen())
 
   if screenI == 1 then
     sc.moveWindowToCenter2(win)
@@ -93,8 +126,8 @@ function sc.moveAllWindowsToScreenWithAppName(appName, d)
   return wins
 end
 
-function sc.moveWindowToScreen(win, index)
-  local screens = S:getScreens()
+function sc.moveWindowToBiggestScreen(win, index)
+  local screens = S:getTwoBiggestScreens()
   win:moveToScreen(screens[index], false, true)
 end
 
