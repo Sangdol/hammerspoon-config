@@ -22,17 +22,17 @@ hs.window.filter.default:subscribe(hs.window.filter.windowUnfocused, function(wi
 end)
 
 -- Focus the last used window when the application is activated.
-AppFocusWatcher = hs.application.watcher.new(function(appName, eventType)
-  if (eventType == hs.application.watcher.activated) then
-    logger:d(appName, 'activated')
-    if appName == 'iTerm2' then
-      -- Do not use it for iTerm2 for now.
-      return
-    end
-    Wf.selectLastActiveWindow(appName)()
-  end
-end)
-AppFocusWatcher:start()
+--AppFocusWatcher = hs.application.watcher.new(function(appName, eventType)
+  --if (eventType == hs.application.watcher.activated) then
+    --logger:d(appName, 'activated')
+    --if appName == 'iTerm2' then
+      ---- Do not use it for iTerm2 for now.
+      --return
+    --end
+    --Wf.selectLastActiveWindow(appName)()
+  --end
+--end)
+--AppFocusWatcher:start()
 
 -- The appName the function `launchOrFocus()` requires
 -- and the appName used in subscribe can be different
