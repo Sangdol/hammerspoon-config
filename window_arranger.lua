@@ -16,8 +16,8 @@ local center1Apps = {'KakaoTalk'}
 local center2Apps = {'Reminders', 'Anki', 'Terminal', 'Notes'}
 
 -- Fullscreen
-local screen1Apps = {} -- {'Calendar', 'Hyper'}
-local screen2Apps = {} -- {'Affinity Photo', 'Safari', 'Google Chrome', 'Brave Browser', 'Google Chrome Canary'}
+local screen1Apps = {'Google Chrome'}
+local screen2Apps = {'Microsoft Edge', 'Slack', 'Safari'}
 
 local function arrangeWindowsForOneScreen(app, appName)
   local win = app:mainWindow()
@@ -31,7 +31,7 @@ local function arrangeWindowsForOneScreen(app, appName)
   end
 end
 
-local function arrangeWindowsForTwoScreens(app, appName)
+local function arrangeWindowsForMultiScreens(app, appName)
   local win = app:mainWindow()
 
   if (tl.isInList(center1Apps, appName)) then
@@ -40,10 +40,10 @@ local function arrangeWindowsForTwoScreens(app, appName)
     sc.moveWindowToCenter2(win)
   elseif (tl.isInList(screen1Apps, appName)) then
     -- For some reason, windows shrink to right or left.
-    sc.moveWindowToScreen(win, 1)
+    sc.moveWindowToBiggestScreen(win, 1)
     wl.fullscreen(win)
   elseif (tl.isInList(screen2Apps, appName)) then
-    sc.moveWindowToScreen(win, 2)
+    sc.moveWindowToBiggestScreen(win, 2)
     wl.fullscreen(win)
   end
 end
@@ -62,10 +62,10 @@ local function arrangeWindows(appName)
   local screenCount = #hs.screen.allScreens()
   if screenCount == 1 then
     arrangeWindowsForOneScreen(app, appName)
-  elseif screenCount == 2 then
-    arrangeWindowsForTwoScreens(app, appName)
+  elseif screenCount > 1 then
+    arrangeWindowsForMultiScreens(app, appName)
   else
-    logger:d('Did you buy more screens? Screen count: ' .. screenCount )
+    logger:w('Do you have zero screen? Screen count: ' .. screenCount )
   end
 end
 
@@ -139,7 +139,7 @@ function Wa.arrangeAllWindowsWithRules()
         return
       end
 
-      sc.moveWindowToScreen(win, screenNumber)
+      sc.moveWindowToBiggestScreen(win, screenNumber)
       wl.fullscreen(win)
     end
   end
