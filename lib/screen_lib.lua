@@ -93,13 +93,13 @@ function sc.getNextScreen(currentScreen, direction)
 end
 
 function sc.moveWindowToCenter1(win)
+  sc.moveWindowToBiggestScreen(win, 1, false)
   wl.moveWindowToRight(win)
-  sc.moveWindowToBiggestScreen(win, 1)
 end
 
 function sc.moveWindowToCenter2(win)
+  sc.moveWindowToBiggestScreen(win, 2, false)
   wl.moveWindowToLeft(win)
-  sc.moveWindowToBiggestScreen(win, 2)
 end
 
 function sc.currentWindowCenterToggle()
@@ -114,27 +114,26 @@ function sc.currentWindowCenterToggle()
 end
 
 -- return: list of windows of an app e.g., {win1, win2}
-function sc.moveAllWindowsToScreenWithAppName(appName, d)
+function sc.moveAllWindowsToBiggestScreenWithAppName(appName, screenI, maximize)
   -- https://stackoverflow.com/a/58398311/524588
-  local screens = S:getScreens()
   local wins = hs.application.find(appName):allWindows()
 
   for _, win in ipairs(wins) do
-    win:moveToScreen(screens[d], false, true)
+    sc.moveWindowToBiggestScreen(win, screenI, maximize)
   end
 
   return wins
 end
 
-function sc.moveWindowToBiggestScreen(win, index)
+function sc.moveWindowToBiggestScreen(win, index, maximize)
   local screens = S:getTwoBiggestScreens()
-  win:moveToScreen(screens[index], false, true)
+  sc.moveWindowToScreen(win, screens[index], maximize)
 end
 
 function sc.moveToSmallerScreen(win, targetScreen)
-  -- resize and move
   local targetScreenFrame = targetScreen:frame()
 
+  -- resize and move
   win:setSize(targetScreenFrame.w, targetScreenFrame.h)
   wait()
   win:moveToScreen(targetScreen, true, false)
@@ -153,34 +152,50 @@ function sc.moveToBiggerScreen(win, targetScreen, maximize)
   end
 end
 
--- This has lots of hacks to avoid bug
+-- This has lots of hacks to avoid bugs
 -- https://github.com/Hammerspoon/hammerspoon/issues/3224
 --
 -- maximize: boolean
 -- direction: 1 or -1 (1: right, -1: left)
+--
+-- This can be replaced with `win:moveToScreen(targetScreen, maximize, true)`
+-- once the bugs are fixed.
+function sc.moveWindowToScreen(win, targetScreen, maximize)
+  local targetScreenFrame = targetScreen:frame()
+
+  local isTargetScreenSmallerThanWindow = win:size().w > targetScreenFrame.w
+  if isTargetScreenSmallerThanWindow then
+    sc.moveToSmallerScreen(win, targetScreen)
+  else
+    sc.moveToBiggerScreen(win, targetScreen, maximize)
+  end
+
+  wait()
+
+  -- move window to the center of the screen based on the window size
+  local x = targetScreenFrame.x + (targetScreenFrame.w - win:size().w) / 2
+  local y = targetScreenFrame.y + (targetScreenFrame.h - win:size().h) / 2
+  win:setTopLeft(x, y)
+end
+
+function sc.moveFocusedWindowToScreen(maximize, targetScreen)
+  local win = hs.window.focusedWindow()
+  sc.moveWindowToScreen(win, targetScreen, maximize)
+end
+
 function sc.moveFocusedWindowToNextScreen(maximize, direction)
   local function inner()
-    local win = hs.window.focusedWindow()
     local currentScreen = hs.window.focusedWindow():screen()
     local targetScreen = sc.getNextScreen(currentScreen, direction)
-    local targetScreenFrame = targetScreen:frame()
-
-    local isTargetScreenSmallerThanWindow = win:size().w > targetScreenFrame.w
-    if isTargetScreenSmallerThanWindow then
-      sc.moveToSmallerScreen(win, targetScreen)
-    else
-      sc.moveToBiggerScreen(win, targetScreen, maximize)
-    end
-
-    wait()
-
-    -- move window to the center of the screen based on the window size
-    local x = targetScreenFrame.x + (targetScreenFrame.w - win:size().w) / 2
-    local y = targetScreenFrame.y + (targetScreenFrame.h - win:size().h) / 2
-    win:setTopLeft(x, y)
+    sc.moveFocusedWindowToScreen(maximize, targetScreen)
   end
 
   return inner
+end
+
+function sc.moveFocusedWindowToScreenWithIndex(maximize, targetScreenI)
+  local targetScreen = sc.getScreens()[targetScreenI]
+  sc.moveFocusedWindowToScreen(maximize, targetScreen)
 end
 
 return sc

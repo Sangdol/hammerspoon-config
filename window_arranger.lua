@@ -4,7 +4,7 @@
 --   Arrange applications when they start up or multiple screens are connected.
 --
 
-local logger = hs.logger.new('window_arranger', 'info')
+local logger = hs.logger.new('window_arranger', 'debug')
 
 -- Global for debugging
 Wa = {}
@@ -17,7 +17,7 @@ local center2Apps = {'Reminders', 'Anki', 'Terminal', 'Notes'}
 
 -- Fullscreen
 local screen1Apps = {'Google Chrome'}
-local screen2Apps = {'Microsoft Edge', 'Slack', 'Safari'}
+local screen2Apps = {'Microsoft Edge', 'Slack', 'Safari', 'iTerm2'}
 
 local function arrangeWindowsForOneScreen(app, appName)
   local win = app:mainWindow()
@@ -39,12 +39,9 @@ local function arrangeWindowsForMultiScreens(app, appName)
   elseif (tl.isInList(center2Apps, appName)) then
     sc.moveWindowToCenter2(win)
   elseif (tl.isInList(screen1Apps, appName)) then
-    -- For some reason, windows shrink to right or left.
-    sc.moveWindowToBiggestScreen(win, 1)
-    wl.fullscreen(win)
+    sc.moveAllWindowsToBiggestScreenWithAppName(appName, 1, true)
   elseif (tl.isInList(screen2Apps, appName)) then
-    sc.moveWindowToBiggestScreen(win, 2)
-    wl.fullscreen(win)
+    sc.moveAllWindowsToBiggestScreenWithAppName(appName, 2, true)
   end
 end
 
