@@ -15,6 +15,7 @@ local appNames = {'Google Chrome', 'Microsoft Edge', 'Slack', 'Safari',
 -- Sturecture:
 --    { currentNumberOfScreen: {winId: screen} }
 Wm.windowScreenMap = {}
+Wm.windowPositionAndSizeMap = {}
 
 local function getCurrentWindowScreenMap()
   local currentNumberOfScreen = #hs.screen.allScreens()
@@ -26,8 +27,17 @@ local function getCurrentWindowScreenMap()
   return winScreenMap
 end
 
--- TODO score position and window size and restore them.
-local function updateWindowScreenMap()
+local function getCurrentWindowPositionAndSizeMap()
+  local currentNumberOfScreen = #hs.screen.allScreens()
+  local winPositionAndSizeMap = Wm.windowPositionAndSizeMap[currentNumberOfScreen]
+  if (not winPositionAndSizeMap) then
+    logger:d('No windowPositionAndSizeMap for the current number of screens: ' .. currentNumberOfScreen)
+    return {}
+  end
+  return winPositionAndSizeMap
+end
+
+function Wm.updateWindowScreenMap()
   logger:d('Updating windowScreenMap')
 
   for _, appName in ipairs(appNames) do
@@ -41,8 +51,15 @@ local function updateWindowScreenMap()
         local currentNumberOfScreen = #hs.screen.allScreens()
         if (not Wm.windowScreenMap[currentNumberOfScreen]) then
           Wm.windowScreenMap[currentNumberOfScreen] = {}
+          Wm.windowPositionAndSizeMap[currentNumberOfScreen] = {}
         end
         Wm.windowScreenMap[currentNumberOfScreen][win:id()] = screen
+        Wm.windowPositionAndSizeMap[currentNumberOfScreen][win:id()] = {
+          x = win:frame().x,
+          y = win:frame().y,
+          w = win:frame().w,
+          h = win:frame().h,
+        }
       end
     end
   end
@@ -55,7 +72,7 @@ function Wm.moveAllWindowsToTheirScreens()
   for winId, screen in pairs(winScreenMap) do
     local win = hs.window.get(winId)
     if (win) then
-      sc.moveWindowToScreen(win, screen)
+      sc.moveWindowToScreen(win, screen, true)
     end
   end
 end
@@ -72,7 +89,37 @@ function Wm.moveAppWindowsToTheirScreens(appName)
       local winScreenMap = getCurrentWindowScreenMap()
       local screen = winScreenMap[win:id()]
       if (screen) then
-        sc.moveWindowToScreen(win, screen)
+        sc.moveWindowToScreen(win, screen, true)
+      end
+    end
+  end
+end
+
+function Wm.restorePositionAndSize()
+  logger:d('Restoring position and size')
+
+  local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
+  for winId, positionAndSize in pairs(winPositionAndSizeMap) do
+    local win = hs.window.get(winId)
+    if (win) then
+      win:setFrame(positionAndSize)
+    end
+  end
+end
+
+function Wm.restorePositionAndSizeOfApp(appName)
+  logger:d('Restoring position and size of the app: ' .. appName)
+
+  local app = hs.application.get(appName)
+  if (not app) then
+    logger:d("Couldn't get the app: " .. appName)
+  else
+    logger:d(app, "App found: " .. appName)
+    for _, win in ipairs(app:allWindows()) do
+      local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
+      local positionAndSize = winPositionAndSizeMap[win:id()]
+      if (positionAndSize) then
+        win:setFrame(positionAndSize)
       end
     end
   end
@@ -82,6 +129,7 @@ Wm.appWatcher = hs.application.watcher.new(function(appName, event)
   if (event == hs.application.watcher.launched) then
     logger:d('App launched. Moving windows: ' .. appName)
     Wm.moveAppWindowsToTheirScreens(appName)
+    Wm.restorePositionAndSizeOfApp(appName)
   end
 end)
 
@@ -96,10 +144,11 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
     end
     logger:d('Screen changed. Number of screens: ' .. #hs.screen.allScreens())
     Wm.moveAllWindowsToTheirScreens()
+    Wm.restorePositionAndSize()
   end)
 end)
 
-hs.timer.doEvery(interval, updateWindowScreenMap)
+hs.timer.doEvery(interval, Wm.updateWindowScreenMap)
 hs.screen.watcher.new(Wm.moveAllWindowsToTheirScreens):start()
-updateWindowScreenMap()
+Wm.updateWindowScreenMap()
 
