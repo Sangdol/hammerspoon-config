@@ -40,6 +40,13 @@ end
 function Wm.updateWindowScreenMap()
   logger:d('Updating windowScreenMap')
 
+  local screenCount = #hs.screen.allScreens()
+
+  if (screenCount == 1) then
+    logger:d('No need to update windowScreenMap for 1 screen')
+    return
+  end
+
   for _, appName in ipairs(appNames) do
     local app = hs.application.get(appName)
     if (not app) then
@@ -127,22 +134,36 @@ end
 
 Wm.appWatcher = hs.application.watcher.new(function(appName, event)
   if (event == hs.application.watcher.launched) then
+    local screenCount = #hs.screen.allScreens()
+    if screenCount == 1 then
+      logger:d('Skipping the moving app windows because the number of screens is 1')
+      return
+    end
+
     logger:d('App launched. Moving windows: ' .. appName)
     Wm.moveAppWindowsToTheirScreens(appName)
     Wm.restorePositionAndSizeOfApp(appName)
   end
 end)
 
-local timer
+local screenWatcherTimer
 Wm.screenWatcher = hs.screen.watcher.new(function()
   -- For some reason, it doesn't recognize the number of screens correctly
   -- if it runs immediately after the screen change.
-  timer = hs.timer.doAfter(3, function()
-    if (timer) then
+  screenWatcherTimer = hs.timer.doAfter(3, function()
+    if (screenWatcherTimer) then
       -- Debounce the timer
-      timer:stop()
+      screenWatcherTimer:stop()
     end
-    logger:d('Screen changed. Number of screens: ' .. #hs.screen.allScreens())
+
+    local screenCount = #hs.screen.allScreens()
+
+    if screenCount == 1 then
+      logger:d('Skipping the screen change because the number of screens is 1')
+      return
+    end
+
+    logger:d('Screen changed. Number of screens: ' .. screenCount)
     Wm.moveAllWindowsToTheirScreens()
     Wm.restorePositionAndSize()
   end)
