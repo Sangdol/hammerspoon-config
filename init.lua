@@ -22,7 +22,7 @@ hs.hotkey.bind({"ctrl", "shift", "option", "cmd"}, "p", function()
 end)
 
 require('global')
-require('window_arranger')
+require('window_mover')
 require('caffeinate')
 require('window_shortcuts')
 require('dnd')

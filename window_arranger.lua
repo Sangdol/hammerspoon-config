@@ -1,4 +1,7 @@
 --
+-- This is not used anymore in favor of 'window_mover'.
+-- This can be deleted once window_mover is stable.
+--
 -- Window Arranger
 --
 --   Arrange applications when they start up or multiple screens are connected.
