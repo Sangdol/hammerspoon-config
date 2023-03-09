@@ -83,9 +83,18 @@ Wm.appWatcher = hs.application.watcher.new(function(appName, event)
   end
 end)
 
+local timer
 Wm.screenWatcher = hs.screen.watcher.new(function()
-  logger:d('Screen changed. Number of screens: ' .. #hs.screen.allScreens())
-  Wm.moveAllWindowsToTheirScreens()
+  -- For some reason, it doesn't recognize the number of screens correctly
+  -- if it runs immediately after the screen change.
+  timer = hs.timer.doAfter(3, function()
+    if (timer) then
+      -- Debounce the timer
+      timer:stop()
+    end
+    logger:d('Screen changed. Number of screens: ' .. #hs.screen.allScreens())
+    Wm.moveAllWindowsToTheirScreens()
+  end)
 end)
 
 hs.timer.doEvery(interval, updateWindowScreenMap)
