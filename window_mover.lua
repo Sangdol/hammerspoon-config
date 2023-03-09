@@ -12,7 +12,8 @@ local appNames = {'Google Chrome', 'Microsoft Edge', 'Slack', 'Safari',
   'Google Chrome Canary', 'Hammerspoon', 'Preview', 'WhatsApp', 'Telegram',
   'Calendar', 'Notion', 'Miro'}
 
--- { currentNumberOfScreen: {winId: screen} }
+-- Sturecture:
+--    { currentNumberOfScreen: {winId: screen} }
 Wm.windowScreenMap = {}
 
 local function getCurrentWindowScreenMap()
@@ -25,6 +26,7 @@ local function getCurrentWindowScreenMap()
   return winScreenMap
 end
 
+-- TODO score position and window size and restore them.
 local function updateWindowScreenMap()
   logger:d('Updating windowScreenMap')
 
