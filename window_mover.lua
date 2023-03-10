@@ -47,8 +47,15 @@ function Wm.updateWindowScreenMap()
     return
   end
 
-  for _, appName in ipairs(appNames) do
-    local app = hs.application.get(appName)
+  local runningApps = hs.application.runningApplications()
+  for _, app in ipairs(runningApps) do
+    -- Do this instead of iterating over appNames
+    -- to be able to capture multiple processes with the same app name.
+    local appName = app:name()
+    if (not tl.isInList(appNames, appName)) then
+      return
+    end
+
     if (not app) then
       logger:d("Couldn't get the app: " .. appName)
     else
