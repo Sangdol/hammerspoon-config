@@ -169,7 +169,7 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
   end)
 end)
 
-hs.timer.doEvery(interval, Wm.updateWindowScreenMap)
-hs.screen.watcher.new(Wm.moveAllWindowsToTheirScreens):start()
+Wm.updateWindowTimer = hs.timer.doEvery(interval, Wm.updateWindowScreenMap)
+Wm.screenWatcher = hs.screen.watcher.new(Wm.moveAllWindowsToTheirScreens):start()
 Wm.updateWindowScreenMap()
 
