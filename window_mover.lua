@@ -6,7 +6,7 @@ local logger = hs.logger.new('window_mover', 'debug')
 
 Wm = {}
 
-local interval = 30
+local interval = 180
 local appNames = {'Google Chrome', 'Microsoft Edge', 'Slack', 'Safari',
   'iTerm2', 'Reminders', 'Anki', 'Terminal', 'Notes', 'KakaoTalk',
   'Google Chrome Canary', 'Hammerspoon', 'Preview', 'WhatsApp', 'Telegram',
