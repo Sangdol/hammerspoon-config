@@ -13,7 +13,7 @@ local appNames = {'Google Chrome', 'Microsoft Edge', 'Slack', 'Safari',
   'Calendar', 'Notion', 'Miro'}
 
 -- Sturecture:
---    { currentNumberOfScreen: {winId: screen} }
+--    { numberOfScreen: {winId: screen} }
 Wm.windowScreenMap = {}
 Wm.windowPositionAndSizeMap = {}
 
