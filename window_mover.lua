@@ -67,7 +67,12 @@ function Wm.restorePositionAndSizeOfAllWindows()
     if (win) then
       logger:d('Restoring position and size of the window: ' .. win:title())
       logger:d('Position and size: ' .. hs.inspect(positionAndSize))
-      win:setFrame(positionAndSize)
+      if (positionAndSize.w == 0 or positionAndSize.h == 0) then
+        -- E.g., Bartender
+        logger:d('Skipping the window because the size is zero')
+      else
+        win:setFrame(positionAndSize)
+      end
     end
   end
 end
