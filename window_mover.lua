@@ -65,6 +65,8 @@ function Wm.restorePositionAndSizeOfAllWindows()
   for winId, positionAndSize in pairs(winPositionAndSizeMap) do
     local win = hs.window.get(winId)
     if (win) then
+      logger:d('Restoring position and size of the window: ' .. win:title())
+      logger:d('Position and size: ' .. hs.inspect(positionAndSize))
       win:setFrame(positionAndSize)
     end
   end
@@ -104,14 +106,18 @@ Wm.appWatcher = hs.application.watcher.new(function(appName, event)
     Wm.restorePositionAndSizeOfApp(appName)
   end
 end)
+Wm.appWatcher:start()
 
 local screenWatcherTimer
 --
 -- Screen watcher to move all windows to their screens
 --
 Wm.screenWatcher = hs.screen.watcher.new(function()
+  logger:d('Screen changed')
+
   -- Debounce the timer
   if (screenWatcherTimer) then
+    logger:d('Debouncing the screen watcher timer')
     screenWatcherTimer:stop()
   end
 
@@ -129,6 +135,7 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
     Wm.restorePositionAndSizeOfAllWindows()
   end)
 end)
+Wm.screenWatcher:start()
 
 Wm.updateWindowTimer = hs.timer.doEvery(interval, Wm.updateWindowMap)
 Wm.updateWindowMap()
