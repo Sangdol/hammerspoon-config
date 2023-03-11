@@ -7,10 +7,6 @@ local logger = hs.logger.new('window_mover', 'debug')
 Wm = {}
 
 local interval = 180
-local appNames = {'Google Chrome', 'Microsoft Edge', 'Slack', 'Safari',
-  'iTerm2', 'Reminders', 'Anki', 'Terminal', 'Notes', 'KakaoTalk',
-  'Google Chrome Canary', 'Hammerspoon', 'Preview', 'WhatsApp', 'Telegram',
-  'Calendar', 'Notion', 'Miro'}
 
 -- Sturecture:
 --    { numberOfScreen: {winId: screen} }
@@ -47,28 +43,28 @@ function Wm.updateWindowScreenMap()
     return
   end
 
-  for _, appName in ipairs(appNames) do
-    local app = hs.application.get(appName)
-    if (not app) then
-      logger:d("Couldn't get the app: " .. appName)
-    else
-      logger:d(app, "App found: " .. appName)
-      for _, win in ipairs(app:allWindows()) do
-        local screen = win:screen()
-        local currentNumberOfScreen = #hs.screen.allScreens()
-        if (not Wm.windowScreenMap[currentNumberOfScreen]) then
-          Wm.windowScreenMap[currentNumberOfScreen] = {}
-          Wm.windowPositionAndSizeMap[currentNumberOfScreen] = {}
-        end
-        Wm.windowScreenMap[currentNumberOfScreen][win:id()] = screen
-        Wm.windowPositionAndSizeMap[currentNumberOfScreen][win:id()] = {
-          x = win:frame().x,
-          y = win:frame().y,
-          w = win:frame().w,
-          h = win:frame().h,
-        }
-      end
+  --for _, appName in ipairs(appNames) do
+  local windows = hs.window.allWindows()
+  for _, win in ipairs(windows) do
+    -- Do this instead of iterating over appNames
+    -- to be able to capture multiple processes with the same app name.
+    local screen = win:screen()
+    local currentNumberOfScreen = #hs.screen.allScreens()
+
+    logger:d('Update windowScreenMap for the window: ' .. win:title())
+
+    if (not Wm.windowScreenMap[currentNumberOfScreen]) then
+      Wm.windowScreenMap[currentNumberOfScreen] = {}
+      Wm.windowPositionAndSizeMap[currentNumberOfScreen] = {}
     end
+
+    Wm.windowScreenMap[currentNumberOfScreen][win:id()] = screen
+    Wm.windowPositionAndSizeMap[currentNumberOfScreen][win:id()] = {
+      x = win:frame().x,
+      y = win:frame().y,
+      w = win:frame().w,
+      h = win:frame().h,
+    }
   end
 end
 
