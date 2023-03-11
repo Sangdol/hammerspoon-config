@@ -10,18 +10,7 @@ local interval = 180
 
 -- Sturecture:
 --    { numberOfScreen: {winId: screen} }
-Wm.windowScreenMap = {}
 Wm.windowPositionAndSizeMap = {}
-
-local function getCurrentWindowScreenMap()
-  local currentNumberOfScreen = #hs.screen.allScreens()
-  local winScreenMap = Wm.windowScreenMap[currentNumberOfScreen]
-  if (not winScreenMap) then
-    logger:d('No windowScreenMap for the current number of screens: ' .. currentNumberOfScreen)
-    return {}
-  end
-  return winScreenMap
-end
 
 local function getCurrentWindowPositionAndSizeMap()
   local currentNumberOfScreen = #hs.screen.allScreens()
@@ -33,13 +22,13 @@ local function getCurrentWindowPositionAndSizeMap()
   return winPositionAndSizeMap
 end
 
-function Wm.updateWindowScreenMap()
-  logger:d('Updating windowScreenMap')
+function Wm.updateWindowMap()
+  logger:d('Updating window map')
 
   local screenCount = #hs.screen.allScreens()
 
   if (screenCount == 1) then
-    logger:d('No need to update windowScreenMap for 1 screen')
+    logger:d('No need to update window map for 1 screen')
     return
   end
 
@@ -51,50 +40,18 @@ function Wm.updateWindowScreenMap()
     local screen = win:screen()
     local currentNumberOfScreen = #hs.screen.allScreens()
 
-    logger:d('Update windowScreenMap for the window: ' .. win:title())
+    logger:d('Update window map for the window: ' .. win:title())
 
-    if (not Wm.windowScreenMap[currentNumberOfScreen]) then
-      Wm.windowScreenMap[currentNumberOfScreen] = {}
+    if (not Wm.windowPositionAndSizeMap[currentNumberOfScreen]) then
       Wm.windowPositionAndSizeMap[currentNumberOfScreen] = {}
     end
 
-    Wm.windowScreenMap[currentNumberOfScreen][win:id()] = screen
     Wm.windowPositionAndSizeMap[currentNumberOfScreen][win:id()] = {
       x = win:frame().x,
       y = win:frame().y,
       w = win:frame().w,
       h = win:frame().h,
     }
-  end
-end
-
-function Wm.moveAllWindowsToTheirScreens()
-  logger:d('Moving all windows to their screens')
-
-  local winScreenMap = getCurrentWindowScreenMap()
-  for winId, screen in pairs(winScreenMap) do
-    local win = hs.window.get(winId)
-    if (win) then
-      sc.moveWindowToScreen(win, screen, true)
-    end
-  end
-end
-
-function Wm.moveAppWindowsToTheirScreens(appName)
-  logger:d('Moving windows of the app to their screens: ' .. appName)
-
-  local app = hs.application.get(appName)
-  if (not app) then
-    logger:d("Couldn't get the app: " .. appName)
-  else
-    logger:d(app, "App found: " .. appName)
-    for _, win in ipairs(app:allWindows()) do
-      local winScreenMap = getCurrentWindowScreenMap()
-      local screen = winScreenMap[win:id()]
-      if (screen) then
-        sc.moveWindowToScreen(win, screen, true)
-      end
-    end
   end
 end
 
@@ -160,12 +117,10 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
     end
 
     logger:d('Screen changed. Number of screens: ' .. screenCount)
-    Wm.moveAllWindowsToTheirScreens()
     Wm.restorePositionAndSize()
   end)
 end)
 
-Wm.updateWindowTimer = hs.timer.doEvery(interval, Wm.updateWindowScreenMap)
-Wm.screenWatcher = hs.screen.watcher.new(Wm.moveAllWindowsToTheirScreens):start()
-Wm.updateWindowScreenMap()
+Wm.updateWindowTimer = hs.timer.doEvery(interval, Wm.updateWindowMap)
+Wm.updateWindowMap()
 
