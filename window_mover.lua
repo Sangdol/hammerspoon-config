@@ -9,9 +9,13 @@ Wm = {}
 local interval = 180
 
 -- Sturecture:
---    { numberOfScreen: {winId: screen} }
+--    { numberOfScreen: {winId: frame} }
 Wm.windowPositionAndSizeMap = {}
 
+--
+-- Get the position and size of the running windows
+-- for the current number of screens
+--
 local function getCurrentWindowPositionAndSizeMap()
   local currentNumberOfScreen = #hs.screen.allScreens()
   local winPositionAndSizeMap = Wm.windowPositionAndSizeMap[currentNumberOfScreen]
@@ -22,6 +26,9 @@ local function getCurrentWindowPositionAndSizeMap()
   return winPositionAndSizeMap
 end
 
+--
+-- Save the position and size of the running windows
+--
 function Wm.updateWindowMap()
   logger:d('Updating window map')
 
@@ -32,12 +39,8 @@ function Wm.updateWindowMap()
     return
   end
 
-  --for _, appName in ipairs(appNames) do
   local windows = hs.window.allWindows()
   for _, win in ipairs(windows) do
-    -- Do this instead of iterating over appNames
-    -- to be able to capture multiple processes with the same app name.
-    local screen = win:screen()
     local currentNumberOfScreen = #hs.screen.allScreens()
 
     logger:d('Update window map for the window: ' .. win:title())
@@ -55,7 +58,7 @@ function Wm.updateWindowMap()
   end
 end
 
-function Wm.restorePositionAndSize()
+function Wm.restorePositionAndSizeOfAllWindows()
   logger:d('Restoring position and size')
 
   local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
@@ -85,6 +88,9 @@ function Wm.restorePositionAndSizeOfApp(appName)
   end
 end
 
+--
+-- App watcher to move windows to their screens on startup
+--
 Wm.appWatcher = hs.application.watcher.new(function(appName, event)
   if (event == hs.application.watcher.launched) then
     local screenCount = #hs.screen.allScreens()
@@ -100,6 +106,9 @@ Wm.appWatcher = hs.application.watcher.new(function(appName, event)
 end)
 
 local screenWatcherTimer
+--
+-- Screen watcher to move all windows to their screens
+--
 Wm.screenWatcher = hs.screen.watcher.new(function()
   -- Debounce the timer
   if (screenWatcherTimer) then
@@ -117,10 +126,9 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
     end
 
     logger:d('Screen changed. Number of screens: ' .. screenCount)
-    Wm.restorePositionAndSize()
+    Wm.restorePositionAndSizeOfAllWindows()
   end)
 end)
 
 Wm.updateWindowTimer = hs.timer.doEvery(interval, Wm.updateWindowMap)
 Wm.updateWindowMap()
-
