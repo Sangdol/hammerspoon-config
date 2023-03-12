@@ -49,6 +49,7 @@ function wl.moveWindowToRight(win)
   return win
 end
 
+-- This is not used at the moment.
 function wl.resizeAndCenterCurrent(ratio)
   local resize = function()
     local win = wl.resize(hs.window.focusedWindow(), ratio)
