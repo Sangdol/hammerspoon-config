@@ -67,6 +67,30 @@ function Wm.updateWindowMap()
   end
 end
 
+local function restorePositionAndSizeOfWindow(win, positionAndSize)
+  local buggyApps = {
+    'Google Chrome',
+    'Google Chrome Canary',
+    'Microsoft Edge',
+  }
+
+  local app = win:application()
+  -- Run win:setFrame(positionAndSize) 3 times for buggy apps
+  -- 1: resize a bit, 2: move, 3: resize correctly
+  if (app and hs.fnutils.contains(buggyApps, app:name())) then
+    logger:d('Running win:setFrame() 3 times for the buggy app: ' .. app:name())
+    win:setFrame(positionAndSize)
+    hs.timer.doAfter(2, function()
+      win:setFrame(positionAndSize)
+      hs.timer.doAfter(2, function()
+        win:setFrame(positionAndSize)
+      end)
+    end)
+  else
+    win:setFrame(positionAndSize)
+  end
+end
+
 function Wm.restorePositionAndSizeOfAllWindows()
   logger:d('Restoring position and size')
 
@@ -76,7 +100,8 @@ function Wm.restorePositionAndSizeOfAllWindows()
     if (win) then
       logger:d('Restoring position and size of the window: ' .. win:title())
       logger:d('Position and size: ' .. hs.inspect(positionAndSize))
-      win:setFrame(positionAndSize)
+
+      restorePositionAndSizeOfWindow(win, positionAndSize)
     end
   end
 end
@@ -93,7 +118,9 @@ function Wm.restorePositionAndSizeOfApp(appName)
       local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
       local positionAndSize = winPositionAndSizeMap[win:id()]
       if (positionAndSize) then
-        win:setFrame(positionAndSize)
+        restorePositionAndSizeOfWindow(win, positionAndSize)
+      else
+        logger:d('No position and size for the window: ' .. win:title())
       end
     end
   end
