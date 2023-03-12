@@ -23,7 +23,16 @@ local function getCurrentWindowPositionAndSizeMap()
     logger:d('No windowPositionAndSizeMap for the current number of screens: ' .. currentNumberOfScreen)
     return {}
   end
-  return winPositionAndSizeMap
+
+  -- Exclude the windows with size 0
+  local validWinPositionAndSizeMap = {}
+  for winId, positionAndSize in pairs(winPositionAndSizeMap) do
+    if (positionAndSize.w > 0 and positionAndSize.h > 0) then
+      validWinPositionAndSizeMap[winId] = positionAndSize
+    end
+  end
+
+  return validWinPositionAndSizeMap
 end
 
 --
@@ -67,12 +76,7 @@ function Wm.restorePositionAndSizeOfAllWindows()
     if (win) then
       logger:d('Restoring position and size of the window: ' .. win:title())
       logger:d('Position and size: ' .. hs.inspect(positionAndSize))
-      if (positionAndSize.w == 0 or positionAndSize.h == 0) then
-        -- E.g., Bartender
-        logger:d('Skipping the window because the size is zero')
-      else
-        win:setFrame(positionAndSize)
-      end
+      win:setFrame(positionAndSize)
     end
   end
 end
