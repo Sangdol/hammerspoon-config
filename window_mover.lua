@@ -159,7 +159,7 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
 
   -- For some reason, it doesn't recognize the number of screens correctly
   -- if it runs immediately after the screen change.
-  screenWatcherTimer = hs.timer.doAfter(3, function()
+  screenWatcherTimer = hs.timer.doAfter(8, function()
     local screenCount = #hs.screen.allScreens()
 
     if screenCount == 1 then
