@@ -167,11 +167,6 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
   screenWatcherTimer = hs.timer.doAfter(8, function()
     local screenCount = #hs.screen.allScreens()
 
-    if screenCount == 1 then
-      logger:d('Skipping the screen change because the number of screens is 1')
-      return
-    end
-
     logger:d('Screen changed. Number of screens: ' .. screenCount)
     Wm.restorePositionAndSizeOfAllWindows()
   end)
