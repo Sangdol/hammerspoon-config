@@ -151,6 +151,11 @@ local screenWatcherTimer
 Wm.screenWatcher = hs.screen.watcher.new(function()
   logger:d('Screen changed')
 
+  if Cafe.isSleeping then
+    logger:d('Skipping the screen change because the computer is sleeping')
+    return
+  end
+
   -- Debounce the timer
   if (screenWatcherTimer) then
     logger:d('Debouncing the screen watcher timer')
@@ -173,5 +178,12 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
 end)
 Wm.screenWatcher:start()
 
-Wm.updateWindowTimer = hs.timer.doEvery(interval, Wm.updateWindowMap)
+Wm.updateWindowTimer = hs.timer.doEvery(interval, function()
+  if Cafe.isSleeping then
+    logger:d('Skipping the window update because the computer is sleeping')
+    return
+  end
+
+  Wm.updateWindowMap()
+end)
 Wm.updateWindowMap()
