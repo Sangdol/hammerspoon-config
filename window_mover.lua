@@ -6,7 +6,10 @@ local logger = hs.logger.new('window_mover', 'debug')
 
 Wm = {}
 
-local interval = 180
+local WINDOW_MAP_UPDATE_INTERVAL = 180
+local SCREEN_WATCHER_INIT_DELAY = 5
+local BUGGY_APP_RETRY_DELAY = 2
+local RESTORE_POSITION_AND_SIZE_DELAY = 0.5
 
 -- Sturecture:
 --    { numberOfScreen: {winId: frame} }
@@ -80,9 +83,9 @@ local function restorePositionAndSizeOfWindow(win, positionAndSize)
   if (app and hs.fnutils.contains(buggyApps, app:name())) then
     logger:d('Running win:setFrame() 3 times for the buggy app: ' .. app:name())
     win:setFrame(positionAndSize)
-    hs.timer.doAfter(2, function()
+    hs.timer.doAfter(BUGGY_APP_RETRY_DELAY, function()
       win:setFrame(positionAndSize)
-      hs.timer.doAfter(3, function()
+      hs.timer.doAfter(BUGGY_APP_RETRY_DELAY, function()
         win:setFrame(positionAndSize)
       end)
     end)
@@ -102,6 +105,7 @@ function Wm.restorePositionAndSizeOfAllWindows()
       logger:d('Position and size: ' .. hs.inspect(positionAndSize))
 
       restorePositionAndSizeOfWindow(win, positionAndSize)
+      timer.sleep(RESTORE_POSITION_AND_SIZE_DELAY)
     end
   end
 end
@@ -164,7 +168,7 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
 
   -- For some reason, it doesn't recognize the number of screens correctly
   -- if it runs immediately after the screen change.
-  screenWatcherTimer = hs.timer.doAfter(8, function()
+  screenWatcherTimer = hs.timer.doAfter(SCREEN_WATCHER_INIT_DELAY, function()
     local screenCount = #hs.screen.allScreens()
 
     logger:d('Screen changed. Number of screens: ' .. screenCount)
@@ -173,7 +177,7 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
 end)
 Wm.screenWatcher:start()
 
-Wm.updateWindowTimer = hs.timer.doEvery(interval, function()
+Wm.updateWindowTimer = hs.timer.doEvery(WINDOW_MAP_UPDATE_INTERVAL, function()
   if Cafe.isSleeping then
     logger:d('Skipping the window update because the computer is sleeping')
     return
