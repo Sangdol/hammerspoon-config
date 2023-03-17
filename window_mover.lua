@@ -7,7 +7,7 @@ local logger = hs.logger.new('window_mover', 'debug')
 Wm = {}
 
 local WINDOW_MAP_UPDATE_INTERVAL = 180
-local SCREEN_WATCHER_INIT_DELAY = 5
+local SCREEN_WATCHER_INIT_DELAY = 3
 local BUGGY_APP_RETRY_DELAY = 1
 local RESTORE_POSITION_AND_SIZE_DELAY = 0.5
 
