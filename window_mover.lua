@@ -161,7 +161,10 @@ Wm.appWatcher = hs.application.watcher.new(function(appName, event)
     Wm.restorePositionAndSizeOfApp(appName)
   end
 end)
-Wm.appWatcher:start()
+
+-- TODO: This doesn't work since the window ID changes when an app is restarted.
+--       Work on it later if this annoys me.
+--Wm.appWatcher:start()
 
 local screenWatcherTimer
 --
