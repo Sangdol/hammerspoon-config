@@ -10,6 +10,7 @@ local WINDOW_MAP_UPDATE_INTERVAL = 180
 local SCREEN_WATCHER_INIT_DELAY = 5
 local BUGGY_APP_RETRY_DELAY = 1
 local RESTORE_POSITION_AND_SIZE_DELAY = 0.5
+local UPDATE_WAKE_UP_DELAY = 30
 
 -- Sturecture:
 --    { numberOfScreen: {winId: frame} }
@@ -196,7 +197,9 @@ end)
 Wm.screenWatcher:start()
 
 Wm.updateWindowTimer = hs.timer.doEvery(WINDOW_MAP_UPDATE_INTERVAL, function()
-  if Cafe.isSleeping then
+  -- Don't update the window map if the computer is sleeping or if it just woke up.
+  local secondsSinceWakeUp = os.time() - Cafe.wakeUpTime
+  if Cafe.isSleeping or secondsSinceWakeUp < UPDATE_WAKE_UP_DELAY then
     logger:d('Skipping the window update because the computer is sleeping')
     return
   end

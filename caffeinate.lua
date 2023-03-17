@@ -6,6 +6,7 @@ local logger = hs.logger.new('cafe', 'info')
 
 Cafe = {}
 Cafe.isSleeping = false
+Cafe.wakeUpTime = os.time()
 
 -- https://www.hammerspoon.org/docs/hs.caffeinate.watcher.html#systemDidWake
 function Cafe.cafeHandler(eventType)
@@ -18,6 +19,7 @@ function Cafe.cafeHandler(eventType)
     logger:i('===================')
 
     Cafe.isSleeping = false
+    Cafe.wakeUpTime = os.time()
 
     bt.conditionallyConnect()
 
