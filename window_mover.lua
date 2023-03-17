@@ -70,12 +70,19 @@ function Wm.updateWindowMap()
   end
 end
 
-local function restorePositionAndSizeOfWindow(win, positionAndSize)
+local function restorePositionAndSizeOfWindow(win)
   local buggyApps = {
     'Google Chrome',
     'Google Chrome Canary',
     'Microsoft Edge',
   }
+
+  local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
+  local positionAndSize = winPositionAndSizeMap[win:id()]
+  if (not positionAndSize) then
+    logger:d('No position and size for the window: ' .. win:title())
+    return
+  end
 
   local app = win:application()
   -- Run win:setFrame(positionAndSize) 3 times for buggy apps
@@ -104,7 +111,7 @@ function Wm.restorePositionAndSizeOfAllWindows()
       logger:d('Restoring position and size of the window: ' .. win:title())
       logger:d('Position and size: ' .. hs.inspect(positionAndSize))
 
-      restorePositionAndSizeOfWindow(win, positionAndSize)
+      restorePositionAndSizeOfWindow(win)
       timer.sleep(RESTORE_POSITION_AND_SIZE_DELAY)
     end
   end
@@ -119,13 +126,21 @@ function Wm.restorePositionAndSizeOfApp(appName)
   else
     logger:d(app, "App found: " .. appName)
     for _, win in ipairs(app:allWindows()) do
-      local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
-      local positionAndSize = winPositionAndSizeMap[win:id()]
-      if (positionAndSize) then
-        restorePositionAndSizeOfWindow(win, positionAndSize)
-      else
-        logger:d('No position and size for the window: ' .. win:title())
-      end
+      restorePositionAndSizeOfWindow(win)
+    end
+  end
+end
+
+function Wm.moveAppWindowsToTheirScreens(appName)
+  logger:d('Moving windows of the app to their screens: ' .. appName)
+
+  local app = hs.application.get(appName)
+  if (not app) then
+    logger:d("Couldn't get the app: " .. appName)
+  else
+    logger:d(app, "App found: " .. appName)
+    for _, win in ipairs(app:allWindows()) do
+      restorePositionAndSizeOfWindow(win)
     end
   end
 end
