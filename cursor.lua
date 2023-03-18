@@ -1,11 +1,11 @@
 --
--- Show me the cursor!
+-- Show me the cursor
 --
 
 local DIAMETER = 40
-local STROKE_WIDTH = 1
+local STROKE_WIDTH = 0.5
 local DURATION = 0.5
-local COLOR = '#603b5a'
+local COLOR = '#333333'
 local ALPHA = 0.3
 
 local function mouseHighlight()
