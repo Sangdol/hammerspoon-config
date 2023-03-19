@@ -38,22 +38,6 @@ end
 hs.hotkey.bind({"ctrl","alt"}, "c", centerCursor)
 hs.hotkey.bind({"ctrl","shift"}, "c", centerCursor)
 
--- This function finds the next screen based on the current mouse position.
-local function moveCursorToNextScreen(direction)
-  return function()
-    local currentScreen = hs.mouse.getCurrentScreen()
-    local targetScreen = sc.getNextScreen(currentScreen, direction)
-    local frame = targetScreen:frame()
-    local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
-    hs.mouse.absolutePosition(center)
-    mouseHighlight()
-  end
-end
-
--- Move cursor to the center of next screen
-hs.hotkey.bind({"ctrl","alt"}, "n", moveCursorToNextScreen(-1))
-hs.hotkey.bind({"ctrl","alt"}, "m", moveCursorToNextScreen(1))
-
 -- Move cursor to the focused window screen when an application window is activated
 -- if the cursor is not on the focused window screen.
 hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function()
