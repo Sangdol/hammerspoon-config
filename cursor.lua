@@ -51,8 +51,8 @@ local function clickNextScreen(direction)
 end
 
 -- Move cursor to the center of next screen
-hs.hotkey.bind({"ctrl","alt"}, "n", clickNextScreen(-1))
-hs.hotkey.bind({"ctrl","alt"}, "m", clickNextScreen(1))
+hs.hotkey.bind({"ctrl","cmd"}, "n", clickNextScreen(-1))
+hs.hotkey.bind({"ctrl","cmd"}, "m", clickNextScreen(1))
 
 -- Move cursor to the focused window screen when an application window is activated
 -- if the cursor is not on the focused window screen.
