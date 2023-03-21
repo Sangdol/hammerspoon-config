@@ -9,6 +9,11 @@ local function executeScript(scriptName)
   return st.trim(hs.execute(PATH_PREFIX .. '/' .. scriptName))
 end
 
+--
+-- This function adds a menubar item or updates it if it already exists.
+-- Setting the order of the items is not straightforward 
+-- as it is determined by the order of their creation.
+--
 local menubar = {
   _items = {},
   _add = function(self, name, title, fn)
