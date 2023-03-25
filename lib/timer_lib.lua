@@ -5,18 +5,24 @@
 
 local timer = {}
 
-local DEFAULT_TRIAL = 10
+local DEFAULT_MAX_TRIAL = 10
 local logger = hs.logger.new('timer', 'info')
 
-local function safeTimer(timerFn, predicateFn, actionFn, failtureFn, count)
+function timer.sleep(seconds)
+  hs.timer.usleep(seconds * 1000 * 1000)
+end
+
+-- This is a Hammerspoon timer wrapper that has a maxTrial parameter.
+local function safeTimer(timerFn, predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
   logger:d('SafeTimer', timerFn)
 
-  count = count or DEFAULT_TRIAL
+  maxTrial = maxTrial or DEFAULT_MAX_TRIAL
+  checkInterval = checkInterval or 1
 
   local waitCounter = 0
 
   timerFn(function()
-    if waitCounter < count then
+    if waitCounter < maxTrial then
       logger:d('SafeTimer waitCounter:', waitCounter)
 
       waitCounter = waitCounter + 1
@@ -28,32 +34,12 @@ local function safeTimer(timerFn, predicateFn, actionFn, failtureFn, count)
   end, actionFn)
 end
 
-function timer.safeBlockedTimer(predicateFn, actionFn, failtureFn, count)
-  logger:d('SafeBlockedTimer')
-
-  count = count or DEFAULT_TRIAL
-
-  for _ = 1, count do
-    if predicateFn() then
-      return actionFn()
-    end
-    timer.sleep(1)
-  end
-
-  failtureFn()
-  return {}
+function timer.safeDoUntil(predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
+  safeTimer(hs.timer.doUntil, predicateFn, actionFn, failtureFn, checkInterval, maxTrial)
 end
 
-function timer.safeDoUntil(predicateFn, actionFn, failtureFn, count)
-  safeTimer(hs.timer.doUntil, predicateFn, actionFn, failtureFn, count)
-end
-
-function timer.safeWaitUntil(predicateFn, actionFn, failtureFn, count)
-  safeTimer(hs.timer.waitUntil, predicateFn, actionFn, failtureFn, count)
-end
-
-function timer.sleep(seconds)
-  hs.timer.usleep(seconds * 1000 * 1000)
+function timer.safeWaitUntil(predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
+  safeTimer(hs.timer.waitUntil, predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
 end
 
 return timer

@@ -98,7 +98,7 @@ local rules = {['iTerm2'] = {function()
   -- (Rule-based arrangement is not needed for now.)
   local screen2AppTabCountMax = 50
 
-  return timer.safeBlockedTimer(function()
+  return timer.safeDoUntil(function()
     -- When a laptop restarts win:tabCount() returns 0
     -- probably due to a race condition.
     -- This checks until the application is fully initialized
