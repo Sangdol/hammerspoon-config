@@ -183,7 +183,8 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
 
   -- Debounce the timer
   if (screenWatcherTimer) then
-    logger:d('Debouncing the screen watcher timer')
+    logger:d('Debouncing the screen watcher timer. ' ..
+            'Screen count: '.. #hs.screen.allScreens())
     screenWatcherTimer:stop()
   end
 
