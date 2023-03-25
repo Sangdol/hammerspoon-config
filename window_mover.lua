@@ -51,6 +51,10 @@ function Wm.updateWindowMap()
     return
   end
 
+  -- Clear the map to avoid unnecessary window lookup during restoration process
+  -- which takes a significant amount of time.
+  Wm.windowPositionAndSizeMap = {}
+
   local windows = hs.window.allWindows()
   for _, win in ipairs(windows) do
     local currentNumberOfScreen = #hs.screen.allScreens()
@@ -204,4 +208,5 @@ Wm.updateWindowTimer = hs.timer.doEvery(WINDOW_MAP_UPDATE_INTERVAL, function()
 
   Wm.updateWindowMap()
 end)
+
 Wm.updateWindowMap()
