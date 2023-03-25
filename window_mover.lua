@@ -8,7 +8,6 @@ Wm = {}
 
 local WINDOW_MAP_UPDATE_INTERVAL = 180
 local SCREEN_WATCHER_INIT_DELAY = 5
-local BUGGY_APP_RETRY_DELAY = 2
 local RESTORE_POSITION_AND_SIZE_DELAY = 0.5
 local UPDATE_WAKE_UP_DELAY = 30
 
@@ -86,16 +85,15 @@ local function restorePositionAndSizeOfWindow(win)
   end
 
   local app = win:application()
-  -- Run win:setFrame(positionAndSize) 3 times for buggy apps
-  -- 1: resize a bit, 2: move, 3: resize correctly
   if (app and hs.fnutils.contains(buggyApps, app:name())) then
-    logger:d('Running win:setFrame() 3 times for the buggy app: ' .. app:name())
-    win:setFrame(positionAndSize)
-    hs.timer.doAfter(BUGGY_APP_RETRY_DELAY, function()
+    logger:d('Running win:setFrame() times for the buggy app: ' .. app:name())
+
+    timer.safeDoUntil(function()
+      return win:frame() == positionAndSize
+    end, function()
       win:setFrame(positionAndSize)
-      hs.timer.doAfter(BUGGY_APP_RETRY_DELAY, function()
-        win:setFrame(positionAndSize)
-      end)
+    end, function()
+      logger:i('Failed to set frame size correctly: ' .. app:name())
     end)
   else
     win:setFrame(positionAndSize)
