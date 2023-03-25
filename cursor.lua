@@ -7,6 +7,7 @@ local STROKE_WIDTH = 0.5
 local DURATION = 0.5
 local COLOR = '#333333'
 local ALPHA = 0.3
+local CURSOR_MARGIN = 150
 
 local function mouseHighlight()
   local mousepoint = hs.mouse.absolutePosition()
@@ -29,14 +30,39 @@ local function moveCursorToCenter()
   hs.mouse.absolutePosition(center)
 end
 
+local function moveCursorToLeftSide()
+  local currentScreen = hs.window.focusedWindow():screen()
+  local frame = currentScreen:frame()
+  local right = hs.geometry.point(frame.x + CURSOR_MARGIN, frame.y + frame.h/2)
+  hs.mouse.absolutePosition(right)
+end
+
+local function moveCursorToRightSide()
+  local currentScreen = hs.window.focusedWindow():screen()
+  local frame = currentScreen:frame()
+  local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h/2)
+  hs.mouse.absolutePosition(right)
+end
+
 local function centerCursor()
   moveCursorToCenter()
   mouseHighlight()
 end
 
+local function leftCursor()
+  moveCursorToLeftSide()
+  mouseHighlight()
+end
+
+local function rightCursor()
+  moveCursorToRightSide()
+  mouseHighlight()
+end
+
 -- Move cursor to the center of current screen
-hs.hotkey.bind({"ctrl","alt"}, "c", centerCursor)
-hs.hotkey.bind({"ctrl","shift"}, "c", centerCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "0", centerCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "9", rightCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "8", leftCursor)
 
 -- This function finds the next screen based on the current mouse position.
 local function clickNextScreen(direction)
