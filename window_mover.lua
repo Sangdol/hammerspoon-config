@@ -7,7 +7,7 @@ local logger = hs.logger.new('window_mover', 'debug')
 Wm = {}
 
 local WINDOW_MAP_UPDATE_INTERVAL = 180
-local SCREEN_WATCHER_INIT_DELAY = 5
+local SCREEN_WATCHER_INIT_DELAY = 2
 local RESTORE_POSITION_AND_SIZE_DELAY = 0.5
 local UPDATE_WAKE_UP_DELAY = 30
 
@@ -75,12 +75,6 @@ function Wm.updateWindowMap()
 end
 
 local function restorePositionAndSizeOfWindow(win)
-  local buggyApps = {
-    'Google Chrome',
-    'Google Chrome Canary',
-    'Microsoft Edge',
-  }
-
   local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
   local positionAndSize = winPositionAndSizeMap[win:id()]
   if (not positionAndSize) then
@@ -89,19 +83,15 @@ local function restorePositionAndSizeOfWindow(win)
   end
 
   local app = win:application()
-  if (app and hs.fnutils.contains(buggyApps, app:name())) then
-    logger:d('Running win:setFrame() times for the buggy app: ' .. app:name())
 
-    timer.safeDoUntil(function()
-      return win:frame() == positionAndSize
-    end, function()
-      win:setFrame(positionAndSize)
-    end, function()
-      logger:i('Failed to set frame size correctly: ' .. app:name())
-    end)
-  else
+  -- Retry until the window is set to the correct position and size
+  timer.safeDoUntil(function()
+    return win:frame() == positionAndSize
+  end, function()
     win:setFrame(positionAndSize)
-  end
+  end, function()
+    logger:i('Failed to set frame size correctly: ' .. app:name())
+  end)
 end
 
 function Wm.restorePositionAndSizeOfAllWindows()
