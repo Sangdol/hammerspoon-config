@@ -44,13 +44,6 @@ end
 function Wm.updateWindowMap()
   logger:d('Updating window map')
 
-  local screenCount = #hs.screen.allScreens()
-
-  if (screenCount == 1) then
-    logger:d('No need to update window map for 1 screen')
-    return
-  end
-
   -- Clear the map to avoid unnecessary window lookup during restoration process
   -- which takes a significant amount of time.
   Wm.windowPositionAndSizeMap = {}
