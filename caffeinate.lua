@@ -22,6 +22,7 @@ function Cafe.cafeHandler(eventType)
     Cafe.wakeUpTime = os.time()
 
     bt.conditionallyConnect()
+    Wm.screenWatcherHandler()
 
     espanso.restartRetry(3)
 

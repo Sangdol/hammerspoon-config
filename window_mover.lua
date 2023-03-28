@@ -153,10 +153,7 @@ end)
 --Wm.appWatcher:start()
 
 local screenWatcherTimer
---
--- Screen watcher to move all windows to their screens
---
-Wm.screenWatcher = hs.screen.watcher.new(function()
+function Wm.screenWatcherHandler()
   logger:d('Screen changed')
 
   if Cafe.isSleeping then
@@ -179,7 +176,12 @@ Wm.screenWatcher = hs.screen.watcher.new(function()
     logger:d('Screen changed. Number of screens: ' .. screenCount)
     Wm.restorePositionAndSizeOfAllWindows()
   end)
-end)
+end
+
+--
+-- Screen watcher to move all windows to their screens
+--
+Wm.screenWatcher = hs.screen.watcher.new(Wm.screenWatcherHandler)
 Wm.screenWatcher:start()
 
 Wm.updateWindowTimer = hs.timer.doEvery(WINDOW_MAP_UPDATE_INTERVAL, function()
