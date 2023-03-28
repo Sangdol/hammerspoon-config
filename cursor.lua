@@ -60,9 +60,9 @@ local function rightCursor()
 end
 
 -- Move cursor to the center of current screen
-hs.hotkey.bind({"ctrl","cmd"}, "0", centerCursor)
-hs.hotkey.bind({"ctrl","cmd"}, "9", rightCursor)
 hs.hotkey.bind({"ctrl","cmd"}, "8", leftCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "9", centerCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "0", rightCursor)
 
 -- This function finds the next screen based on the current mouse position.
 local function clickNextScreen(direction)
