@@ -86,6 +86,6 @@ hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function()
   local currentScreen = hs.mouse.getCurrentScreen()
   local focusedScreen = hs.window.focusedWindow():screen()
   if currentScreen ~= focusedScreen then
-    centerCursor()
+    rightCursor()
   end
 end)
