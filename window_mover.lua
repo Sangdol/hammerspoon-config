@@ -172,8 +172,8 @@ function Wm.screenWatcherHandler()
   -- if it runs immediately after the screen change.
   screenWatcherTimer = hs.timer.doAfter(SCREEN_WATCHER_INIT_DELAY, function()
     local screenCount = #hs.screen.allScreens()
-
     logger:d('Screen changed. Number of screens: ' .. screenCount)
+    no.alert('Starting moving windows')
     Wm.restorePositionAndSizeOfAllWindows()
   end)
 end
