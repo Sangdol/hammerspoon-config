@@ -104,55 +104,6 @@ function Wm.restorePositionAndSizeOfAllWindows()
   end
 end
 
-function Wm.restorePositionAndSizeOfApp(appName)
-  logger:d('Restoring position and size of the app: ' .. appName)
-
-  local app = hs.application.get(appName)
-  if (not app) then
-    logger:d("Couldn't get the app: " .. appName)
-  else
-    logger:d(app, "App found: " .. appName)
-    for _, win in ipairs(app:allWindows()) do
-      restorePositionAndSizeOfWindow(win)
-    end
-  end
-end
-
-function Wm.moveAppWindowsToTheirScreens(appName)
-  logger:d('Moving windows of the app to their screens: ' .. appName)
-
-  local app = hs.application.get(appName)
-  if (not app) then
-    logger:d("Couldn't get the app: " .. appName)
-  else
-    logger:d(app, "App found: " .. appName)
-    for _, win in ipairs(app:allWindows()) do
-      restorePositionAndSizeOfWindow(win)
-    end
-  end
-end
-
---
--- App watcher to move windows to their screens on startup
---
-Wm.appWatcher = hs.application.watcher.new(function(appName, event)
-  if (event == hs.application.watcher.launched) then
-    local screenCount = #hs.screen.allScreens()
-    if screenCount == 1 then
-      logger:d('Skipping the moving app windows because the number of screens is 1')
-      return
-    end
-
-    logger:d('App launched. Moving windows: ' .. appName)
-    Wm.moveAppWindowsToTheirScreens(appName)
-    Wm.restorePositionAndSizeOfApp(appName)
-  end
-end)
-
--- TODO: This doesn't work since the window ID changes when an app is restarted.
---       Work on it later if this annoys me.
---Wm.appWatcher:start()
-
 local screenWatcherTimer
 function Wm.screenWatcherHandler()
   logger:d('Screen changed')
