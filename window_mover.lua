@@ -1,5 +1,7 @@
 --
--- Move windows to where they were
+-- Window Mover
+--
+--    Move windows on wake up or screen change
 --
 
 local logger = hs.logger.new('window_mover', 'debug')

@@ -25,6 +25,7 @@ end)
 
 require('global')
 require('window_mover')
+require('window_arranger')
 require('caffeinate')
 require('window_shortcuts')
 require('dnd')

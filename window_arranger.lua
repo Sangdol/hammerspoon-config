@@ -1,10 +1,7 @@
 --
--- This is not used anymore in favor of 'window_mover'.
--- This can be deleted once window_mover is stable.
---
 -- Window Arranger
 --
---   Arrange applications when they start up or multiple screens are connected.
+--   Arrange applications when they start up
 --
 
 local logger = hs.logger.new('window_arranger', 'debug')
@@ -13,10 +10,10 @@ local logger = hs.logger.new('window_arranger', 'debug')
 Wa = {}
 
 -- Screen 1 right
-local center1Apps = {'KakaoTalk'}
+local center1Apps = {'KakaoTalk', 'Reminders', 'Anki', 'Notes'}
 
 -- Screen 2 left
-local center2Apps = {'Reminders', 'Anki', 'Terminal', 'Notes'}
+local center2Apps = {'Terminal'}
 
 -- Fullscreen
 local screen1Apps = {'Google Chrome'}
@@ -86,65 +83,6 @@ function Wa.arrangeAllWindows()
   end
 end
 
--- Rules has AppRules.
---
---    rules = [appRules, appRules, ...]
---    appRules = [rule, rule, ...]
---
--- A rule returns {win, targetScrenNumber} or {}.
-local rules = {['iTerm2'] = {function()
-  local targetScreen = 2
-  -- Move all iTerm2 windows to screen2
-  -- (Rule-based arrangement is not needed for now.)
-  local screen2AppTabCountMax = 50
-
-  return timer.safeDoUntil(function()
-    -- When a laptop restarts win:tabCount() returns 0
-    -- probably due to a race condition.
-    -- This checks until the application is fully initialized
-    -- so it can return a right tab count.
-    local allWins = hs.application.get('iTerm2'):allWindows()
-
-    if not tl.empty(allWins) then
-      local tabCount = allWins[1]:tabCount()
-      logger:d('Tab count checking: ' .. tabCount)
-      return tabCount > 0
-    else
-      logger:d('No iTerm2 windows.')
-    end
-
-    return false
-  end, function()
-    local allWins = hs.application.get('iTerm2'):allWindows()
-    for _, win in ipairs(allWins) do
-      logger:d('Tab count: ' .. win:tabCount())
-      if win:tabCount() <= screen2AppTabCountMax then
-        return {win, targetScreen}
-      end
-    end
-
-    return {}
-  end, function()
-    logger:w('Failed to load tab count of iTerm2.')
-  end, 20)
-end}}
-
-function Wa.arrangeAllWindowsWithRules()
-  for appName, appRules in pairs(rules) do
-    for i, rule in ipairs(appRules) do
-      local win, screenNumber = table.unpack(rule())
-
-      if not win then
-        logger:i(appName .. ': no matching window for the rule ' .. i)
-        return
-      end
-
-      sc.moveWindowToBiggestScreen(win, screenNumber)
-      wl.fullscreen(win)
-    end
-  end
-end
-
 -- App watcher
 function Wa.appWatcherHandler(appName, eventType)
   logger:d('appWatcher', appName, eventType)
@@ -175,17 +113,6 @@ function Wa.appWatcherHandler(appName, eventType)
   end
 end
 
--- Screen watcher
-function Wa.screenWatcherHandler()
-  logger:d('screenWatcherHandler', 'number of screens', #hs.screen.allScreens())
-
-  Wa.arrangeAllWindows()
-  --Wa.arrangeAllWindowsWithRules()
-end
-
 Wa.appWatcher = hs.application.watcher.new(Wa.appWatcherHandler)
 Wa.appWatcher:start()
-
-Wa.screenWatcher = hs.screen.watcher.new(Wa.screenWatcherHandler)
-Wa.screenWatcher:start()
 
