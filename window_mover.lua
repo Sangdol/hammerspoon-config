@@ -44,13 +44,14 @@ end
 function Wm.updateWindowMap()
   logger:d('Updating window map')
 
+  local currentNumberOfScreen = #hs.screen.allScreens()
+
   -- Clear the map to avoid unnecessary window lookup during restoration process
   -- which takes a significant amount of time.
-  Wm.windowPositionAndSizeMap = {}
+  Wm.windowPositionAndSizeMap[currentNumberOfScreen] = {}
 
   local windows = hs.window.allWindows()
   for _, win in ipairs(windows) do
-    local currentNumberOfScreen = #hs.screen.allScreens()
 
     logger:d('Update window map for the window: ' .. win:title())
 
