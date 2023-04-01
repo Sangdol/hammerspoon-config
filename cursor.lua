@@ -70,8 +70,8 @@ local function clickNextScreen(direction)
     local currentScreen = hs.mouse.getCurrentScreen()
     local targetScreen = sc.getNextScreen(currentScreen, direction)
     local frame = targetScreen:frame()
-    local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
-    hs.eventtap.leftClick(center)
+    local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h/2)
+    hs.eventtap.leftClick(right)
     mouseHighlight()
   end
 end
