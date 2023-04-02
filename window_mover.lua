@@ -5,7 +5,8 @@
 --
 
 local logger = hs.logger.new('window_mover', 'debug')
-local windowMap = require('window_mover_map')
+local stack = require('lib/stack'):new(5)
+local windowMap = require('window_mover_map'):new()
 
 Wm = {}
 
@@ -24,7 +25,7 @@ function Wm.updateWindowMap()
   local windows = hs.window.allWindows()
   for _, win in ipairs(windows) do
     logger:d('Update window map for the window: ' .. win:title())
-    windowMap.setWindow(currentNumberOfScreen, win:id(), win:frame())
+    windowMap:setWindow(currentNumberOfScreen, win:id(), win:frame())
   end
 end
 
@@ -33,7 +34,7 @@ end
 --
 local function restoreWindow(win)
   local screenCount = #hs.screen.allScreens()
-  local winPositionAndSizeMap = windowMap.getWindowMap(screenCount)
+  local winPositionAndSizeMap = windowMap:getWindowMap(screenCount)
   local positionAndSize = winPositionAndSizeMap[win:id()]
   if (not positionAndSize) then
     logger:d('No position and size for the window: ' .. win:title())
@@ -59,7 +60,7 @@ function Wm.restoreAll()
   logger:d('Restoring position and size')
 
   local screenCount = #hs.screen.allScreens()
-  local winPositionAndSizeMap = windowMap.getWindowMap(screenCount)
+  local winPositionAndSizeMap = windowMap:getWindowMap(screenCount)
   for winId, positionAndSize in pairs(winPositionAndSizeMap) do
     local win = hs.window.get(winId)
     if (win) then

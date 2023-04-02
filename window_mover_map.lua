@@ -3,43 +3,47 @@
 --
 
 local logger = hs.logger.new('window_mover_map', 'debug')
-local stack = require('lib/stack'):new(5)
-
-Wmm = {}
 
 -- Sturecture:
 --    { numberOfScreen: {winId: frame} }
-Wmm.windowMap = {}
+local windowMap = {}
+
+function windowMap:new()
+  local o = {}
+  o.maps = {}
+  setmetatable(o, self)
+  self.__index = self
+  return o
+end
 
 --
 -- Get the position and size of the running windows
 -- for the current number of screens
 --
-function Wmm.getWindowMap(screenCount)
-  local winPositionAndSizeMap = Wmm.windowMap[screenCount]
+function windowMap:getWindowMap(screenCount)
+  local winPositionAndSizeMap = self.maps[screenCount]
   if (not winPositionAndSizeMap) then
     logger:d('No window map for the current number of screens: ' .. screenCount)
     return {}
   end
 
   -- Exclude the windows with size 0
-  local validWinPositionAndSizeMap = {}
+  local filteredMap = {}
   for winId, positionAndSize in pairs(winPositionAndSizeMap) do
     if (positionAndSize.w > 0 and positionAndSize.h > 0) then
-      validWinPositionAndSizeMap[winId] = positionAndSize
+      filteredMap[winId] = positionAndSize
     end
   end
 
-  return validWinPositionAndSizeMap
+  return filteredMap
 end
 
--- TODO use stack
-function Wmm.setWindow(numberOfScreen, winId, frame)
-  if (not Wmm.windowMap[numberOfScreen]) then
-    Wmm.windowMap[numberOfScreen] = {}
+function windowMap:setWindow(numberOfScreen, winId, frame)
+  if (not self.maps[numberOfScreen]) then
+    self.maps[numberOfScreen] = {}
   end
 
-  Wmm.windowMap[numberOfScreen][winId] = frame
+  self.maps[numberOfScreen][winId] = frame
 end
 
-return Wmm
+return windowMap
