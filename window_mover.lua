@@ -32,7 +32,8 @@ end
 -- Restore the position and size of the running windows
 --
 local function restoreWindow(win)
-  local winPositionAndSizeMap = windowMap.getCurrentWindowPositionAndSizeMap()
+  local screenCount = #hs.screen.allScreens()
+  local winPositionAndSizeMap = windowMap.getWindowMap(screenCount)
   local positionAndSize = winPositionAndSizeMap[win:id()]
   if (not positionAndSize) then
     logger:d('No position and size for the window: ' .. win:title())
@@ -57,7 +58,8 @@ end
 function Wm.restoreAll()
   logger:d('Restoring position and size')
 
-  local winPositionAndSizeMap = windowMap.getCurrentWindowPositionAndSizeMap()
+  local screenCount = #hs.screen.allScreens()
+  local winPositionAndSizeMap = windowMap.getWindowMap(screenCount)
   for winId, positionAndSize in pairs(winPositionAndSizeMap) do
     local win = hs.window.get(winId)
     if (win) then

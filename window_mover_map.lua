@@ -9,17 +9,16 @@ Wmm = {}
 
 -- Sturecture:
 --    { numberOfScreen: {winId: frame} }
-Wmm.windowPositionAndSizeMap = {}
+Wmm.windowMap = {}
 
 --
 -- Get the position and size of the running windows
 -- for the current number of screens
 --
-function Wmm.getCurrentWindowPositionAndSizeMap()
-  local currentNumberOfScreen = #hs.screen.allScreens()
-  local winPositionAndSizeMap = Wmm.windowPositionAndSizeMap[currentNumberOfScreen]
+function Wmm.getWindowMap(screenCount)
+  local winPositionAndSizeMap = Wmm.windowMap[screenCount]
   if (not winPositionAndSizeMap) then
-    logger:d('No windowPositionAndSizeMap for the current number of screens: ' .. currentNumberOfScreen)
+    logger:d('No window map for the current number of screens: ' .. screenCount)
     return {}
   end
 
@@ -36,11 +35,11 @@ end
 
 -- TODO use stack
 function Wmm.setWindow(numberOfScreen, winId, frame)
-  if (not Wmm.windowPositionAndSizeMap[numberOfScreen]) then
-    Wmm.windowPositionAndSizeMap[numberOfScreen] = {}
+  if (not Wmm.windowMap[numberOfScreen]) then
+    Wmm.windowMap[numberOfScreen] = {}
   end
 
-  Wmm.windowPositionAndSizeMap[numberOfScreen][winId] = frame
+  Wmm.windowMap[numberOfScreen][winId] = frame
 end
 
 return Wmm
