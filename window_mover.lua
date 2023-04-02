@@ -5,6 +5,7 @@
 --
 
 local logger = hs.logger.new('window_mover', 'debug')
+local windowMap = require('window_mover_map')
 
 Wm = {}
 
@@ -13,33 +14,6 @@ local SCREEN_WATCHER_INIT_DELAY = 2
 local RESTORE_POSITION_AND_SIZE_DELAY = 0.5
 local UPDATE_WAKE_UP_DELAY = 30
 
--- Sturecture:
---    { numberOfScreen: {winId: frame} }
-Wm.windowPositionAndSizeMap = {}
-
---
--- Get the position and size of the running windows
--- for the current number of screens
---
-local function getCurrentWindowPositionAndSizeMap()
-  local currentNumberOfScreen = #hs.screen.allScreens()
-  local winPositionAndSizeMap = Wm.windowPositionAndSizeMap[currentNumberOfScreen]
-  if (not winPositionAndSizeMap) then
-    logger:d('No windowPositionAndSizeMap for the current number of screens: ' .. currentNumberOfScreen)
-    return {}
-  end
-
-  -- Exclude the windows with size 0
-  local validWinPositionAndSizeMap = {}
-  for winId, positionAndSize in pairs(winPositionAndSizeMap) do
-    if (positionAndSize.w > 0 and positionAndSize.h > 0) then
-      validWinPositionAndSizeMap[winId] = positionAndSize
-    end
-  end
-
-  return validWinPositionAndSizeMap
-end
-
 --
 -- Save the position and size of the running windows
 --
@@ -47,31 +21,18 @@ function Wm.updateWindowMap()
   logger:d('Updating window map')
 
   local currentNumberOfScreen = #hs.screen.allScreens()
-
-  -- Clear the map to avoid unnecessary window lookup during restoration process
-  -- which takes a significant amount of time.
-  Wm.windowPositionAndSizeMap[currentNumberOfScreen] = {}
-
   local windows = hs.window.allWindows()
   for _, win in ipairs(windows) do
-
     logger:d('Update window map for the window: ' .. win:title())
-
-    if (not Wm.windowPositionAndSizeMap[currentNumberOfScreen]) then
-      Wm.windowPositionAndSizeMap[currentNumberOfScreen] = {}
-    end
-
-    Wm.windowPositionAndSizeMap[currentNumberOfScreen][win:id()] = {
-      x = win:frame().x,
-      y = win:frame().y,
-      w = win:frame().w,
-      h = win:frame().h,
-    }
+    windowMap.setWindow(currentNumberOfScreen, win:id(), win:frame())
   end
 end
 
-local function restorePositionAndSizeOfWindow(win)
-  local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
+-- 
+-- Restore the position and size of the running windows
+--
+local function restoreWindow(win)
+  local winPositionAndSizeMap = windowMap.getCurrentWindowPositionAndSizeMap()
   local positionAndSize = winPositionAndSizeMap[win:id()]
   if (not positionAndSize) then
     logger:d('No position and size for the window: ' .. win:title())
@@ -90,17 +51,20 @@ local function restorePositionAndSizeOfWindow(win)
   end)
 end
 
-function Wm.restorePositionAndSizeOfAllWindows()
+--
+-- Restore the position and size of the running windows
+--
+function Wm.restoreAll()
   logger:d('Restoring position and size')
 
-  local winPositionAndSizeMap = getCurrentWindowPositionAndSizeMap()
+  local winPositionAndSizeMap = windowMap.getCurrentWindowPositionAndSizeMap()
   for winId, positionAndSize in pairs(winPositionAndSizeMap) do
     local win = hs.window.get(winId)
     if (win) then
       logger:d('Restoring position and size of the window: ' .. win:title())
       logger:d('Position and size: ' .. hs.inspect(positionAndSize))
 
-      restorePositionAndSizeOfWindow(win)
+      restoreWindow(win)
       timer.sleep(RESTORE_POSITION_AND_SIZE_DELAY)
     end
   end
@@ -128,7 +92,7 @@ function Wm.screenWatcherHandler()
     local screenCount = #hs.screen.allScreens()
     logger:d('Screen changed. Number of screens: ' .. screenCount)
     no.alert('Starting moving windows')
-    Wm.restorePositionAndSizeOfAllWindows()
+    Wm.restoreAll()
   end)
 end
 
