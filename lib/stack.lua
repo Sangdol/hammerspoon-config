@@ -27,7 +27,7 @@ function stack:peek()
     return self.items[#self.items]
 end
 
-function stack:is_empty()
+function stack:isEmpty()
     return #self.items == 0
 end
 

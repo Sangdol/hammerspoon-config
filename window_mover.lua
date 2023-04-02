@@ -5,10 +5,12 @@
 --
 
 local logger = hs.logger.new('window_mover', 'debug')
-local stack = require('lib/stack'):new(5)
-local windowMap = require('window_mover_map'):new()
+
+-- Current window map
+local windowMap
 
 Wm = {}
+Wm.stack = require('lib/stack'):new(5)
 
 local WINDOW_MAP_UPDATE_INTERVAL = 180
 local SCREEN_WATCHER_INIT_DELAY = 2
@@ -20,6 +22,12 @@ local UPDATE_WAKE_UP_DELAY = 30
 --
 function Wm.updateWindowMap()
   logger:d('Updating window map')
+
+  if windowMap then
+    Wm.stack:push(windowMap)
+  end
+
+  windowMap = require('window_mover_map'):new()
 
   local currentNumberOfScreen = #hs.screen.allScreens()
   local windows = hs.window.allWindows()
@@ -98,6 +106,19 @@ function Wm.screenWatcherHandler()
     Wm.restoreAll()
   end)
 end
+
+function Wm.restorePreviousMap()
+  if Wm.stack:isEmpty() then
+    logger:d('No previous window map')
+    return
+  else
+    logger:d('Using previous window map')
+    windowMap = Wm.stack:pop()
+    Wm.restoreAll()
+  end
+end
+
+hs.hotkey.bind({"ctrl", "shift", "opt", "cmd"}, "r", Wm.restorePreviousMap)
 
 --
 -- Screen watcher to move all windows to their screens
