@@ -64,11 +64,10 @@ hs.hotkey.bind({"ctrl","cmd"}, "8", leftCursor)
 hs.hotkey.bind({"ctrl","cmd"}, "9", centerCursor)
 hs.hotkey.bind({"ctrl","cmd"}, "0", rightCursor)
 
--- This function finds the next screen based on the current mouse position.
-local function clickNextScreen(direction)
+-- Move cursor to the nth main screen
+local function clickMainScreen(number)
   return function()
-    local currentScreen = hs.mouse.getCurrentScreen()
-    local targetScreen = sc.getNextScreen(currentScreen, direction)
+    local targetScreen = sc.getMainScreenByNumber(number)
     local frame = targetScreen:frame()
     local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h/2)
     hs.eventtap.leftClick(right)
@@ -76,9 +75,9 @@ local function clickNextScreen(direction)
   end
 end
 
--- Move cursor to the center of next screen
-hs.hotkey.bind({"ctrl","cmd"}, "j", clickNextScreen(-1))
-hs.hotkey.bind({"ctrl","cmd"}, "k", clickNextScreen(1))
+-- Click main screens
+hs.hotkey.bind({"ctrl","cmd"}, "j", clickMainScreen(1))
+hs.hotkey.bind({"ctrl","cmd"}, "k", clickMainScreen(2))
 
 -- Move cursor to the focused window screen when an application window is activated
 -- if the cursor is not on the focused window screen.

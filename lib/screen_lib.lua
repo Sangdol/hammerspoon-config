@@ -81,6 +81,16 @@ local S = {
 
 local sc = {}
 
+function sc.getMainScreenByNumber(number)
+  local screens = S:getTwoBiggestScreens()
+
+  if number > #screens then
+    number = #screens
+  end
+
+  return screens[number]
+end
+
 function sc.getNextScreen(currentScreen, direction)
   local screens = S:getScreens()
   local screenI = S:getScreenNumber(currentScreen)
