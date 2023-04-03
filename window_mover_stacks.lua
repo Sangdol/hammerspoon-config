@@ -5,14 +5,15 @@ local stack = require('lib/stack')
 local M = {}
 local STACK_SIZE = 5
 
-function M.push(windowMap)
-  if not windowMap then
+function M.push(item)
+  if not item then
+    error('item is nil')
     return
   end
 
   local screenCount = #hs.screen.allScreens()
   local stack = M.getStack(screenCount)
-  stack:push(windowMap)
+  stack:push(item)
 end
 
 function M.pop()

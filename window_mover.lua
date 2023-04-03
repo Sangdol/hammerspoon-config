@@ -6,9 +6,6 @@
 
 local logger = hs.logger.new('window_mover', 'debug')
 
--- Current window map
-local windowMap
-
 Wm = {}
 Wm.stacks = require('window_mover_stacks')
 
@@ -23,28 +20,32 @@ local UPDATE_WAKE_UP_DELAY = 30
 function Wm.insertWindowMap()
   logger:d('Inserting a new window map')
 
-  if windowMap then
-    Wm.stacks.push(windowMap)
-  end
-
-  windowMap = require('window_mover_map'):new()
-
-  local currentNumberOfScreen = #hs.screen.allScreens()
+  local windowMap = {}
   local windows = hs.window.allWindows()
   for _, win in ipairs(windows) do
     logger:d('Update window map for the window: ' .. win:title())
-    windowMap:setWindow(currentNumberOfScreen, win:id(), win:frame())
+
+    local frame = win:frame()
+    if (frame.w > 0 and frame.h > 0) then
+      windowMap[win:id()] = frame
+    end
   end
+
+  Wm.stacks.push(windowMap)
 end
 
 -- 
 -- Restore the position and size of the running windows
 --
 local function restoreWindow(win)
-  local screenCount = #hs.screen.allScreens()
-  local winPositionAndSizeMap = windowMap:getWindowMap(screenCount)
-  local positionAndSize = winPositionAndSizeMap[win:id()]
-  if (not positionAndSize) then
+  local windowMap = Wm.stacks.peek()
+  if (not windowMap) then
+    logger:d('No window map to restore for the current number of screens')
+    return
+  end
+
+  local frame = windowMap[win:id()]
+  if (not frame) then
     logger:d('No position and size for the window: ' .. win:title())
     return
   end
@@ -53,9 +54,9 @@ local function restoreWindow(win)
 
   -- Retry until the window is set to the correct position and size
   timer.safeDoUntil(function()
-    return win:frame() == positionAndSize
+    return win:frame() == frame
   end, function()
-    win:setFrame(positionAndSize)
+    win:setFrame(frame)
   end, function()
     logger:i('Failed to set frame size correctly: ' .. app:name())
   end)
@@ -67,13 +68,17 @@ end
 function Wm.restoreAll()
   logger:d('Restoring position and size')
 
-  local screenCount = #hs.screen.allScreens()
-  local winPositionAndSizeMap = windowMap:getWindowMap(screenCount)
-  for winId, positionAndSize in pairs(winPositionAndSizeMap) do
+  local windowMap = Wm.stacks.peek()
+  if (not windowMap) then
+    logger:d('No window map to restore for the current number of screens')
+    return
+  end
+
+  for winId, frame in pairs(windowMap) do
     local win = hs.window.get(winId)
     if (win) then
       logger:d('Restoring position and size of the window: ' .. win:title())
-      logger:d('Position and size: ' .. hs.inspect(positionAndSize))
+      logger:d('Position and size: ' .. hs.inspect(frame))
 
       restoreWindow(win)
       timer.sleep(RESTORE_POSITION_AND_SIZE_DELAY)
@@ -113,7 +118,6 @@ function Wm.restorePreviousMap()
     return
   else
     logger:d('Using previous window map')
-    windowMap = Wm.stacks.pop()
     Wm.restoreAll()
   end
 end
