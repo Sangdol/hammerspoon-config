@@ -82,6 +82,8 @@ function Wm.restoreAll()
 
       restoreWindow(win)
       timer.sleep(RESTORE_POSITION_AND_SIZE_DELAY)
+    else
+      logger:d('Window not found: ' .. winId)
     end
   end
 end
