@@ -118,6 +118,7 @@ function Wm.restorePreviousMap()
     return
   else
     logger:d('Using previous window map')
+    Wm.stacks.pop()
     Wm.restoreAll()
   end
 end
