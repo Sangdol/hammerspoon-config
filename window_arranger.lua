@@ -4,7 +4,7 @@
 --   Arrange applications when they start up
 --
 
-local logger = hs.logger.new('window_arranger', 'debug')
+local logger = hs.logger.new('window_arranger', 'info')
 
 -- Global for debugging
 Wa = {}
