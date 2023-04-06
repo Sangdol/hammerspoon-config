@@ -11,7 +11,6 @@ Wm.stacks = require('window_mover_stacks')
 
 local WINDOW_MAP_UPDATE_INTERVAL = 180
 local SCREEN_WATCHER_INIT_DELAY = 2
-local RESTORE_POSITION_AND_SIZE_DELAY = 0.5
 local UPDATE_WAKE_UP_DELAY = 30
 
 --
@@ -81,7 +80,6 @@ function Wm.restoreAll()
       logger:d('Position and size: ' .. hs.inspect(frame))
 
       restoreWindow(win)
-      timer.sleep(RESTORE_POSITION_AND_SIZE_DELAY)
     else
       logger:d('Window not found: ' .. winId)
     end
