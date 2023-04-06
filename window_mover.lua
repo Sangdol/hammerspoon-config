@@ -10,8 +10,10 @@ Wm = {}
 Wm.stacks = require('window_mover_stacks')
 
 local WINDOW_MAP_UPDATE_INTERVAL = 180
-local SCREEN_WATCHER_INIT_DELAY = 2
 local UPDATE_WAKE_UP_DELAY = 30
+
+-- hs.window.get() returns nil if the delay is too short.
+local SCREEN_WATCHER_INIT_DELAY = 4
 
 --
 -- Save the position and size of the running windows
