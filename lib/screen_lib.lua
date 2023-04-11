@@ -126,7 +126,7 @@ end
 -- return: list of windows of an app e.g., {win1, win2}
 function sc.moveAllWindowsToBiggestScreenWithAppName(appName, screenI, maximize)
   -- https://stackoverflow.com/a/58398311/524588
-  local wins = hs.application.find(appName):allWindows()
+  local wins = hs.application.find(appName, true):allWindows()
 
   for _, win in ipairs(wins) do
     sc.moveWindowToBiggestScreen(win, screenI, maximize)

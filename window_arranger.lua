@@ -47,7 +47,7 @@ end
 
 local function arrangeWindows(appName)
   logger:d('Arranging: ' .. appName)
-  local app = hs.application.get(appName)
+  local app = hs.application.find(appName, true)
 
   if (not app) then
     logger:d("Couldn't get the app: " .. appName)
@@ -63,23 +63,6 @@ local function arrangeWindows(appName)
     arrangeWindowsForMultiScreens(app, appName)
   else
     logger:w('Do you have zero screen? Screen count: ' .. screenCount )
-  end
-end
-
-function Wa.arrangeAllWindows()
-  logger:d('Arranging all windows')
-
-  for _, appNames in ipairs({center1Apps, center2Apps, screen1Apps, screen2Apps}) do
-    for _, appName in ipairs(appNames) do
-      -- pcall to ignore this error
-      -- ERROR:   LuaSkin: hs.screen.watcher callback: ...oon.app/Contents/Resources/extensions/hs/window/init.lua:922: not a rect
-      -- similar issue: https://github.com/Hammerspoon/hammerspoon/issues/2507
-      local status, err = pcall(arrangeWindows, appName)
-
-      if (not status) then
-        print(err)
-      end
-    end
   end
 end
 
