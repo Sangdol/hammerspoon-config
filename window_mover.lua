@@ -73,6 +73,9 @@ function Wm.restoreAll()
   if (not windowMap) then
     logger:d('No window map to restore for the current number of screens')
     return
+  elseif #windowMap == 0 then
+    logger:d('Window map is empty')
+    return
   end
 
   for winId, frame in pairs(windowMap) do
