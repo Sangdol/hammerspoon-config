@@ -12,18 +12,8 @@ hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
   no.notify('Config reloaded')
 end)
 
--- For debugging
-hs.hotkey.bind({"ctrl", "shift", "option", "cmd"}, "p", function()
----@diagnostic disable-next-line: lowercase-global
-  app = hs.window.focusedWindow():application()
----@diagnostic disable-next-line: lowercase-global
-  win = hs.window.focusedWindow()
-  print('Current app name: ' .. app:name())
-  print('The current app is accessible via the variable `app`.')
-  print('The current window is accessible via the variable `win`.')
-end)
-
 require('global')
+require('debug')
 require('window_mover')
 require('window_arranger')
 require('caffeinate')
