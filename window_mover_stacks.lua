@@ -1,6 +1,7 @@
 --
 -- Map of stacks for each screen count
 --
+local logger = hs.logger.new('win_stack', 'debug')
 local stack = require('lib/stack')
 local M = {}
 local STACK_SIZE = 5
@@ -11,33 +12,32 @@ function M.push(item)
     return
   end
 
-  local screenCount = #hs.screen.allScreens()
-  local stack = M.getStack(screenCount)
+  local stack = M.getStack()
   stack:push(item)
 end
 
 function M.pop()
-  local screenCount = #hs.screen.allScreens()
-  local stack = M.getStack(screenCount)
+  local stack = M.getStack()
   return stack:pop()
 end
 
 function M.peek()
-  local screenCount = #hs.screen.allScreens()
-  local stack = M.getStack(screenCount)
+  local stack = M.getStack()
   return stack:peek()
 end
 
 function M.isEmpty()
-  local screenCount = #hs.screen.allScreens()
-  local stack = M.getStack(screenCount)
+  local stack = M.getStack()
   return stack:isEmpty()
 end
 
-function M.getStack(screenCount)
+function M.getStack()
   if not M.stacks then
     M.stacks = {}
   end
+
+  local screenCount = #hs.screen.allScreens()
+  logger:d('Getting Stack for screen count: ' .. screenCount)
 
   if not M.stacks[screenCount] then
     M.stacks[screenCount] = stack:new(STACK_SIZE)
