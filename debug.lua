@@ -3,7 +3,8 @@
 --
 local pasteboard = require("hs.pasteboard")
 
-function CopyToClipboard(text)
+---@diagnostic disable-next-line: lowercase-global
+function copy(text)
   pasteboard.setContents(text)
 end
 
