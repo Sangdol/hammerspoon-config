@@ -21,17 +21,20 @@ local function safeTimer(timerFn, predicateFn, actionFn, failtureFn, maxTrial, c
 
   local waitCounter = 0
 
-  timerFn(function()
-    if waitCounter < maxTrial then
-      logger:d('SafeTimer waitCounter:', waitCounter)
+  timerFn(
+    function()
+      if waitCounter < maxTrial then
+        logger:d('SafeTimer waitCounter:', waitCounter)
 
-      waitCounter = waitCounter + 1
-      return predicateFn()
-    else
-      failtureFn()
-      return true
-    end
-  end, actionFn)
+        waitCounter = waitCounter + 1
+        return predicateFn()
+      else
+        failtureFn()
+        return true
+      end
+    end, 
+    actionFn,
+    checkInterval)
 end
 
 function timer.safeDoUntil(predicateFn, actionFn, failtureFn, maxTrial, checkInterval)

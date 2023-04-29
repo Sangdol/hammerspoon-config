@@ -66,6 +66,8 @@ end
 --
 -- Restore the position and size of the running windows
 --
+-- @return true if the windows are restored successfully
+--
 function Wm.restoreAll()
   logger:d('Restoring position and size')
 
@@ -78,6 +80,7 @@ function Wm.restoreAll()
     return
   end
 
+  local failCount = 0
   for winId, frame in pairs(windowMap) do
     local win = hs.window.get(winId)
     if (win) then
@@ -86,9 +89,14 @@ function Wm.restoreAll()
 
       restoreWindow(win)
     else
+      failCount = failCount + 1
       logger:d('Window not found: ' .. winId)
     end
   end
+
+  -- If all the windows are failed to restore, 
+  -- it's probably because the windows weren't accessible yet.
+  return failCount ~= tl.tableLength(windowMap)
 end
 
 local screenWatcherTimer
@@ -113,7 +121,16 @@ function Wm.screenWatcherHandler()
     local screenCount = #hs.screen.allScreens()
     logger:d('Screen changed. Number of screens: ' .. screenCount)
     no.alert('Starting moving windows')
-    Wm.restoreAll()
+
+    timer.safeDoUntil(function()
+      return Wm.restoreAll()
+    end, function()
+      logger:w('Failed to restore windows. ' ..
+              'Number of screens: ' .. screenCount)
+    end, function()
+      logger:i('Successfully restored windows. ' ..
+              'Number of screens: ' .. screenCount)
+    end, 3, 3)
   end)
 end
 
