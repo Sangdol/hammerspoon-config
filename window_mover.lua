@@ -135,9 +135,14 @@ function Wm.screenWatcherHandler()
 end
 
 function Wm.restorePreviousMap()
+  logger:d('Manually restoring previous window map')
+
   if Wm.stacks.isEmpty() then
     logger:d('No previous window map')
     return
+  elseif Wm.stacks.size() == 1 then
+    logger:d('This is the last window map')
+    Wm.restoreAll()
   else
     logger:d('Using previous window map')
     Wm.stacks.pop()
