@@ -139,12 +139,15 @@ function Wm.restorePreviousMap()
 
   if Wm.stacks.isEmpty() then
     logger:d('No previous window map')
+    no.alert('No previous window map')
     return
   elseif Wm.stacks.size() == 1 then
     logger:d('This is the last window map')
+    no.alert('This is the last window map')
     Wm.restoreAll()
   else
     logger:d('Using previous window map')
+    no.alert('Using previous window map')
     Wm.stacks.pop()
     Wm.restoreAll()
   end

@@ -6,6 +6,7 @@ local stack = require('lib/stack')
 local M = {}
 local STACK_SIZE = 5
 
+
 function M.push(item)
   if not item then
     error('item is nil')
@@ -29,6 +30,11 @@ end
 function M.isEmpty()
   local stack = M.getStack()
   return stack:isEmpty()
+end
+
+function M.size()
+  local stack = M.getStack()
+  return stack:size()
 end
 
 function M.getStack()

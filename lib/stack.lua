@@ -3,17 +3,17 @@
 --
 local stack = {}
 
-function stack:new(size)
+function stack:new(maxSize)
     local obj = {}
     obj.items = {}
-    obj.size = size or math.huge
+    obj.maxSize = maxSize or math.huge
     setmetatable(obj, self)
     self.__index = self
     return obj
 end
 
 function stack:push(item)
-    if #self.items >= self.size then
+    if #self.items >= self.maxSize then
         table.remove(self.items, 1)
     end
     table.insert(self.items, item)
@@ -29,6 +29,10 @@ end
 
 function stack:isEmpty()
     return #self.items == 0
+end
+
+function stack:size()
+    return #self.items
 end
 
 return stack
