@@ -19,6 +19,11 @@ local SCREEN_WATCHER_INIT_DELAY = 4
 -- Save the position and size of the running windows
 --
 function Wm.insertWindowMap()
+  if Cafe.isLocked then
+    logger:d('Skipping inserting a new window map because the screen is locked')
+    return
+  end
+
   logger:d('Inserting a new window map')
 
   local windowMap = {}

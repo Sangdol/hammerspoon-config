@@ -6,6 +6,7 @@ local logger = hs.logger.new('cafe', 'info')
 
 Cafe = {}
 Cafe.isSleeping = false
+Cafe.isLocked = false
 Cafe.wakeUpTime = os.time()
 
 -- https://www.hammerspoon.org/docs/hs.caffeinate.watcher.html#systemDidWake
@@ -38,6 +39,10 @@ function Cafe.cafeHandler(eventType)
     logger:i('=== Bis Bald ===')
     logger:i('================')
     logger:i('')
+  elseif (eventType == hs.caffeinate.watcher.screensDidUnlock) then
+    Cafe.isLocked = false
+  elseif (eventType == hs.caffeinate.watcher.screensDidLock) then
+    Cafe.isLocked = true
   end
 end
 
