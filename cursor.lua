@@ -26,7 +26,9 @@ end
 local function moveCursorToCenter()
   local currentScreen = hs.window.focusedWindow():screen()
   local frame = currentScreen:frame()
-  local center = hs.geometry.point(frame.x + frame.w/2, frame.y + frame.h/2)
+  -- Make it slightly left to the center to scroll on the windows 
+  -- occupying the left half of the screen.
+  local center = hs.geometry.point(frame.x + frame.w/2 - 30, frame.y + frame.h/2)
   hs.mouse.absolutePosition(center)
 end
 
