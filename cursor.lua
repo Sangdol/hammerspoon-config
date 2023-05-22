@@ -46,6 +46,12 @@ local function moveCursorToRightSide()
   hs.mouse.absolutePosition(right)
 end
 
+local function moveCursorToRightSideOfFocusedWindow()
+  local frame = hs.window.focusedWindow():frame()
+  local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h/2)
+  hs.mouse.absolutePosition(right)
+end
+
 local function centerCursor()
   moveCursorToCenter()
   mouseHighlight()
@@ -58,6 +64,11 @@ end
 
 local function rightCursor()
   moveCursorToRightSide()
+  mouseHighlight()
+end
+
+local function rightCursorOfFocusedWindow()
+  moveCursorToRightSideOfFocusedWindow()
   mouseHighlight()
 end
 
@@ -87,6 +98,6 @@ hs.window.filter.default:subscribe(hs.window.filter.windowFocused, function()
   local currentScreen = hs.mouse.getCurrentScreen()
   local focusedScreen = hs.window.focusedWindow():screen()
   if currentScreen ~= focusedScreen then
-    rightCursor()
+    rightCursorOfFocusedWindow()
   end
 end)
