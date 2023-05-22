@@ -48,7 +48,8 @@ end
 
 local function moveCursorToRightSideOfFocusedWindow()
   local frame = hs.window.focusedWindow():frame()
-  local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h/2)
+  -- Avoid vertical center of the window to avoid distraction
+  local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h - 30)
   hs.mouse.absolutePosition(right)
 end
 
