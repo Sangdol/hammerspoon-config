@@ -2,12 +2,11 @@
 -- Textbar replacement
 --
 
-local PATH_PREFIX = '$HOME/projects/osx/textbar'
-local UPDATE_INTERVAL = 5
+local logger = hs.logger.new('menubar', 'info')
 
-local function executeScript(scriptName)
-  return st.trim(hs.execute(PATH_PREFIX .. '/' .. scriptName))
-end
+local home = os.getenv('HOME')
+local PATH_PREFIX = home .. '/projects/osx/textbar'
+local UPDATE_INTERVAL = 5
 
 --
 -- This function adds a menubar item or updates it if it already exists.
@@ -36,18 +35,27 @@ local menubar = {
   end,
 }
 
+local function scriptPath(scriptname)
+  return PATH_PREFIX .. '/' .. scriptname .. '.sh'
+end
+
 -- This has to be global not to be garbage collected.
 MenubarTimer = hs.timer.new(UPDATE_INTERVAL, function()
   local scripts = {'pomo', 'tea', 'mail-checker', 'youtube-music'}
 
   for _, scriptname in ipairs(scripts) do
-    local result = executeScript(scriptname .. '.sh')
-
-    if result ~= '' then
-      menubar:set(scriptname, result)
-    else
-      menubar:delete(scriptname)
-    end
+    hs.task.new(scriptPath(scriptname), function(exitCode, stdOut, stdErr)
+      if exitCode ~= 0 then
+        logger:e("Error executing " .. scriptname .. ": " .. stdErr)
+      else
+        local result = stdOut
+        logger:d("Result of " .. scriptname .. ": " .. result)
+        if result ~= '' then
+          menubar:set(scriptname, st.trim(result))
+        else
+          menubar:delete(scriptname)
+        end
+      end
+    end):start()
   end
 end):start()
-
