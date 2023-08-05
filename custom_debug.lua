@@ -3,12 +3,20 @@
 --
 local pasteboard = require("hs.pasteboard")
 
+hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
+  hs.reload()
+
+  -- It seems hs.alert doesn't work before or after hs.reload()
+  -- and the notification often doesn't disappear automatically.
+  no.notify('Config reloaded')
+end)
+
 ---@diagnostic disable-next-line: lowercase-global
 function copy(text)
   pasteboard.setContents(text)
 end
 
-hs.hotkey.bind({"ctrl", "shift", "option", "cmd"}, "p", function()
+hs.hotkey.bind({"ctrl", "shift", "cmd", "alt"}, "p", function()
   ---@diagnostic disable-next-line: lowercase-global
   app = hs.window.focusedWindow():application()
 
