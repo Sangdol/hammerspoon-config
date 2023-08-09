@@ -14,6 +14,7 @@ local function changeVolume(delta)
     local newVolume = math.min(100, math.max(0, currentVolume + delta))
     newVolume = math.floor(newVolume + 0.5) -- Round to the nearest whole number
     hs.audiodevice.defaultOutputDevice():setVolume(newVolume)
+    hs.alert.closeAll() -- Close any existing alerts
     hs.alert.show("Volume changed to " .. newVolume .. "%")
 end
 
