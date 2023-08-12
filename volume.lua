@@ -2,10 +2,16 @@
 -- To work around the Mac volume lag with bluetooth headphones.
 --
 
+local function alert(message)
+    hs.alert.closeAll() -- Close any existing alerts
+    hs.alert.show(message)
+end
+
 -- Helper function to set volume to a specific level
 local function setVolume(level)
     hs.audiodevice.defaultOutputDevice():setVolume(level)
-    hs.alert.show("Volume set to " .. level .. "%")
+
+    alert("Volume set to " .. level .. "%")
 end
 
 -- Helper function to change volume by a given percentage
@@ -14,8 +20,8 @@ local function changeVolume(delta)
     local newVolume = math.min(100, math.max(0, currentVolume + delta))
     newVolume = math.floor(newVolume + 0.5) -- Round to the nearest whole number
     hs.audiodevice.defaultOutputDevice():setVolume(newVolume)
-    hs.alert.closeAll() -- Close any existing alerts
-    hs.alert.show("Volume changed to " .. newVolume .. "%")
+
+    alert("Volume changed to " .. newVolume .. "%")
 end
 
 -- Hotkey definitions for specific levels
