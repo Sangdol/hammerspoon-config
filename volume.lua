@@ -2,9 +2,13 @@
 -- To work around the Mac volume lag with bluetooth headphones.
 --
 
+local alertSound = hs.sound.getByName('Tink')
+
 local function alert(message)
     hs.alert.closeAll() -- Close any existing alerts
     hs.alert.show(message)
+
+    alertSound:play()
 end
 
 -- Helper function to set volume to a specific level
