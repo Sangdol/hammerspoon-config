@@ -41,5 +41,5 @@ hs.hotkey.bind({"ctrl", "shift"}, "9", function() setVolume(90) end)
 hs.hotkey.bind({"ctrl", "shift"}, "0", function() setVolume(100) end)
 
 -- Hotkey definitions for volume change
-hs.hotkey.bind({"ctrl", "alt"}, "-", function() changeVolume(-5) end)
-hs.hotkey.bind({"ctrl", "alt"}, "=", function() changeVolume(5) end)
+hs.hotkey.bind({"ctrl", "alt"}, "-", function() changeVolume(-3) end)
+hs.hotkey.bind({"ctrl", "alt"}, "=", function() changeVolume(3) end)
