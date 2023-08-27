@@ -89,9 +89,18 @@ local function clickMainScreen(number)
   end
 end
 
+local function clickSmallestScreen()
+  local targetScreen = sc.getSmallestScreen()
+  local frame = targetScreen:frame()
+  local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h/2)
+  hs.eventtap.leftClick(right)
+  mouseHighlight()
+end
+
 -- Click main screens
 hs.hotkey.bind({"ctrl","cmd"}, "j", clickMainScreen(1))
 hs.hotkey.bind({"ctrl","cmd"}, "k", clickMainScreen(2))
+hs.hotkey.bind({"ctrl","cmd"}, "7", clickSmallestScreen)
 
 -- Move cursor to the focused window screen when an application window is activated
 -- if the cursor is not on the focused window screen.

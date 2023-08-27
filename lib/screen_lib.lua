@@ -76,10 +76,23 @@ local S = {
     end
 
     return screenI
-  end
+  end,
 }
 
 local sc = {}
+
+function sc.getSmallestScreen()
+  local screens = S:getScreens()
+  local smallestScreen = screens[1]
+
+  for _, s in ipairs(screens) do
+    if (smallestScreen:fullFrame().w * smallestScreen:fullFrame().h > s:fullFrame().w * s:fullFrame().h) then
+      smallestScreen = s
+    end
+  end
+
+  return smallestScreen
+end
 
 function sc.getMainScreenByNumber(number)
   local screens = S:getTwoBiggestScreens()
