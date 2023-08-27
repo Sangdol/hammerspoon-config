@@ -74,9 +74,9 @@ local function rightCursorOfFocusedWindow()
 end
 
 -- Move cursor to the center of current screen
-hs.hotkey.bind({"ctrl","cmd"}, "8", leftCursor)
-hs.hotkey.bind({"ctrl","cmd"}, "9", centerCursor)
-hs.hotkey.bind({"ctrl","cmd"}, "0", rightCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "7", leftCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "8", centerCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "9", rightCursor)
 
 -- Move cursor to the nth main screen
 local function clickMainScreen(number)
@@ -100,7 +100,7 @@ end
 -- Click main screens
 hs.hotkey.bind({"ctrl","cmd"}, "j", clickMainScreen(1))
 hs.hotkey.bind({"ctrl","cmd"}, "k", clickMainScreen(2))
-hs.hotkey.bind({"ctrl","cmd"}, "7", clickSmallestScreen)
+hs.hotkey.bind({"ctrl","cmd"}, "0", clickSmallestScreen)
 
 -- Move cursor to the focused window screen when an application window is activated
 -- if the cursor is not on the focused window screen.
