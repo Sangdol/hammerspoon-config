@@ -5,7 +5,6 @@
 
 bt = require('lib/bluetooth_lib')
 dnd = require('lib/dnd_lib')
-espanso = require('lib/espanso_lib')
 no = require('lib/notification_lib')
 sc = require('lib/screen_lib')
 st = require('lib/string_lib')
