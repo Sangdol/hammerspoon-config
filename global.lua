@@ -15,3 +15,19 @@ wl = require("lib/window_lib")
 function Win()
   return hs.window.focusedWindow()
 end
+
+--
+-- Dynamic global variables
+--
+local logger = hs.logger.new('global', 'debug')
+
+Global = {}
+
+function GlobalWatcherCallback()
+  logger.d('GlobalWatcherCallback')
+  Global.screenCount = #hs.screen.allScreens()
+end
+
+GlobalWatcher = hs.screen.watcher.new(GlobalWatcherCallback)
+GlobalWatcher:start()
+GlobalWatcherCallback()
