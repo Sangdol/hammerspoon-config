@@ -46,7 +46,9 @@ MenubarTimer = hs.timer.new(UPDATE_INTERVAL, function()
   -- Macbook menubar is too crowded for youtube-music.
   if Global.screenCount > 1 then
     table.insert(scripts, 'youtube-music')
-  end
+  else
+    menubar:delete('youtube-music')
+  end 
 
   for _, scriptname in ipairs(scripts) do
     hs.task.new(scriptPath(scriptname), function(exitCode, stdOut, stdErr)
