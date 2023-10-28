@@ -74,9 +74,9 @@ local function rightCursorOfFocusedWindow()
 end
 
 -- Move cursor to the center of current screen
-hs.hotkey.bind({"ctrl","cmd"}, "7", leftCursor)
-hs.hotkey.bind({"ctrl","cmd"}, "8", centerCursor)
-hs.hotkey.bind({"ctrl","cmd"}, "9", rightCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "8", leftCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "9", centerCursor)
+hs.hotkey.bind({"ctrl","cmd"}, "0", rightCursor)
 
 -- Check if a point is inside a rectangle
 local function contains(frame, point)
@@ -121,7 +121,7 @@ end
 
 hs.hotkey.bind({"ctrl","cmd"}, "j", focusMainScreen(1))
 hs.hotkey.bind({"ctrl","cmd"}, "k", focusMainScreen(2))
-hs.hotkey.bind({"ctrl","cmd"}, "0", focusSmallestScreen)
+hs.hotkey.bind({"ctrl","cmd"}, "u", focusSmallestScreen)
 
 -- Move cursor to the focused window screen when an application window is activated
 -- if the cursor is not on the focused window screen.
