@@ -78,29 +78,50 @@ hs.hotkey.bind({"ctrl","cmd"}, "7", leftCursor)
 hs.hotkey.bind({"ctrl","cmd"}, "8", centerCursor)
 hs.hotkey.bind({"ctrl","cmd"}, "9", rightCursor)
 
+-- Check if a point is inside a rectangle
+local function contains(frame, point)
+  return point.x >= frame.x and point.x <= (frame.x + frame.w) and
+         point.y >= frame.y and point.y <= (frame.y + frame.h)
+end
+
+-- Move cursor and focus the window under the cursor
+local function focusWindowAtPosition(position)
+  hs.mouse.absolutePosition(position)
+
+  local orderedWindows = hs.window.orderedWindows()
+
+  for _, win in ipairs(orderedWindows) do
+    local frame = win:frame()
+
+    if contains(frame, position) then
+      win:focus()
+      break
+    end
+  end
+end
+
 -- Move cursor to the nth main screen
-local function clickMainScreen(number)
+local function focusMainScreen(number)
   return function()
     local targetScreen = sc.getMainScreenByNumber(number)
     local frame = targetScreen:frame()
     local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h/2)
-    hs.eventtap.leftClick(right)
+    focusWindowAtPosition(right)
     mouseHighlight()
   end
 end
 
-local function clickSmallestScreen()
+local function focusSmallestScreen()
   local targetScreen = sc.getSmallestScreen()
   local frame = targetScreen:frame()
   local right = hs.geometry.point(frame.x + frame.w - CURSOR_MARGIN, frame.y + frame.h/2)
-  hs.eventtap.leftClick(right)
+  focusWindowAtPosition(right)
   mouseHighlight()
 end
 
--- Click main screens
-hs.hotkey.bind({"ctrl","cmd"}, "j", clickMainScreen(1))
-hs.hotkey.bind({"ctrl","cmd"}, "k", clickMainScreen(2))
-hs.hotkey.bind({"ctrl","cmd"}, "0", clickSmallestScreen)
+hs.hotkey.bind({"ctrl","cmd"}, "j", focusMainScreen(1))
+hs.hotkey.bind({"ctrl","cmd"}, "k", focusMainScreen(2))
+hs.hotkey.bind({"ctrl","cmd"}, "0", focusSmallestScreen)
 
 -- Move cursor to the focused window screen when an application window is activated
 -- if the cursor is not on the focused window screen.
