@@ -29,11 +29,9 @@ local function changeVolume(delta)
 end
 
 -- Hotkey definitions for specific levels
-hs.hotkey.bind({"ctrl", "shift"}, "1", function() setVolume(10) end)
-hs.hotkey.bind({"ctrl", "shift"}, "2", function() setVolume(20) end)
-hs.hotkey.bind({"ctrl", "shift"}, "3", function() setVolume(30) end)
-hs.hotkey.bind({"ctrl", "shift"}, "4", function() setVolume(40) end)
-hs.hotkey.bind({"ctrl", "shift"}, "5", function() setVolume(50) end)
+hs.hotkey.bind({"ctrl", "alt"}, "0", function() setVolume(10) end)
+hs.hotkey.bind({"ctrl", "alt"}, "9", function() setVolume(20) end)
+hs.hotkey.bind({"ctrl", "alt"}, "8", function() setVolume(30) end)
 
 -- Hotkey definitions for volume change
 hs.hotkey.bind({"ctrl", "alt"}, "-", function() changeVolume(-3) end)
