@@ -9,7 +9,7 @@ local logger = hs.logger.new('window_mover', 'debug')
 Wm = {}
 Wm.stacks = require('window_mover_stacks')
 
-local WINDOW_MAP_UPDATE_INTERVAL = 180
+local WINDOW_MAP_UPDATE_INTERVAL = 600
 local UPDATE_WAKE_UP_DELAY = 30
 
 -- hs.window.get() returns nil if the delay is too short.
@@ -28,6 +28,7 @@ function Wm.insertWindowMap()
 
   local windowMap = {}
   local windows = hs.window.allWindows()
+
   for _, win in ipairs(windows) do
     logger:d('Update window map for the window: ' .. win:title())
 
