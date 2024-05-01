@@ -46,24 +46,18 @@ local S = {
   end,
   getTwoBiggestScreens = function(self)
     local screens = self:getScreens()
-    local screenCount = #screens
 
-    -- To find out the two biggest screens and sort the screens by its position.
-    -- Well, this is getting crazy.
-    if screenCount > 2 then
-      table.sort(screens, function(a, b)
-        return a:fullFrame().w * a:fullFrame().h > b:fullFrame().w * b:fullFrame().h
-      end)
+    -- Sort by screen size
+    table.sort(screens, function(a, b)
+      return a:fullFrame().w * a:fullFrame().h > b:fullFrame().w * b:fullFrame().h
+    end)
 
-      screens = {screens[1], screens[2]}
-      table.sort(screens, function(a, b)
-        return a:position() < b:position()
-      end)
+    -- Sort by screen position
+    table.sort(screens, function(a, b)
+      return a:position() < b:position()
+    end)
 
-      return {screens[1], screens[2]}
-    else
-      return screens
-    end
+    return {screens[1], screens[2]}
   end,
   getScreenNumberFromTwoBiggestScreens = function(self, screen)
     local screens = self:getTwoBiggestScreens()
