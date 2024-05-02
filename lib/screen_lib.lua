@@ -52,6 +52,8 @@ local S = {
       return a:fullFrame().w * a:fullFrame().h > b:fullFrame().w * b:fullFrame().h
     end)
 
+    -- This is needed when there are more than 2 screens
+    screens = {screens[1], screens[2]}
     -- Sort by screen position
     table.sort(screens, function(a, b)
       return a:position() < b:position()
