@@ -5,31 +5,27 @@
 --
 -- Clicks
 -- 
-function performClick(button, clicks)
-  local currentPos = hs.mouse.getAbsolutePosition()
-  local clickEvent = hs.eventtap.event.newMouseEvent(hs.eventtap.event.types["leftMouseDown"], currentPos, {button})
-  clickEvent:post()
-  hs.timer.usleep(100000)  -- Delay for the click (100 ms)
-  clickEvent:setType(hs.eventtap.event.types["leftMouseUp"])
-  clickEvent:post()
-  if clicks > 1 then
-    hs.timer.usleep(100000)  -- Delay between clicks
-    performClick(button, clicks - 1)
-  end
+local clickMods = {"ctrl", "alt"}
+local clickDelay = 100000 -- 100ms
+
+local getMousePosition = function()
+    return hs.mouse.absolutePosition()
 end
 
-local clickMods = {"ctrl", "alt"}
-
+-- https://www.hammerspoon.org/docs/hs.eventtap.html#leftClick
 hs.hotkey.bind(clickMods, "1", function()
-  performClick(nil, 1)  -- 'nil' for left button, 'right' for right button
+  hs.eventtap.leftClick(getMousePosition())
 end)
 
 hs.hotkey.bind(clickMods, "2", function()
-  performClick("right", 1)
+  hs.eventtap.rightClick(getMousePosition())
 end)
 
+-- Double click
 hs.hotkey.bind(clickMods, "3", function()
-  performClick(nil, 2)
+  hs.eventtap.leftClick(getMousePosition())
+  hs.timer.usleep(clickDelay)
+  hs.eventtap.leftClick(getMousePosition())
 end)
 
 

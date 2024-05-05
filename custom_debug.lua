@@ -8,7 +8,7 @@ hs.hotkey.bind({'ctrl', 'shift', 'cmd', 'alt'}, 'h', function()
 
   -- It seems hs.alert doesn't work before or after hs.reload()
   -- and the notification often doesn't disappear automatically.
-  no.notify('Config reloaded')
+  no.notify('Reloading config...')
 end)
 
 ---@diagnostic disable-next-line: lowercase-global

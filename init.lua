@@ -16,3 +16,6 @@ require('cursor')
 require('volume')
 require('quick_app')
 require('keymou')
+
+-- See custom_debug.lua for the reload trigger
+no.notify('Hammerspoon loaded!')
