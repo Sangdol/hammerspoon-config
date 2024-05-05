@@ -3,11 +3,6 @@
 
 [Hammerspoon](https://www.hammerspoon.org/) configuration for automating macOS using Lua.
 
-Development Environment
----
-
-I use Neovim with [coc](https://github.com/neoclide/coc.nvim) and [coc-lua](https://github.com/josa42/coc-lua) plugins to write Lua code.
-
 See also
 ---
 
