@@ -32,7 +32,7 @@ end)
 --
 -- Scrolling
 --
-local scrollDistance = 50
+local scrollDistance = 100
 local scrollMods = {"ctrl", "alt"}
 
 -- Helper function to perform scroll
