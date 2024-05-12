@@ -16,11 +16,6 @@ function wl.moveFocusedWindowToLeft()
   return wl.moveWindowToLeft(win)
 end
 
-function wl.moveFocusedWindowToRight()
-  local win = hs.window.focusedWindow()
-  return wl.moveWindowToRight(win)
-end
-
 function wl.moveWindowToLeft(win)
   local f = win:frame()
   local screen = win:screen()
@@ -35,6 +30,11 @@ function wl.moveWindowToLeft(win)
   return win
 end
 
+function wl.moveFocusedWindowToRight()
+  local win = hs.window.focusedWindow()
+  return wl.moveWindowToRight(win)
+end
+
 function wl.moveWindowToRight(win)
   local f = win:frame()
   local screen = win:screen()
@@ -44,6 +44,44 @@ function wl.moveWindowToRight(win)
   f.y = screenFrame.y
   f.w = screenFrame.w / 2
   f.h = screenFrame.h
+  win:setFrame(f)
+
+  return win
+end
+
+function wl.moveFocusedWindowToBottom()
+  local win = hs.window.focusedWindow()
+  return wl.moveWindowToBottom(win)
+end
+
+function wl.moveWindowToBottom(win)
+  local f = win:frame()
+  local screen = win:screen()
+  local screenFrame = screen:frame()
+
+  f.x = screenFrame.x
+  f.y = screenFrame.y + (screenFrame.h / 2)
+  f.w = screenFrame.w
+  f.h = screenFrame.h / 2
+  win:setFrame(f)
+
+  return win
+end
+
+function wl.moveFocusedWindowToTop()
+  local win = hs.window.focusedWindow()
+  return wl.moveWindowToTop(win)
+end
+
+function wl.moveWindowToTop(win)
+  local f = win:frame()
+  local screen = win:screen()
+  local screenFrame = screen:frame()
+
+  f.x = screenFrame.x
+  f.y = screenFrame.y
+  f.w = screenFrame.w
+  f.h = screenFrame.h / 2
   win:setFrame(f)
 
   return win

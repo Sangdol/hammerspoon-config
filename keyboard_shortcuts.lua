@@ -9,11 +9,33 @@ local hotkey = require "hs.hotkey"
 hotkey.bind({"ctrl", "shift", "cmd"}, "l", sc.currentWindowCenterToggle)
 hotkey.bind({"ctrl", "shift", "cmd"}, "j", wl.moveFocusedWindowToLeft)
 hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveFocusedWindowToRight)
+hotkey.bind({"ctrl", "shift", "cmd"}, "UP", wl.moveFocusedWindowToTop)
+hotkey.bind({"ctrl", "shift", "cmd"}, "DOWN", wl.moveFocusedWindowToBottom)
 hotkey.bind({"ctrl", "shift"}, "n", sc.moveFocusedWindowToNextScreen(false, -1))
 hotkey.bind({"ctrl", "shift"}, "m", sc.moveFocusedWindowToNextScreen(false, 1))
 hotkey.bind({"ctrl", "shift", "cmd"}, "n", sc.moveFocusedWindowToNextScreen(true, -1))
 hotkey.bind({"ctrl", "shift", "cmd"}, "m", sc.moveFocusedWindowToNextScreen(true, 1))
 hotkey.bind({"ctrl", "cmd"}, "f", wl.fullscreenCurrent)
+
+local function unminimizeLastWindow()
+    local focusedApp = hs.application.frontmostApplication()
+    local windows = focusedApp:allWindows()
+    -- Filter out only minimized windows
+    local minimizedWindows = hs.fnutils.filter(windows, function(window) return window:isMinimized() end)
+
+    if #minimizedWindows > 0 then
+        -- Assuming the last one in the list is the most recently minimized
+        local lastMinimizedWindow = minimizedWindows[#minimizedWindows]  
+        lastMinimizedWindow:unminimize()
+    else
+        hs.alert.show("No minimized windows found for " .. focusedApp:name())
+    end
+end
+
+-- Keybinding configuration
+hotkey.bind({"ctrl", "alt"}, "M", function()
+    unminimizeLastWindow()
+end)
 
 --
 -- Application shortcuts to launch applications
