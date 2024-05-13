@@ -1,11 +1,13 @@
 --
 -- Hotkeys
 --
+
 local hotkey = require "hs.hotkey"
 
 --
 -- Window Shortcuts to arrange windows
 --
+
 hotkey.bind({"ctrl", "shift", "cmd"}, "l", sc.currentWindowCenterToggle)
 hotkey.bind({"ctrl", "shift", "cmd"}, "j", wl.moveFocusedWindowToLeft)
 hotkey.bind({"ctrl", "shift", "cmd"}, "k", wl.moveFocusedWindowToRight)
@@ -65,6 +67,7 @@ hotkey.bind({"ctrl", "alt"}, "C", function() hs.application.launchOrFocus("Calen
 --
 -- Finder
 --
+
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "S", function()
   hs.execute("open ~/screenshots")
 end)
@@ -80,13 +83,42 @@ end)
 --
 -- Youtube Music
 --
---
 
 hs.hotkey.bind({"shift"}, "F19", function()
   hs.execute("osascript $HOME/projects/osx/applescripts/youtube-music-play-pause.scpt")
 end)
 
-
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "-", function()
   hs.execute("osascript $HOME/projects/osx/applescripts/youtube-music-like-notification.scpt")
+end)
+
+--
+-- Notifications
+--
+
+hs.hotkey.bind({"ctrl", "shift"}, ".", function()
+  hs.execute("osascript $HOME/projects/osx/applescripts/close-notifications-center.scpt")
+end)
+
+hs.hotkey.bind({"ctrl", "shift"}, ",", function()
+  hs.execute("osascript $HOME/projects/osx/applescripts/complete-notifications-center.scpt")
+end)
+
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, ".", function()
+  hs.execute("osascript $HOME/projects/osx/applescripts/close-one-notification-center.scpt")
+end)
+
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, ",", function()
+  hs.execute("osascript $HOME/projects/osx/applescripts/complete-one-notification-center.scpt")
+end)
+
+--
+-- Etc.
+--
+
+-- Remap to C-_ for undo and commenting in terminal.
+-- C-/ works in nvim but it doesn't work in nvim terminal as an undo.
+hs.hotkey.bind({"ctrl"}, "/", function()
+  hs.eventtap.event.newKeyEvent({"ctrl", "shift"}, "-", true):post()
+  hs.eventtap.event.newKeyEvent({"ctrl", "shift"}, "-", false):post()
 end)
