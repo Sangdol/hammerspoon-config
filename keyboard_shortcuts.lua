@@ -113,6 +113,39 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, ",", function()
 end)
 
 --
+-- Screenshot
+--
+
+-- Function to launch Screenshot.app, wait 0.5 seconds, and press Enter
+local function launchScreenshotAndEnter()
+  -- Launch Screenshot.app
+  hs.application.launchOrFocus("Screenshot")
+
+  -- Delay for 0.5 seconds
+  hs.timer.doAfter(0.5, function()
+    -- Simulate pressing the Enter key
+    hs.eventtap.keyStroke({}, "return")
+  end)
+end
+
+-- Bind the F19 key to the launchScreenshotAndEnter function
+hs.hotkey.bind({"ctrl"}, "F19", launchScreenshotAndEnter)
+
+--
+-- noop
+--
+
+-- Disable emoji palette
+hs.hotkey.bind({"ctrl", "cmd"}, "space", function()
+  -- noop
+end)
+
+-- Disable opening Mail app when text is highlighted
+hs.hotkey.bind({"shift", "cmd"}, "i", function()
+  -- noop
+end)
+
+--
 -- Etc.
 --
 
@@ -121,4 +154,15 @@ end)
 hs.hotkey.bind({"ctrl"}, "/", function()
   hs.eventtap.event.newKeyEvent({"ctrl", "shift"}, "-", true):post()
   hs.eventtap.event.newKeyEvent({"ctrl", "shift"}, "-", false):post()
+end)
+
+-- Sleep
+hs.hotkey.bind({}, "F6", function()
+  hs.execute("pmset sleepnow")
+end)
+
+-- Vimac bridge
+hs.hotkey.bind({"cmd"}, "space", function()
+  hs.eventtap.event.newKeyEvent({"ctrl", "shift", "alt", "cmd"}, "space", true):post()
+  hs.eventtap.event.newKeyEvent({"ctrl", "shift", "alt", "cmd"}, "space", false):post()
 end)
