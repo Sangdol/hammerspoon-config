@@ -96,11 +96,11 @@ end)
 -- Notifications
 --
 
-hs.hotkey.bind({"ctrl", "shift"}, ".", function()
+hs.hotkey.bind({"ctrl", "cmd"}, ".", function()
   hs.execute("osascript $HOME/projects/osx/applescripts/close-notifications-center.scpt")
 end)
 
-hs.hotkey.bind({"ctrl", "shift"}, ",", function()
+hs.hotkey.bind({"ctrl", "cmd"}, ",", function()
   hs.execute("osascript $HOME/projects/osx/applescripts/complete-notifications-center.scpt")
 end)
 
@@ -153,6 +153,26 @@ end)
 hs.hotkey.bind({"cmd"}, "space", function()
   hs.eventtap.keyStroke({"ctrl", "shift", "alt", "cmd"}, "space")
 end)
+
+-- iTerm2 + vim theme toggle craziness
+local function toggleTheme(color)
+  return function()
+    local key = "W"
+
+    if color == "light" then
+      key = "E"
+    end
+
+    hs.execute("$HOME/projects/osx/scripts/iterm_vim_theme.sh " .. color)
+    hs.eventtap.keyStroke({"ctrl", "alt", "cmd"}, key)
+    hs.eventtap.keyStroke({}, "space")
+    hs.eventtap.keyStroke({}, "E")
+    hs.eventtap.keyStroke({}, "[")
+  end
+end
+
+hs.hotkey.bind({"ctrl", "shift", "alt"}, "[", toggleTheme("dark"))
+hs.hotkey.bind({"ctrl", "shift", "alt"}, "]", toggleTheme("light"))
 
 --
 -- Etc.
