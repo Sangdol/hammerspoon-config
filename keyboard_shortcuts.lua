@@ -146,23 +146,25 @@ hs.hotkey.bind({"shift", "cmd"}, "i", function()
 end)
 
 --
+-- Bridges
+--
+
+-- Vimac bridge
+hs.hotkey.bind({"cmd"}, "space", function()
+  hs.eventtap.keyStroke({"ctrl", "shift", "alt", "cmd"}, "space")
+end)
+
+--
 -- Etc.
 --
 
 -- Remap to C-_ for undo and commenting in terminal.
 -- C-/ works in nvim but it doesn't work in nvim terminal as an undo.
 hs.hotkey.bind({"ctrl"}, "/", function()
-  hs.eventtap.event.newKeyEvent({"ctrl", "shift"}, "-", true):post()
-  hs.eventtap.event.newKeyEvent({"ctrl", "shift"}, "-", false):post()
+  hs.eventtap.keyStroke({"ctrl", "shift"}, "-")
 end)
 
 -- Sleep
 hs.hotkey.bind({}, "F6", function()
   hs.execute("pmset sleepnow")
-end)
-
--- Vimac bridge
-hs.hotkey.bind({"cmd"}, "space", function()
-  hs.eventtap.event.newKeyEvent({"ctrl", "shift", "alt", "cmd"}, "space", true):post()
-  hs.eventtap.event.newKeyEvent({"ctrl", "shift", "alt", "cmd"}, "space", false):post()
 end)
