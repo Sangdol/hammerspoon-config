@@ -76,3 +76,17 @@ end)
 hs.hotkey.bind({"ctrl", "shift", "alt"}, "D", function()
   hs.execute("open ~/docs")
 end)
+
+--
+-- Youtube Music
+--
+--
+
+hs.hotkey.bind({"shift"}, "F19", function()
+  hs.execute("osascript $HOME/projects/osx/applescripts/youtube-music-play-pause.scpt")
+end)
+
+
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "-", function()
+  hs.execute("osascript $HOME/projects/osx/applescripts/youtube-music-like-notification.scpt")
+end)
