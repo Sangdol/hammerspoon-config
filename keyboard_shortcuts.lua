@@ -61,3 +61,18 @@ hotkey.bind({"ctrl", "alt"}, "P", function() hs.application.launchOrFocus("Previ
 hotkey.bind({"ctrl", "alt"}, "R", function() hs.application.launchOrFocus("Reminders") end)
 hotkey.bind({"ctrl", "alt"}, "N", function() hs.application.launchOrFocus("Notes") end)
 hotkey.bind({"ctrl", "alt"}, "C", function() hs.application.launchOrFocus("Calendar") end)
+
+--
+-- Finder
+--
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "S", function()
+  hs.execute("open ~/screenshots")
+end)
+
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "D", function()
+  hs.execute("open ~/Documents")
+end)
+
+hs.hotkey.bind({"ctrl", "shift", "alt"}, "D", function()
+  hs.execute("open ~/docs")
+end)
