@@ -72,7 +72,7 @@ hs.hotkey.bind({"ctrl", "shift", "cmd"}, "S", function()
   hs.execute("open ~/screenshots")
 end)
 
-hs.hotkey.bind({"ctrl", "alt", "cmd"}, "D", function()
+hs.hotkey.bind({"ctrl", "shift", "cmd"}, "D", function()
   hs.execute("open ~/Documents")
 end)
 
