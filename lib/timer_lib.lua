@@ -13,6 +13,7 @@ function timer.sleep(seconds)
 end
 
 -- This is a Hammerspoon timer wrapper that has a maxTrial parameter.
+-- Default interval is 1 second.
 local function safeTimer(timerFn, predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
   logger:d('SafeTimer', timerFn)
 
