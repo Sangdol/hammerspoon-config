@@ -22,8 +22,6 @@ function Cafe.cafeHandler(eventType)
     Cafe.isSleeping = false
     Cafe.wakeUpTime = os.time()
 
-    bt.conditionallyConnect()
-
     -- Sometimes Redshift doesn't work well after restarting
     -- e.g., Redshift: still on when it shouldn't / one monitor doesn't have a warm color
     --       (a similar issue https://github.com/Hammerspoon/hammerspoon/issues/1197)
