@@ -13,7 +13,7 @@ local WINDOW_MAP_UPDATE_INTERVAL = 600
 local UPDATE_WAKE_UP_DELAY = 30
 
 -- hs.window.get() returns nil if the delay is too short.
-local SCREEN_WATCHER_INIT_DELAY = 4
+local SCREEN_WATCHER_INIT_DELAY = 3
 
 --
 -- Save the position and size of the running windows
