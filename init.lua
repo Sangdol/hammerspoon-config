@@ -13,9 +13,11 @@ require('keyboard_shortcuts')
 require('dnd')
 require('menubar')
 require('cursor')
-require('volume')
 require('quick_app')
 require('keymou')
+
+-- Not being used
+--require('volume')
 
 -- See custom_debug.lua for the reload trigger
 no.notify('Hammerspoon loaded!')
