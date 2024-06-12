@@ -13,7 +13,7 @@ local WINDOW_MAP_UPDATE_INTERVAL = 600
 local UPDATE_WAKE_UP_DELAY = 30
 
 -- hs.window.get() returns nil if the delay is too short.
-local SCREEN_WATCHER_INIT_DELAY = 3
+local SCREEN_WATCHER_DEBOUNCE_DELAY = 2
 
 --
 -- Save the position and size of the running windows
@@ -121,9 +121,18 @@ function Wm.screenWatcherHandler()
     screenWatcherTimer:stop()
   end
 
+  local MAX_SCREEN_COUNT = 3
+  local debounceDelay = SCREEN_WATCHER_DEBOUNCE_DELAY
+
+  -- If the number of screens is more than the maximum screen count,
+  -- don't debounce the timer.
+  if #hs.screen.allScreens() >= MAX_SCREEN_COUNT then
+    debounceDelay = 0
+  end
+
   -- For some reason, it doesn't recognize the number of screens correctly
   -- if it runs immediately after the screen change.
-  screenWatcherTimer = hs.timer.doAfter(SCREEN_WATCHER_INIT_DELAY, function()
+  screenWatcherTimer = hs.timer.doAfter(debounceDelay, function()
     local screenCount = #hs.screen.allScreens()
     logger:d('Screen changed. Number of screens: ' .. screenCount)
     no.alert('Starting moving windows')
