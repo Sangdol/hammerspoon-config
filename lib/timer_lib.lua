@@ -22,7 +22,7 @@ local function safeTimer(timerFn, predicateFn, actionFn, failtureFn, maxTrial, c
 
   local waitCounter = 0
 
-  timerFn(
+  return timerFn(
     function()
       if waitCounter < maxTrial then
         logger:d('SafeTimer waitCounter:', waitCounter)
@@ -33,17 +33,17 @@ local function safeTimer(timerFn, predicateFn, actionFn, failtureFn, maxTrial, c
         failtureFn()
         return true
       end
-    end, 
+    end,
     actionFn,
     checkInterval)
 end
 
 function timer.safeDoUntil(predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
-  safeTimer(hs.timer.doUntil, predicateFn, actionFn, failtureFn, checkInterval, maxTrial)
+  return safeTimer(hs.timer.doUntil, predicateFn, actionFn, failtureFn, checkInterval, maxTrial)
 end
 
 function timer.safeWaitUntil(predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
-  safeTimer(hs.timer.waitUntil, predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
+  return safeTimer(hs.timer.waitUntil, predicateFn, actionFn, failtureFn, maxTrial, checkInterval)
 end
 
 return timer

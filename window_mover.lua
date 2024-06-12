@@ -100,9 +100,14 @@ function Wm.restoreAll()
     end
   end
 
+  local isAllFailed = failCount == tl.tableLength(windowMap)
+  if isAllFailed then
+    logger:i('All windows are failed to restore')
+  end
+
   -- If all the windows are failed to restore, 
   -- it's probably because the windows weren't accessible yet.
-  return failCount ~= tl.tableLength(windowMap)
+  return not isAllFailed
 end
 
 local screenWatcherTimer
@@ -147,6 +152,20 @@ function Wm.screenWatcherHandler()
               'Number of screens: ' .. screenCount)
     end, 3, 3)
   end)
+
+  local MAX_TRIAL = 3
+  local screenCount = #hs.screen.allScreens()
+  screenWatcherTimer = timer.safeDoUntil(function()
+    no.alert('Starting moving windows')
+    logger:i('Starting moving windows. Number of screens: ' .. screenCount)
+    return Wm.restoreAll()
+  end, function()
+    logger:w('Failed to restore windows. ' ..
+            'Number of screens: ' .. screenCount)
+  end, function()
+    logger:i('Successfully restored windows. ' ..
+            'Number of screens: ' .. screenCount)
+  end, MAX_TRIAL, SCREEN_WATCHER_DEBOUNCE_DELAY)
 end
 
 function Wm.restorePreviousMap()
