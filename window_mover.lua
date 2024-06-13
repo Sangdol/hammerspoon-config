@@ -4,7 +4,7 @@
 --    Move windows on wake up or screen change
 --
 
-local logger = hs.logger.new('window_mover', 'debug')
+local logger = hs.logger.new('window_mover', 'info')
 
 Wm = {}
 Wm.stacks = require('window_mover_stacks')

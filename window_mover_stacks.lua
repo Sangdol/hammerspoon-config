@@ -1,7 +1,7 @@
 --
 -- Map of stacks for each screen count
 --
-local logger = hs.logger.new('win_stack', 'debug')
+local logger = hs.logger.new('win_stack', 'info')
 local stack = require('lib/stack')
 local M = {}
 local STACK_SIZE = 5
