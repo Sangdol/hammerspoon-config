@@ -60,6 +60,7 @@ local currentAppIndex = fileAppIndex:read()
 -- Function to cycle through the app list
 local function cycleApp()
     currentAppIndex = currentAppIndex % #appList + 1
+    fileAppIndex:write(currentAppIndex)
     hs.alert.show(appList[currentAppIndex] .. " is set")
 end
 
@@ -71,7 +72,6 @@ end
 -- Hotkey to cycle through the apps
 hs.hotkey.bind({"ctrl", "shift", "cmd"}, "H", function()
     cycleApp()
-    fileAppIndex:write(currentAppIndex)
 end)
 
 -- Hotkey to open the current app
