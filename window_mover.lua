@@ -63,6 +63,7 @@ local function restoreWindow(win)
   timer.safeDoUntil(function()
     return win:frame() == frame
   end, function()
+    logger:i('Setting frame size for the window: ' .. app:name())
     win:setFrame(frame)
   end, function()
     logger:i('Failed to set frame size correctly: ' .. app:name())
