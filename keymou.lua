@@ -72,9 +72,9 @@ local cursorMods = {"ctrl", "shift"}
 local cursorDistance = 120
 
 local function moveCursor(dx, dy)
-    local currentPos = hs.mouse.getAbsolutePosition()
+    local currentPos = hs.mouse.absolutePosition()
     local newPos = hs.geometry.point(currentPos.x + dx, currentPos.y + dy)
-    hs.mouse.setAbsolutePosition(newPos)
+    hs.mouse.absolutePosition(newPos)
 end
 
 local moveUp = function()
