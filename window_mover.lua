@@ -127,33 +127,8 @@ function Wm.screenWatcherHandler()
     screenWatcherTimer:stop()
   end
 
-  local MAX_SCREEN_COUNT = 3
-  local debounceDelay = SCREEN_WATCHER_DEBOUNCE_DELAY
-
-  -- If the number of screens is more than the maximum screen count,
-  -- don't debounce the timer.
-  if #hs.screen.allScreens() >= MAX_SCREEN_COUNT then
-    debounceDelay = 0
-  end
-
   -- For some reason, it doesn't recognize the number of screens correctly
   -- if it runs immediately after the screen change.
-  screenWatcherTimer = hs.timer.doAfter(debounceDelay, function()
-    local screenCount = #hs.screen.allScreens()
-    logger:d('Screen changed. Number of screens: ' .. screenCount)
-    no.alert('Starting moving windows')
-
-    timer.safeDoUntil(function()
-      return Wm.restoreAll()
-    end, function()
-      logger:w('Failed to restore windows. ' ..
-              'Number of screens: ' .. screenCount)
-    end, function()
-      logger:i('Successfully restored windows. ' ..
-              'Number of screens: ' .. screenCount)
-    end, 3, 3)
-  end)
-
   local MAX_TRIAL = 3
   local screenCount = #hs.screen.allScreens()
   screenWatcherTimer = timer.safeDoUntil(function()
