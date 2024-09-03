@@ -4,7 +4,7 @@
 --    Move windows on wake up or screen change
 --
 
-local logger = hs.logger.new('window_mover', 'info')
+local logger = hs.logger.new('window_mover', 'debug')
 
 Wm = {}
 Wm.stacks = require('window_mover_stacks')
@@ -57,6 +57,7 @@ local function restoreWindow(win)
     return
   end
 
+  logger:d('Getting the application for the window: ' .. win:title())
   local app = win:application()
 
   -- Retry until the window is set to the correct position and size
