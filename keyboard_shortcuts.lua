@@ -96,9 +96,12 @@ end)
 -- Notifications
 --
 
-hs.hotkey.bind({"ctrl", "cmd"}, ".", function()
-  hs.execute("osascript $HOME/projects/osx/applescripts/close-notifications-center.scpt")
-end)
+--
+-- Disable this in favor of BTT to close grouped notifications.
+--
+--hs.hotkey.bind({"ctrl", "cmd"}, ".", function()
+  --hs.execute("osascript $HOME/projects/osx/applescripts/close-notifications-center.scpt")
+--end)
 
 hs.hotkey.bind({"ctrl", "cmd"}, ",", function()
   hs.execute("osascript $HOME/projects/osx/applescripts/complete-notifications-center.scpt")
