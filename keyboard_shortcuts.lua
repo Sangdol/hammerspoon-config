@@ -51,6 +51,7 @@ local function activate(name)
     end
 end
 
+-- cmd
 hotkey.bind({"ctrl", "cmd"}, "[", function() hs.application.launchOrFocus("KakaoTalk") end)
 hotkey.bind({"ctrl", "cmd"}, "]", function() hs.application.launchOrFocus("Finder") end)
 hotkey.bind({"ctrl", "cmd"}, ";", function() hs.application.launchOrFocus("Microsoft Edge") end)
@@ -59,6 +60,9 @@ hotkey.bind({"ctrl", "cmd"}, "G", function() activate("MongoDB Compass") end)
 hotkey.bind({"ctrl", "cmd"}, "C", function() activate("Google Chrome Canary") end)
 hotkey.bind({"ctrl", "cmd"}, "I", function() activate("Anki") end)
 hotkey.bind({"ctrl", "cmd"}, "'", function() activate("Slack") end)
+
+-- alt
+hotkey.bind({"ctrl", "alt"}, "U", function() hs.application.launchOrFocus("Cursor") end)
 hotkey.bind({"ctrl", "alt"}, "P", function() hs.application.launchOrFocus("Preview") end)
 hotkey.bind({"ctrl", "alt"}, "R", function() hs.application.launchOrFocus("Reminders") end)
 hotkey.bind({"ctrl", "alt"}, "N", function() hs.application.launchOrFocus("Notes") end)
