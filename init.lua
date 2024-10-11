@@ -15,6 +15,7 @@ require('menubar')
 require('cursor')
 require('quick_app')
 require('keymou')
+require('themes')
 
 -- Not being used
 --require('volume')

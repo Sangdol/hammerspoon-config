@@ -164,28 +164,6 @@ hs.hotkey.bind({"cmd"}, "space", function()
   hs.eventtap.keyStroke({"ctrl", "shift", "alt", "cmd"}, "space")
 end)
 
--- iTerm2 + vim theme toggle craziness
-local function toggleTheme(color)
-  return function()
-    local itermKey = "W"
-    local vimKey = "["
-
-    if color == "light" then
-      itermKey = "E"
-      vimKey = "]"
-    end
-
-    hs.execute("$HOME/projects/osx/scripts/iterm_vim_theme.sh " .. color)
-    hs.eventtap.keyStroke({"ctrl", "alt", "shift", "cmd"}, itermKey)
-    hs.eventtap.keyStroke({}, "space")
-    hs.eventtap.keyStroke({}, "E")
-    hs.eventtap.keyStroke({}, vimKey)
-  end
-end
-
-hs.hotkey.bind({"ctrl", "shift", "alt"}, "[", toggleTheme("dark"))
-hs.hotkey.bind({"ctrl", "shift", "alt"}, "]", toggleTheme("light"))
-
 --
 -- Etc.
 --
