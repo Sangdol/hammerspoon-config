@@ -82,7 +82,6 @@ local function isITerm2()
 end
 
 local function autoSelectiTermProfile()
-  print("autoSelectiTermProfile")
   if not isITerm2() then
     return
   end
