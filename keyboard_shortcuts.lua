@@ -62,6 +62,7 @@ hotkey.bind({"ctrl", "cmd"}, "G", function() activate("MongoDB Compass") end)
 hotkey.bind({"ctrl", "cmd"}, "C", function() activate("Google Chrome Canary") end)
 hotkey.bind({"ctrl", "cmd"}, "I", function() activate("Anki") end)
 hotkey.bind({"ctrl", "cmd"}, "'", function() activate("Slack") end)
+hotkey.bind({"ctrl", "cmd"}, "Y", function() activate("Firefox") end)
 
 
 -- alt
