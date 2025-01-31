@@ -169,12 +169,6 @@ end)
 -- Etc.
 --
 
--- Remap to C-_ for undo and commenting in terminal.
--- C-/ works in nvim but it doesn't work in nvim terminal as an undo.
-hs.hotkey.bind({"ctrl"}, "/", function()
-  hs.eventtap.keyStroke({"ctrl", "shift"}, "-")
-end)
-
 -- Sleep
 hs.hotkey.bind({}, "F6", function()
   hs.execute("pmset sleepnow")
