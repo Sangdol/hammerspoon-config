@@ -53,6 +53,7 @@ local function startVolumeTimer()
     if currentVol == lastVolume then return end
 
     lastVolume = currentVol
+    logger:i(os.date("%Y-%m-%d %H:%M:%S") .. " - Volume changed to " .. currentVol .. "%")
     hs.execute(string.format("echo '%d' > %s", currentVol, volumeFile))
   end)
   volumeTimer:start()
