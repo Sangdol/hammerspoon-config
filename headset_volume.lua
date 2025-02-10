@@ -4,7 +4,7 @@
 
 local audio = hs.audiodevice
 
-local logger = hs.logger.new('headset_volume', 'info')
+local logger = hs.logger.new('headset_volume', 'debug')
 local volumeTimer = nil
 local lastVolume = nil
 local maxVolume = 30  -- Maximum allowed volume (adjust as needed)
@@ -30,10 +30,14 @@ local function applyStoredVolume()
   if not string.find(currentDevice:name(), headsetName) then return end
 
   -- Only set volume if it's different from lastVolume
-  if targetVol == lastVolume then return end
+  if targetVol == lastVolume then
+    logger:d("Volume already set to " .. targetVol .. "%")
+    return
+  end
 
   currentDevice:setVolume(targetVol)
   lastVolume = targetVol
+  logger:d("Volume set to " .. targetVol .. "%")
   hs.alert("Volume set to " .. targetVol .. "%")
 end
 
@@ -48,12 +52,10 @@ local function startVolumeTimer()
     if not string.find(currentDevice:name(), headsetName) then return end
 
     local currentVol = math.floor(currentDevice:volume())
-    logger:d('Current volume:', currentVol)
-    logger:d('Last volume:', lastVolume)
     if currentVol == lastVolume then return end
 
     lastVolume = currentVol
-    logger:i(os.date("%Y-%m-%d %H:%M:%S") .. " - Volume changed to " .. currentVol .. "%")
+    logger:d(os.date("%Y-%m-%d %H:%M:%S") .. " - Volume changed to " .. currentVol .. "%")
     hs.execute(string.format("echo '%d' > %s", currentVol, volumeFile))
   end)
   volumeTimer:start()
