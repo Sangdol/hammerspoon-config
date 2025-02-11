@@ -11,6 +11,11 @@ local maxVolume = 30  -- Maximum allowed volume (adjust as needed)
 local headsetName = "AirPods Max"  -- Confirm your device's exact name
 local volumeFile = os.getenv("HOME") .. "/.headset_volume"
 
+-- Monitoring variables
+local isMonitoring = false
+local monitorTimer = nil
+local checkVolumeTimer = nil
+
 -- Apply stored volume, capped at maxVolume
 local function applyStoredVolume()
   logger:d('Applying stored volume')
@@ -54,6 +59,12 @@ local function startVolumeTimer()
     local currentVol = math.floor(currentDevice:volume())
     if currentVol == lastVolume then return end
 
+    -- Do not save if it's 50% during monitoring
+    if isMonitoring and currentVol == 50 then
+      logger:d("Ignoring system reset to 50% during monitoring")
+      return
+    end
+
     lastVolume = currentVol
     logger:d(os.date("%Y-%m-%d %H:%M:%S") .. " - Volume changed to " .. currentVol .. "%")
     hs.execute(string.format("echo '%d' > %s", currentVol, volumeFile))
@@ -64,30 +75,98 @@ end
 -- Stop monitoring volume
 local function stopVolumeTimer()
   logger:d('Stopping volume timer')
-
   if volumeTimer then
     volumeTimer:stop()
     volumeTimer = nil
   end
 end
 
--- Handle audio device changes
-local function deviceChangedCallback(event, deviceName, _, _)
-  logger:d('Device changed:', event, deviceName)
-
-  local currentDevice = audio.defaultOutputDevice()
-
-  if currentDevice and string.find(currentDevice:name(), headsetName) then
-    -- Delay to override system volume reset
-    hs.timer.doAfter(0.5, applyStoredVolume)
-    startVolumeTimer()
-  else
-    stopVolumeTimer()
-  end
+local function cleanupMonitoring()
+    isMonitoring = false
+    if monitorTimer then
+        monitorTimer:stop()
+        monitorTimer = nil
+    end
+    if checkVolumeTimer then
+        checkVolumeTimer:stop()
+        checkVolumeTimer = nil
+    end
 end
 
-deviceChangedCallback()
+--
+-- Monitor for system-initiated volume resets
+-- which occur when the headset is connected
+--
+local function setupMonitoringPeriod()
+    cleanupMonitoring()  -- Clear any existing monitoring
+    
+    isMonitoring = true
+    logger:d("Starting 10-second monitoring period")
+    
+    -- Set monitoring window duration
+    monitorTimer = hs.timer.doAfter(10, function()
+        logger:d("Monitoring period ended")
+        isMonitoring = false
+        monitorTimer = nil
+    end)
 
--- Initialize audio device watcher
+    -- Check for system-initiated volume resets every second
+    checkVolumeTimer = hs.timer.new(1, function()
+        if not isMonitoring then
+            checkVolumeTimer:stop()
+            return
+        end
+        
+        local currentDevice = audio.defaultOutputDevice()
+        if currentDevice and currentDevice:name():find(headsetName) then
+            local currentVol = math.floor(currentDevice:volume())
+            logger:d("Monitoring check, current volume: " .. currentVol)
+            
+            if currentVol == 50 then
+                logger:d("System reset detected (50%). Reapplying stored volume.")
+                applyStoredVolume()
+            end
+        end
+    end)
+    checkVolumeTimer:start()
+end
+
+--[[
+  Device Connection Handlers
+--]]
+local function handleHeadsetConnected()
+    -- Initial volume restore attempt
+    hs.timer.doAfter(0.5, applyStoredVolume)
+    
+    -- Start regular volume tracking
+    startVolumeTimer()
+    
+    -- Begin monitoring for system-initiated resets
+    setupMonitoringPeriod()
+end
+
+local function handleHeadsetDisconnected()
+    stopVolumeTimer()
+    cleanupMonitoring()
+end
+
+--[[
+  Main Device Change Handler
+--]]
+local function deviceChangedCallback(event, deviceName)
+    logger:d('Device changed:', event, deviceName)
+
+    local currentDevice = audio.defaultOutputDevice()
+    local isTargetDevice = currentDevice and currentDevice:name():find(headsetName)
+
+    if isTargetDevice then
+        handleHeadsetConnected()
+    else
+        handleHeadsetDisconnected()
+    end
+end
+
+-- Initialization
+deviceChangedCallback()
 audio.watcher.setCallback(deviceChangedCallback)
 audio.watcher.start()
