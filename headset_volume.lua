@@ -34,13 +34,15 @@ local function applyStoredVolume()
   if not currentDevice then return end
   if not string.find(currentDevice:name(), headsetName) then return end
 
-  -- Only set volume if it's different from lastVolume
   if targetVol == lastVolume then
     logger:d("Volume already set to " .. targetVol .. "%")
     return
   end
 
-  currentDevice:setVolume(targetVol)
+  -- Set volume using AppleScript to ensure UI synchronization
+  local command = string.format("osascript -e 'set volume output volume %d'", targetVol)
+  hs.execute(command)
+
   lastVolume = targetVol
   logger:d("Volume set to " .. targetVol .. "%")
   hs.alert("Volume set to " .. targetVol .. "%")
