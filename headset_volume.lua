@@ -34,7 +34,8 @@ local function applyStoredVolume()
   if not currentDevice then return end
   if not string.find(currentDevice:name(), headsetName) then return end
 
-  if targetVol == lastVolume then
+  local currentVol = math.floor(currentDevice:volume())
+  if targetVol == currentVol then
     logger:d("Volume already set to " .. targetVol .. "%")
     return
   end
@@ -100,51 +101,51 @@ end
 -- which occur when the headset is connected
 --
 local function setupMonitoringPeriod()
-    cleanupMonitoring()  -- Clear any existing monitoring
-    
-    isMonitoring = true
-    logger:d("Starting 10-second monitoring period")
-    
-    -- Set monitoring window duration
-    monitorTimer = hs.timer.doAfter(10, function()
-        logger:d("Monitoring period ended")
-        isMonitoring = false
-        monitorTimer = nil
-    end)
+  cleanupMonitoring()  -- Clear any existing monitoring
 
-    -- Check for system-initiated volume resets every second
-    checkVolumeTimer = hs.timer.new(1, function()
-        if not isMonitoring then
-            checkVolumeTimer:stop()
-            return
-        end
-        
-        local currentDevice = audio.defaultOutputDevice()
-        if currentDevice and currentDevice:name():find(headsetName) then
-            local currentVol = math.floor(currentDevice:volume())
-            logger:d("Monitoring check, current volume: " .. currentVol)
-            
-            if currentVol == 50 then
-                logger:d("System reset detected (50%). Reapplying stored volume.")
-                applyStoredVolume()
-            end
-        end
-    end)
-    checkVolumeTimer:start()
+  isMonitoring = true
+  logger:d("Starting 10-second monitoring period")
+
+  -- Set monitoring window duration
+  monitorTimer = hs.timer.doAfter(10, function()
+    logger:d("Monitoring period ended")
+    isMonitoring = false
+    monitorTimer = nil
+  end)
+
+  -- Check for system-initiated volume resets every second
+  checkVolumeTimer = hs.timer.new(1, function()
+    if not isMonitoring then
+      checkVolumeTimer:stop()
+      return
+    end
+
+    local currentDevice = audio.defaultOutputDevice()
+    if currentDevice and currentDevice:name():find(headsetName) then
+      local currentVol = math.floor(currentDevice:volume())
+      logger:d("Monitoring check, current volume: " .. currentVol)
+
+      if currentVol == 50 then
+        logger:d("System reset detected (50%). Reapplying stored volume.")
+        applyStoredVolume()
+      end
+    end
+  end)
+  checkVolumeTimer:start()
 end
 
 --[[
   Device Connection Handlers
 --]]
 local function handleHeadsetConnected()
-    -- Initial volume restore attempt
-    hs.timer.doAfter(0.5, applyStoredVolume)
-    
-    -- Start regular volume tracking
-    startVolumeTimer()
-    
-    -- Begin monitoring for system-initiated resets
-    setupMonitoringPeriod()
+  -- Initial volume restore attempt
+  hs.timer.doAfter(0.5, applyStoredVolume)
+
+  -- Start regular volume tracking
+  startVolumeTimer()
+
+  -- Begin monitoring for system-initiated resets
+  setupMonitoringPeriod()
 end
 
 local function handleHeadsetDisconnected()
