@@ -50,6 +50,7 @@ local function applyStoredVolume()
 end
 
 -- Start monitoring volume changes for the headset
+-- and record the volume in a file.
 local function startVolumeTimer()
   logger:d('Starting volume timer')
   if volumeTimer then return end
@@ -104,10 +105,10 @@ local function setupMonitoringPeriod()
   cleanupMonitoring()  -- Clear any existing monitoring
 
   isMonitoring = true
-  logger:d("Starting 10-second monitoring period")
+  logger:d("Starting 20-second monitoring period")
 
   -- Set monitoring window duration
-  monitorTimer = hs.timer.doAfter(10, function()
+  monitorTimer = hs.timer.doAfter(20, function()
     logger:d("Monitoring period ended")
     isMonitoring = false
     monitorTimer = nil
@@ -116,7 +117,10 @@ local function setupMonitoringPeriod()
   -- Check for system-initiated volume resets every second
   checkVolumeTimer = hs.timer.new(1, function()
     if not isMonitoring then
-      checkVolumeTimer:stop()
+      if checkVolumeTimer then
+        checkVolumeTimer:stop()
+        checkVolumeTimer = nil
+      end
       return
     end
 
