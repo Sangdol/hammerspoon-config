@@ -40,6 +40,8 @@ local function applyStoredVolume()
     return
   end
 
+  -- NOTE: Setting the volume doesn't work when the system tries to reset it to 50%.
+  --       It seems there's no way to fix this issue for now.
   -- Set volume using AppleScript to ensure UI synchronization
   local command = string.format("osascript -e 'set volume output volume %d'", targetVol)
   hs.execute(command)

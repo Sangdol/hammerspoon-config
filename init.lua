@@ -16,7 +16,7 @@ require('cursor')
 require('quick_app')
 require('keymou')
 require('themes')
-require('headset_volume')
+--require('headset_volume')
 
 -- Not being used
 --require('volume')
