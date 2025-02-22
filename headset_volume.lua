@@ -42,6 +42,7 @@ local function applyStoredVolume()
 
   -- NOTE: Setting the volume doesn't work when the system tries to reset it to 50%.
   --       It seems there's no way to fix this issue for now.
+  --       However, this at least give the signal about the system volume setting issue.
   -- Set volume using AppleScript to ensure UI synchronization
   local command = string.format("osascript -e 'set volume output volume %d'", targetVol)
   hs.execute(command)
@@ -49,6 +50,10 @@ local function applyStoredVolume()
   lastVolume = targetVol
   logger:d("Volume set to " .. targetVol .. "%")
   hs.alert("Volume set to " .. targetVol .. "%")
+
+  -- Current volume
+  currentVol = math.floor(currentDevice:volume())
+  logger:d("Current volume from Hammerspoon: " .. currentVol)
 end
 
 -- Start monitoring volume changes for the headset
@@ -107,10 +112,10 @@ local function setupMonitoringPeriod()
   cleanupMonitoring()  -- Clear any existing monitoring
 
   isMonitoring = true
-  logger:d("Starting 20-second monitoring period")
+  logger:d("Starting 5-second monitoring period")
 
   -- Set monitoring window duration
-  monitorTimer = hs.timer.doAfter(20, function()
+  monitorTimer = hs.timer.doAfter(5, function()
     logger:d("Monitoring period ended")
     isMonitoring = false
     monitorTimer = nil
