@@ -41,7 +41,7 @@ end
 
 -- This has to be global not to be garbage collected.
 MenubarTimer = hs.timer.new(UPDATE_INTERVAL, function()
-  local scripts = {'pomo', 'tea', 'mail-checker', 'audio-output'}
+  local scripts = {'pomo', 'tea', 'mail-checker', 'audio-output', 'highest-cpu'}
 
   -- Macbook menubar is too crowded for youtube-music.
   if Global.screenCount > 1 then
