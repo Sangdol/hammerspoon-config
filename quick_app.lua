@@ -97,6 +97,7 @@ end
 
 -- Function to open the current app
 local function openCurrentApp()
+    currentAppIndex = fileAppIndex:read()
     hs.application.launchOrFocus(appList[currentAppIndex])
 end
 
