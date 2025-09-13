@@ -69,7 +69,7 @@ hotkey.bind({"ctrl", "cmd"}, "Y", function() activate("Firefox") end)
 hotkey.bind({"ctrl", "alt"}, "U", function() hs.application.launchOrFocus("Cursor") end)
 hotkey.bind({"ctrl", "alt"}, "P", function() hs.application.launchOrFocus("Preview") end)
 hotkey.bind({"ctrl", "alt"}, "R", function() hs.application.launchOrFocus("Reminders") end)
-hotkey.bind({"ctrl", "alt"}, "N", function() hs.application.launchOrFocus("Notes") end)
+hotkey.bind({"ctrl", "alt"}, "N", function() hs.application.launchOrFocus("Simplenote") end)
 hotkey.bind({"ctrl", "alt"}, "C", function() hs.application.launchOrFocus("Calendar") end)
 hotkey.bind({"ctrl", "alt"}, "I", function() hs.application.launchOrFocus("Linear") end)
 
